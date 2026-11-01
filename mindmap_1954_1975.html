@@ -506,36 +506,6 @@
     </button>
   </nav>
 
-  <!-- ================= FLOATING QUICK STATS CARD ================= -->
-  <aside class="fixed bottom-6 left-6 z-30 bg-white/95 backdrop-blur-md rounded-3xl p-4 border border-slate-200 shadow-xl hidden lg:block w-72">
-    <div class="flex items-center space-x-2 mb-2.5 pb-2 border-b border-slate-100">
-      <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i>
-      <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wide">CỘT MỐC LỊCH SỬ VNR202</h5>
-    </div>
-    <div class="grid grid-cols-2 gap-2 text-[11px]">
-      <div class="bg-purple-50 p-2.5 rounded-2xl border border-purple-100">
-        <span class="text-slate-500 block text-[10px]">Thời gian</span>
-        <strong class="text-purple-700 text-sm block">21 Năm</strong>
-        <span class="text-[9px] text-purple-500 block">1954 – 1975</span>
-      </div>
-      <div class="bg-rose-50 p-2.5 rounded-2xl border border-rose-100">
-        <span class="text-slate-500 block text-[10px]">Mỹ thất bại</span>
-        <strong class="text-rose-700 text-sm block">4 Chiến lược</strong>
-        <span class="text-[9px] text-rose-500 block">Đơn phương, ĐB, CB, VNH</span>
-      </div>
-      <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-100">
-        <span class="text-slate-500 block text-[10px]">Tổng tiến công</span>
-        <strong class="text-emerald-700 text-sm block">55 Ngày đêm</strong>
-        <span class="text-[9px] text-emerald-600 block">Mùa Xuân 1975</span>
-      </div>
-      <div class="bg-sky-50 p-2.5 rounded-2xl border border-sky-100">
-        <span class="text-slate-500 block text-[10px]">Kinh nghiệm</span>
-        <strong class="text-sky-700 text-sm block">4 Bài học</strong>
-        <span class="text-[9px] text-sky-600 block">Trang 235 Giáo trình</span>
-      </div>
-    </div>
-  </aside>
-
   <!-- ================= CANVAS & VIEWPORT ================= -->
   <main id="viewport" class="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing bg-white bg-pastel-grid">
 
@@ -3075,6 +3045,16 @@
 
       let startX, startY, endX, endY, isHorizontal;
 
+      // Branch 7 children are strictly underneath: force downward vertical connection
+      if (parent.id === 'branch_7') {
+        isHorizontal = false;
+        startX = pCenterX;
+        startY = pY + pH;
+        endX = cCenterX;
+        endY = cY;
+        return { startX, startY, endX, endY, isHorizontal, dx, dy };
+      }
+
       // Primary horizontal routing if dx dominates dy * 0.55
       if (Math.abs(dx) >= Math.abs(dy) * 0.55) {
         isHorizontal = true;
@@ -3433,36 +3413,93 @@
       });
     }
 
-    // Timeline Quick Filter
+    // Timeline Quick Filter & Smart Navigation
     function setupTimelineFilter() {
-      const filterPills = document.querySelectorAll('.filter-pill');
-      filterPills.forEach(pill => {
-        pill.addEventListener('click', () => {
-          filterPills.forEach(p => {
-            p.classList.remove('bg-purple-600', 'text-white', 'shadow-sm');
-            p.classList.add('bg-slate-100', 'text-slate-600');
-          });
-          pill.classList.remove('bg-slate-100', 'text-slate-600');
-          pill.classList.add('bg-purple-600', 'text-white', 'shadow-sm');
+      const filterBtns = document.querySelectorAll('.timeline-filter-btn');
+      if (!filterBtns.length) return;
 
-          const year = pill.dataset.year;
-          activeFilter = year;
-          applyTimelineFilter(year);
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => {
+            b.classList.remove('active', 'bg-pastel-purple', 'text-white', 'shadow-sm', 'font-bold');
+            b.classList.add('text-slate-600', 'font-semibold');
+          });
+          btn.classList.add('active', 'bg-pastel-purple', 'text-white', 'shadow-sm', 'font-bold');
+          btn.classList.remove('text-slate-600', 'font-semibold');
+
+          const filterVal = btn.dataset.filter;
+          activeFilter = filterVal;
+          applyTimelineFilter(filterVal);
         });
       });
     }
 
-    function applyTimelineFilter(year) {
-      NODES.forEach(n => {
-        const el = document.getElementById(`node-${n.id}`);
-        if (!el) return;
+    function applyTimelineFilter(filterVal) {
+      // Map period filter values to their primary focus branch
+      const branchMap = {
+        '1954': 'branch_2',      // Khôi phục miền Bắc & Chuyển sang thế tiến công (1954 - 1960)
+        '1960': 'branch_1',      // Đại hội III & Đường lối chiến lược 2 miền (1960)
+        '1965': 'branch_3',      // Đánh bại Chiến tranh đặc biệt (1961 - 1965)
+        '1968': 'branch_4',      // Đánh bại Chiến tranh cục bộ & Mậu Thân (1965 - 1968)
+        '1973': 'branch_5',      // Việt Nam hóa chiến tranh & Hiệp định Paris (1969 - 1973)
+        '1975': 'branch_6',      // Đại thắng mùa Xuân 1975
+        'Tổng kết': 'branch_7',  // Ý nghĩa lịch sử & Bài học kinh nghiệm
+        'all': 'center'
+      };
 
-        if (year === 'all' || n.filterYear === year || n.id === 'center') {
-          gsap.to(el, { opacity: 1, scale: 1, filter: 'grayscale(0%)', duration: 0.3 });
-        } else {
-          gsap.to(el, { opacity: 0.25, scale: 0.95, filter: 'grayscale(80%)', duration: 0.3 });
-        }
-      });
+      const targetId = branchMap[filterVal] || 'center';
+
+      if (filterVal !== 'all') {
+        // 1. Auto-unfold the target branch so all its campaigns and events are visible!
+        collapsedNodeIds.delete(targetId);
+
+        // Also unfold breakthrough milestones within that period
+        if (filterVal === '1960') collapsedNodeIds.delete('b2_nq15');
+        if (filterVal === '1965') collapsedNodeIds.delete('b3_guidelines');
+        if (filterVal === '1968') collapsedNodeIds.delete('b4_battles');
+        if (filterVal === '1973') collapsedNodeIds.delete('b5_dienbienphu');
+        if (filterVal === '1975') collapsedNodeIds.delete('b6_huedanang');
+
+        renderNodes();
+        requestAnimationFrame(() => renderConnections());
+        lucide.createIcons();
+
+        // 2. Highlight target branch cards in full vibrant color, dim others
+        const targetNode = NODES.find(n => n.id === targetId);
+        const targetBranchId = targetNode ? targetNode.branchId : '';
+
+        NODES.forEach(n => {
+          const el = document.getElementById(`node-${n.id}`);
+          if (!el) return;
+          const isTarget = (n.id === targetId || n.parentId === targetId || n.branchId === targetBranchId);
+          if (isTarget || n.id === 'center') {
+            gsap.to(el, { opacity: 1, scale: 1, filter: 'grayscale(0%)', duration: 0.35 });
+          } else {
+            gsap.to(el, { opacity: 0.22, scale: 0.96, filter: 'grayscale(75%)', duration: 0.35 });
+          }
+        });
+      } else {
+        // Reset all nodes to 100% full color
+        NODES.forEach(n => {
+          const el = document.getElementById(`node-${n.id}`);
+          if (el) gsap.to(el, { opacity: 1, scale: 1, filter: 'grayscale(0%)', duration: 0.35 });
+        });
+      }
+
+      // 3. Smooth Camera Glide: Center the target branch directly on the screen!
+      const targetNode = NODES.find(n => n.id === targetId) || NODES.find(n => n.id === 'center');
+      if (targetNode) {
+        const targetX = (window.innerWidth / 2) - (targetNode.x + targetNode.width / 2) * currentScale;
+        const targetY = (window.innerHeight / 2) - (targetNode.y + targetNode.height / 2) * currentScale;
+
+        gsap.to(currentPan, {
+          x: targetX,
+          y: targetY,
+          duration: 0.55,
+          ease: 'power2.out',
+          onUpdate: updateTransform
+        });
+      }
     }
 
     // Search Engine
