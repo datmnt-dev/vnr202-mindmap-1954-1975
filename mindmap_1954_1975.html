@@ -189,6 +189,42 @@
       }
     }
 
+  
+    /* ================= Z-INDEX & DRAWER FIXES ================= */
+    #detail-drawer {
+      z-index: 9999 !important;
+      background-color: #FFFFFF !important;
+      opacity: 1 !important;
+      box-shadow: -12px 0 35px -5px rgba(0, 0, 0, 0.2) !important;
+    }
+    #drawer-backdrop {
+      z-index: 9998 !important;
+    }
+    #pdf-export-modal {
+      z-index: 10000 !important;
+    }
+    #legend-modal {
+      z-index: 1000 !important;
+    }
+    header {
+      z-index: 500 !important;
+    }
+    #mindmap-canvas {
+      z-index: 1 !important;
+    }
+    .node-card {
+      z-index: 10 !important;
+    }
+    .node-card.z-30 {
+      z-index: 30 !important;
+    }
+    .branch-dock-btn {
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .branch-dock-btn:hover {
+      transform: translateY(-50%) scale(1.18);
+    }
+
   </style>
 </head>
 
@@ -214,14 +250,23 @@
     <div class="flex items-center space-x-2 md:space-x-3">
       <!-- Mode Segmented Control -->
       <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner">
-        <button id="mode-compact-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-purple-900 shadow-xs border border-purple-200" title="Chế độ xem gọn gàng sơ đồ tư duy">
-          <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-purple-600"></i>
-          <span class="hidden sm:inline">Tổng quan</span>
+        <!-- NotebookLM Branch Toggle Button -->
+        <button id="mode-notebook-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-emerald-800 shadow-xs border border-emerald-300" title="Phong cách NotebookLM: Xẻ nhánh & mở rộng từng nhánh chuyên đề">
+          <i data-lucide="git-fork" class="w-3.5 h-3.5 text-emerald-600"></i>
+          <span id="notebook-mode-label" class="hidden sm:inline">Nhánh NotebookLM</span>
         </button>
+
+        <!-- Full 34 Nodes Button -->
+        <button id="mode-compact-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5" title="Mở toàn bộ 34 thẻ sự kiện trên sơ đồ">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-slate-500"></i>
+          <span class="hidden sm:inline">Toàn cảnh (34 thẻ)</span>
+        </button>
+
+        <!-- Expanded 5-Section Mode Button -->
         <button id="mode-expanded-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5" title="Mở rộng trực tiếp 5 mục chi tiết trên mọi thẻ">
-          <i data-lucide="book-open" class="w-3.5 h-3.5 text-amber-600"></i>
-          <span class="font-bold">Mở rộng 5 mục</span>
-          <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 font-extrabold hidden md:inline">CHI TIẾT</span>
+          <i data-lucide="book-open" class="w-3.5 h-3.5 text-amber-500"></i>
+          <span class="font-bold hidden md:inline">Mở 5 mục</span>
+          <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 font-extrabold">5 MỤC</span>
         </button>
       </div>
 
@@ -443,9 +488,9 @@
   </main>
 
   <!-- ================= SLIDE-IN DETAIL DRAWER ================= -->
-  <div id="drawer-backdrop" class="fixed inset-0 z-50 bg-slate-900/25 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300"></div>
+  <div id="drawer-backdrop" style="z-index: 9998 !important;" class="fixed inset-0 z-[9998] bg-slate-900/40 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300"></div>
 
-  <aside id="detail-drawer" class="fixed top-0 right-0 bottom-0 z-50 w-full sm:w-[500px] md:w-[560px] bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col">
+  <aside id="detail-drawer" style="z-index: 9999 !important; background-color: #FFFFFF !important;" class="fixed top-0 right-0 bottom-0 z-[9999] w-full sm:w-[500px] md:w-[560px] bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col">
     
     <!-- Drawer Header -->
     <div class="p-6 border-b border-slate-100 relative flex-shrink-0 bg-slate-50/80">
@@ -2243,6 +2288,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       lucide.createIcons();
+      updateModeButtons();
       renderNodes();
       requestAnimationFrame(() => renderConnections());
       setupInteractions();
@@ -2255,13 +2301,152 @@
     });
 
     // Render HTML Nodes (Supporting both Overview & Deep Detail Expanded Mode)
+    
+    // ================= NOTEBOOKLM BRANCH ENGINE =================
+    const defaultBranchIds = ['branch_1', 'branch_2', 'branch_3', 'branch_4', 'branch_5', 'branch_6', 'branch_7', 'b2_nq15', 'b3_guidelines', 'b4_battles', 'b5_dienbienphu', 'b6_huedanang'];
+    const collapsedNodeIds = new Set(defaultBranchIds);
+    let isNotebookBranchMode = true;
+
+    // Children mapping
+    const childrenMap = new Map();
+    NODES.forEach(n => {
+      const pid = n.parentId;
+      if (pid && pid !== n.id) {
+        if (!childrenMap.has(pid)) childrenMap.set(pid, []);
+        childrenMap.get(pid).push(n.id);
+      }
+    });
+
+    function getDescendantIds(nodeId) {
+      const result = [];
+      const stack = [...(childrenMap.get(nodeId) || [])];
+      while (stack.length > 0) {
+        const curr = stack.pop();
+        result.push(curr);
+        const children = childrenMap.get(curr) || [];
+        for (const ch of children) stack.push(ch);
+      }
+      return result;
+    }
+
+    function isNodeVisible(nodeId) {
+      if (nodeId === 'center') return true;
+      const node = NODES.find(n => n.id === nodeId);
+      if (!node) return false;
+
+      // Check if any ancestor is collapsed
+      let curr = node;
+      while (curr && curr.parentId && curr.parentId !== 'center') {
+        if (collapsedNodeIds.has(curr.parentId)) {
+          return false;
+        }
+        curr = NODES.find(n => n.id === curr.parentId);
+      }
+      if (node.parentId && collapsedNodeIds.has(node.parentId)) {
+        return false;
+      }
+
+      return true;
+    }
+
+    function toggleBranch(nodeId, e) {
+      if (e) e.stopPropagation();
+      if (collapsedNodeIds.has(nodeId)) {
+        collapsedNodeIds.delete(nodeId);
+      } else {
+        collapsedNodeIds.add(nodeId);
+      }
+      renderNodes();
+      requestAnimationFrame(() => renderConnections());
+      lucide.createIcons();
+    }
+
+    function toggleAllBranches(collapse) {
+      if (collapse) {
+        const branchIds = ['branch_1', 'branch_2', 'branch_3', 'branch_4', 'branch_5', 'branch_6', 'branch_7', 'b2_nq15', 'b3_guidelines', 'b4_battles', 'b5_dienbienphu', 'b6_huedanang'];
+        branchIds.forEach(id => collapsedNodeIds.add(id));
+        isNotebookBranchMode = true;
+      } else {
+        collapsedNodeIds.clear();
+        isNotebookBranchMode = false;
+      }
+      updateModeButtons();
+      renderNodes();
+      requestAnimationFrame(() => renderConnections());
+      lucide.createIcons();
+    }
+
     function renderNodes() {
       nodesContainer.innerHTML = '';
 
+      // Dynamic Non-Colliding Layout for Expanded / Detail Cards
+      const visibleNodes = NODES.filter(n => isNodeVisible(n.id));
+      const colGroups = new Map();
+
+      visibleNodes.forEach(node => {
+        if (node.isCenter) return;
+        // Group into vertical columns by X (nodes within 70px)
+        let foundGroupKey = null;
+        for (const key of colGroups.keys()) {
+          if (Math.abs(key - node.x) < 70) {
+            foundGroupKey = key;
+            break;
+          }
+        }
+        const groupKey = (foundGroupKey !== null) ? foundGroupKey : node.x;
+        if (!colGroups.has(groupKey)) colGroups.set(groupKey, []);
+        colGroups.get(groupKey).push(node);
+      });
+
+      const nodeDynamicY = new Map();
+      colGroups.forEach((group) => {
+        group.sort((a, b) => a.y - b.y);
+        let curY = 0;
+        group.forEach(n => {
+          const isExpanded = isDeepDetailMode || expandedNodeIds.has(n.id);
+          const estHeight = isExpanded ? (n.imageUrl ? 620 : 520) : n.height;
+          const posY = Math.max(n.y, curY);
+          nodeDynamicY.set(n.id, posY);
+          curY = posY + estHeight + 40;
+        });
+      });
+
+      // Breakthrough subchildren: align with their parent's dynamic Y if their parent was shifted
+      const breakthroughChildSuffixes = ['_mauthan', '_paris', '_hochiminh', '_dongkhoi', '_campaigns'];
+      visibleNodes.forEach(n => {
+        if (n.parentId && nodeDynamicY.has(n.parentId)) {
+          if (breakthroughChildSuffixes.some(s => n.id.endsWith(s))) {
+            nodeDynamicY.set(n.id, nodeDynamicY.get(n.parentId));
+          }
+        }
+      });
+
+      // Branch 7 bottom positioning: ensure branch_7 and its children always clear center, branch_3 and branch_6
+      const isAnyExpanded = isDeepDetailMode || expandedNodeIds.size > 0;
+      if (isAnyExpanded) {
+        const b3Bottom = nodeDynamicY.has('branch_3') ? (nodeDynamicY.get('branch_3') + (isDeepDetailMode ? 620 : 230)) : 2260;
+        const b6Bottom = nodeDynamicY.has('branch_6') ? (nodeDynamicY.get('branch_6') + (isDeepDetailMode ? 620 : 230)) : 2260;
+        const centerBottom = 1250 + (isDeepDetailMode ? 650 : 220);
+        const maxBottom = Math.max(b3Bottom, b6Bottom, centerBottom);
+
+        const b7Y = maxBottom + 60;
+        nodeDynamicY.set('branch_7', b7Y);
+
+        const b7KidsY = b7Y + (isDeepDetailMode ? 620 : 230) + 50;
+        nodeDynamicY.set('b7_meaning', b7KidsY);
+        nodeDynamicY.set('b7_lessons', b7KidsY);
+        nodeDynamicY.set('b7_critique', b7KidsY);
+      }
+
       NODES.forEach((node) => {
+        if (!isNodeVisible(node.id)) return;
         const theme = PASTEL_THEMES[node.branchId] || PASTEL_THEMES.b1;
         const d = node.detail || {};
         const isExpanded = isDeepDetailMode || expandedNodeIds.has(node.id);
+
+        const hasKids = childrenMap.has(node.id);
+        const isBranchCollapsed = collapsedNodeIds.has(node.id);
+        const descCount = hasKids ? getDescendantIds(node.id).length : 0;
 
         const el = document.createElement('div');
         el.id = `node-${node.id}`;
@@ -2269,8 +2454,9 @@
         el.dataset.filterYear = node.filterYear || 'all';
 
         const cardWidth = isExpanded ? Math.max(node.width, 360) : node.width;
+        const finalY = nodeDynamicY.has(node.id) ? nodeDynamicY.get(node.id) : node.y;
         el.style.left = `${node.x}px`;
-        el.style.top = `${node.y}px`;
+        el.style.top = `${finalY}px`;
         el.style.width = `${cardWidth}px`;
 
         if (node.isCenter) {
@@ -2304,10 +2490,16 @@
                   </p>
                 </div>
                 <div class="flex items-center justify-between pt-2 border-t border-white/20 text-[10px] text-purple-100">
-                  <button class="toggle-card-btn font-bold text-purple-950 bg-amber-300 hover:bg-amber-200 px-2.5 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-                    <i data-lucide="book-open" class="w-3 h-3"></i> Mở rộng 5 mục
+                  <button class="branch-toggle-btn font-bold text-amber-950 bg-amber-400 hover:bg-amber-300 px-2.5 py-0.5 rounded-full shadow-xs flex items-center gap-1 transition" title="Mở rộng hoặc thu gọn tất cả 7 nhánh chính">
+                    <i data-lucide="${isBranchCollapsed ? 'plus-circle' : 'minus-circle'}" class="w-3 h-3"></i>
+                    <span>${isBranchCollapsed ? '+ 7 nhánh' : 'Thu 7 nhánh'}</span>
                   </button>
-                  <span class="font-bold text-white flex items-center bg-white/20 px-2 py-0.5 rounded-full">Chi tiết <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></span>
+                  <div class="flex items-center space-x-1">
+                    <button class="toggle-card-btn font-bold text-purple-950 bg-amber-200 hover:bg-amber-100 px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
+                      <i data-lucide="book-open" class="w-3 h-3"></i> 5 mục
+                    </button>
+                    <span class="font-bold text-white flex items-center bg-white/20 px-2 py-0.5 rounded-full drawer-link">Chi tiết <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></span>
+                  </div>
                 </div>
               </div>
             `;
@@ -2537,9 +2729,15 @@
                   </p>
                 </div>
                 <div class="flex items-center justify-between text-[10px] pt-1.5 border-t border-slate-200/50 mt-1">
-                  <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
-                    <i data-lucide="book-open" class="w-2.5 h-2.5"></i> Mở 5 mục
-                  </button>
+                  <div class="flex items-center space-x-1.5">
+                    <button class="branch-toggle-btn px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 shadow-xs ${isBranchCollapsed ? 'bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-500 animate-pulse' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'}" title="Mở rộng xẻ nhánh theo phong cách NotebookLM">
+                      <i data-lucide="${isBranchCollapsed ? 'git-fork' : 'minus-circle'}" class="w-3 h-3"></i>
+                      <span>${isBranchCollapsed ? `+ ${descCount} nhánh` : 'Thu nhánh'}</span>
+                    </button>
+                    <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
+                      <i data-lucide="book-open" class="w-2.5 h-2.5"></i> 5 mục
+                    </button>
+                  </div>
                   <span class="${theme.tag} font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-3 h-3 ml-0.5"></i></span>
                 </div>
               </div>
@@ -2563,15 +2761,51 @@
                   </p>
                 </div>
                 <div class="flex items-center justify-between pt-1 border-t border-slate-200/50 text-[9px]">
-                  <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
-                    <i data-lucide="book-open" class="w-2.5 h-2.5"></i> Mở 5 mục
-                  </button>
+                  <div class="flex items-center space-x-1">
+                    ${hasKids ? `
+                    <button class="branch-toggle-btn px-2 py-0.5 rounded-full font-bold transition flex items-center gap-0.5 ${isBranchCollapsed ? 'bg-amber-400 text-amber-950 border border-amber-500 animate-pulse' : 'bg-slate-100 text-slate-700 border border-slate-200'}" title="Mở bước đột phá">
+                      <i data-lucide="${isBranchCollapsed ? 'plus-circle' : 'minus-circle'}" class="w-2.5 h-2.5"></i>
+                      <span>${isBranchCollapsed ? `+ ${descCount}` : 'Thu'}</span>
+                    </button>
+                    ` : ''}
+                    <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
+                      <i data-lucide="book-open" class="w-2.5 h-2.5"></i> 5 mục
+                    </button>
+                  </div>
                   <span class="${theme.tag} font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-2.5 h-2.5 ml-0.5"></i></span>
                 </div>
               </div>
             `;
           }
         }
+
+        // Dock button handle on card side
+        if (hasKids) {
+          const isRight = node.x >= 2000;
+          const isBottom = node.id === 'branch_7';
+          let posClass = isRight ? "-right-3.5 top-1/2 -translate-y-1/2" : "-left-3.5 top-1/2 -translate-y-1/2";
+          if (isBottom) posClass = "left-1/2 -translate-x-1/2 -bottom-3.5";
+          
+          const dockBtn = document.createElement('button');
+          dockBtn.className = `branch-dock-btn absolute ${posClass} ${isBranchCollapsed ? 'px-2 h-7 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-500 shadow-md ring-2 ring-amber-300/50' : 'w-7 h-7 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-xs'} flex items-center justify-center font-bold z-30 transition-all hover:scale-110`;
+          dockBtn.title = isBranchCollapsed ? `Mở rộng xẻ ${descCount} nhánh (NotebookLM)` : 'Thu gọn nhánh';
+          dockBtn.innerHTML = isBranchCollapsed 
+            ? `<span class="flex items-center gap-1 text-[11px] font-extrabold"><i data-lucide="plus" class="w-3.5 h-3.5 stroke-[3]"></i><span>${descCount}</span></span>`
+            : `<i data-lucide="minus" class="w-3.5 h-3.5 stroke-[2.5]"></i>`;
+          dockBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleBranch(node.id, e);
+          });
+          el.appendChild(dockBtn);
+        }
+
+        // Branch Toggle inside card
+        el.querySelectorAll('.branch-toggle-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleBranch(node.id, e);
+          });
+        });
 
         // Click to Toggle Expand / Collapse or Open Drawer
         el.querySelectorAll('.toggle-card-btn').forEach(btn => {
@@ -2696,6 +2930,7 @@
       // 1. Hierarchy Parent -> Child Connections
       NODES.forEach(child => {
         if (!child.parentId) return;
+        if (!isNodeVisible(child.id) || !isNodeVisible(child.parentId)) return;
         const parent = nodeMap.get(child.parentId);
         if (!parent) return;
 
@@ -2739,6 +2974,7 @@
 
       // 2. Macro Cross-Links (Hậu phương miền Bắc -> Tiền tuyến miền Nam)
       CROSS_LINKS.forEach(cl => {
+        if (!isNodeVisible(cl.from) || !isNodeVisible(cl.to)) return;
         const fromNode = nodeMap.get(cl.from);
         const toNode = nodeMap.get(cl.to);
         if (!fromNode || !toNode) return;
@@ -2782,13 +3018,24 @@
 
     // Setup Mode Switcher (Overview vs Expanded 5-Sections)
     function setupModeSwitcher() {
+      const notebookBtn = document.getElementById('mode-notebook-btn');
       const compactBtn = document.getElementById('mode-compact-btn');
       const expandedBtn = document.getElementById('mode-expanded-btn');
+
+      if (notebookBtn) {
+        notebookBtn.addEventListener('click', () => {
+          isDeepDetailMode = false;
+          expandedNodeIds.clear();
+          toggleAllBranches(!isNotebookBranchMode);
+        });
+      }
 
       if (compactBtn) {
         compactBtn.addEventListener('click', () => {
           isDeepDetailMode = false;
           expandedNodeIds.clear();
+          collapsedNodeIds.clear();
+          isNotebookBranchMode = false;
           updateModeButtons();
           renderNodes();
           requestAnimationFrame(() => renderConnections());
@@ -2799,6 +3046,8 @@
         expandedBtn.addEventListener('click', () => {
           isDeepDetailMode = true;
           expandedNodeIds.clear();
+          collapsedNodeIds.clear();
+          isNotebookBranchMode = false;
           updateModeButtons();
           renderNodes();
           requestAnimationFrame(() => renderConnections());
@@ -2807,20 +3056,28 @@
     }
 
     function updateModeButtons() {
+      const notebookBtn = document.getElementById('mode-notebook-btn');
       const compactBtn = document.getElementById('mode-compact-btn');
       const expandedBtn = document.getElementById('mode-expanded-btn');
       if (!compactBtn || !expandedBtn) return;
 
+      const baseInactive = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
+
       if (isDeepDetailMode) {
         expandedBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-amber-500 text-white shadow-xs border border-amber-600";
-        compactBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
+        compactBtn.className = baseInactive;
+        if (notebookBtn) notebookBtn.className = baseInactive;
+      } else if (isNotebookBranchMode) {
+        if (notebookBtn) notebookBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-emerald-600 text-white shadow-xs border border-emerald-700";
+        compactBtn.className = baseInactive;
+        expandedBtn.className = baseInactive;
       } else {
         compactBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-purple-900 shadow-xs border border-purple-200";
-        expandedBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
+        expandedBtn.className = baseInactive;
+        if (notebookBtn) notebookBtn.className = baseInactive;
       }
     }
 
-    // Highlight Node Connections on Hover
     function highlightNodeConnections(nodeId, active) {
       const connectedPaths = document.querySelectorAll(`path[data-parent="${nodeId}"], path[data-child="${nodeId}"]`);
       connectedPaths.forEach(p => {
@@ -2866,8 +3123,11 @@
     function setupInteractions() {
       initCamera();
 
+      canvasEl.style.zIndex = '1';
+      viewportEl.style.zIndex = '1';
       Draggable.create(canvasEl, {
         type: 'x,y',
+        zIndexBoost: false,
         trigger: viewportEl,
         dragClickables: false,
         onDragStart: () => {
@@ -3170,7 +3430,21 @@
 
       backdrop.classList.remove('hidden');
       gsap.to(backdrop, { opacity: 1, duration: 0.25 });
+      drawer.classList.remove('translate-x-full');
       gsap.to(drawer, { x: '0%', duration: 0.35, ease: 'power3.out' });
+
+      // SMART AUTO-PAN: Center the selected node in the visible area to the left of the drawer
+      const visibleWidth = Math.max(window.innerWidth - 560, 420);
+      const targetPanX = (visibleWidth / 2) - (node.x + node.width / 2) * currentScale;
+      const targetPanY = (window.innerHeight / 2) - (node.y + node.height / 2) * currentScale;
+
+      gsap.to(currentPan, {
+        x: targetPanX,
+        y: targetPanY,
+        duration: 0.45,
+        ease: 'power2.out',
+        onUpdate: updateTransform
+      });
 
       lucide.createIcons();
     }
@@ -3187,8 +3461,8 @@
           backdrop.classList.add('hidden');
         }
       });
-    
-    // PDF Export Setup
+    }
+
     function setupPdfExport() {
       const modal = document.getElementById('pdf-export-modal');
       const openBtn = document.getElementById('export-pdf-modal-btn');
@@ -3227,8 +3501,6 @@
         });
       }
     }
-
-  }
   </script>
 
   <!-- ================= PDF & IMAGE EXPORT MODAL ================= -->
