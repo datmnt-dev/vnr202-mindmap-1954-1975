@@ -299,6 +299,45 @@
       transform: rotate(90deg) scale(1.15);
     }
 
+  
+    /* Connecting stem from card edge to dock button */
+    .dock-stem-right::before {
+      content: '';
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 3px;
+      background-color: #CBD5E1;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .dock-stem-left::before {
+      content: '';
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 3px;
+      background-color: #CBD5E1;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+    .dock-stem-bottom::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 3px;
+      height: 14px;
+      background-color: #CBD5E1;
+      border-radius: 2px;
+      pointer-events: none;
+    }
+
   </style>
 </head>
 
@@ -324,12 +363,6 @@
     <div class="flex items-center space-x-2 md:space-x-3">
       <!-- Mode Segmented Control -->
       <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner">
-        <!-- NotebookLM Branch Toggle Button -->
-        <button id="mode-notebook-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-emerald-800 shadow-xs border border-emerald-300" title="Phong cách NotebookLM: Xẻ nhánh & mở rộng từng nhánh chuyên đề">
-          <i data-lucide="git-fork" class="w-3.5 h-3.5 text-emerald-600"></i>
-          <span id="notebook-mode-label" class="hidden sm:inline">Nhánh NotebookLM</span>
-        </button>
-
         <!-- Full 34 Nodes Button -->
         <button id="mode-compact-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5" title="Mở toàn bộ 34 thẻ sự kiện trên sơ đồ">
           <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-slate-500"></i>
@@ -2913,23 +2946,42 @@
           }
         }
 
-        // Dock button handle on card side
+        // Prominent Branch Expand Button (Positioned completely outside the card)
         if (hasKids) {
-          const isRight = node.x >= 2000;
-          const isBottom = node.id === 'branch_7';
-          let posClass = isRight ? "-right-3.5 top-1/2 -translate-y-1/2" : "-left-3.5 top-1/2 -translate-y-1/2";
-          if (isBottom) posClass = "left-1/2 -translate-x-1/2 -bottom-3.5";
-          
+          const isRight = (node.x >= 2000) || (node.id === 'b4_battles' || node.id === 'b5_dienbienphu' || node.id === 'b6_huedanang');
+          const isBottom = (node.id === 'branch_7');
+
+          let posStyle = '';
+          let dirStemClass = 'dock-stem-left';
+
+          if (isBottom) {
+            posStyle = 'top: calc(100% + 14px); left: 50%; transform: translateX(-50%);';
+            dirStemClass = 'dock-stem-bottom';
+          } else if (isRight) {
+            posStyle = 'left: calc(100% + 14px); top: 50%; transform: translateY(-50%);';
+            dirStemClass = 'dock-stem-right';
+          } else {
+            posStyle = 'right: calc(100% + 14px); top: 50%; transform: translateY(-50%);';
+            dirStemClass = 'dock-stem-left';
+          }
+
           const dockBtn = document.createElement('button');
-          dockBtn.className = `branch-dock-btn absolute ${posClass} ${isBranchCollapsed ? 'pulse-beacon px-2.5 h-7 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-500 shadow-md ring-2 ring-amber-300/60' : 'w-7 h-7 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-xs'} flex items-center justify-center font-bold z-30 transition-all hover:scale-115 active:scale-90`;
-          dockBtn.title = isBranchCollapsed ? `Mở rộng xẻ ${descCount} nhánh (NotebookLM)` : 'Thu gọn nhánh';
+          dockBtn.style.cssText = posStyle;
+          dockBtn.className = `branch-dock-btn absolute ${dirStemClass} ${isBranchCollapsed ? 'pulse-beacon min-w-[42px] h-[38px] px-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-amber-950 border-2 border-white shadow-lg ring-2 ring-amber-400/80' : 'w-[38px] h-[38px] rounded-full bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 shadow-md'} flex items-center justify-center font-bold z-40 transition-all hover:scale-115 active:scale-90 cursor-pointer`;
+          dockBtn.title = isBranchCollapsed ? `Mở rộng xẻ ${descCount} nhánh sự kiện` : 'Thu gọn nhánh';
           dockBtn.innerHTML = isBranchCollapsed 
-            ? `<span class="flex items-center gap-1 text-[11px] font-extrabold"><i data-lucide="plus" class="w-3.5 h-3.5 stroke-[3]"></i><span>${descCount}</span></span>`
-            : `<i data-lucide="minus" class="w-3.5 h-3.5 stroke-[2.5]"></i>`;
+            ? `<span class="flex items-center gap-1 text-xs font-black pointer-events-none"><i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i><span>${descCount}</span></span>`
+            : `<i data-lucide="minus" class="w-5 h-5 stroke-[3] pointer-events-none"></i>`;
+
+          // Event isolation: prevent card click / drawer open
           dockBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+            e.preventDefault();
             toggleBranch(node.id, e);
           });
+          dockBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+          dockBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+
           el.appendChild(dockBtn);
         }
 
@@ -2981,10 +3033,11 @@
         });
 
         el.addEventListener('click', (e) => {
-          // If clicking card outside buttons
-          if (!e.target.closest('button')) {
-            openDrawer(node.id);
+          // If clicking card outside buttons and dock button
+          if (e.target.closest('button') || e.target.closest('.branch-dock-btn')) {
+            return;
           }
+          openDrawer(node.id);
         });
 
         // Hover Effect
@@ -3195,25 +3248,19 @@
     }
 
     function updateModeButtons() {
-      const notebookBtn = document.getElementById('mode-notebook-btn');
       const compactBtn = document.getElementById('mode-compact-btn');
       const expandedBtn = document.getElementById('mode-expanded-btn');
       if (!compactBtn || !expandedBtn) return;
 
-      const baseInactive = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
+      const activeClass = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 shadow-xs border";
+      const inactiveClass = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
 
       if (isDeepDetailMode) {
-        expandedBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-amber-500 text-white shadow-xs border border-amber-600";
-        compactBtn.className = baseInactive;
-        if (notebookBtn) notebookBtn.className = baseInactive;
-      } else if (isNotebookBranchMode) {
-        if (notebookBtn) notebookBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-emerald-600 text-white shadow-xs border border-emerald-700";
-        compactBtn.className = baseInactive;
-        expandedBtn.className = baseInactive;
+        expandedBtn.className = `${activeClass} bg-amber-500 text-white border-amber-600`;
+        compactBtn.className = inactiveClass;
       } else {
-        compactBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-purple-900 shadow-xs border border-purple-200";
-        expandedBtn.className = baseInactive;
-        if (notebookBtn) notebookBtn.className = baseInactive;
+        compactBtn.className = `${activeClass} bg-white text-purple-900 border-purple-200`;
+        expandedBtn.className = inactiveClass;
       }
     }
 
