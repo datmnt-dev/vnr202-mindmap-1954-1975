@@ -192,13 +192,17 @@
   
     /* ================= Z-INDEX & DRAWER FIXES ================= */
     #detail-drawer {
-      z-index: 9999 !important;
+      z-index: 99999 !important;
       background-color: #FFFFFF !important;
       opacity: 1 !important;
-      box-shadow: -12px 0 35px -5px rgba(0, 0, 0, 0.2) !important;
+      box-shadow: -16px 0 45px -5px rgba(0, 0, 0, 0.3) !important;
+    }
+    #detail-drawer, #detail-drawer * {
+      box-sizing: border-box;
     }
     #drawer-backdrop {
-      z-index: 9998 !important;
+      z-index: 99998 !important;
+      background-color: rgba(15, 23, 42, 0.45) !important;
     }
     #pdf-export-modal {
       z-index: 10000 !important;
@@ -474,7 +478,7 @@
   </div>
 
   <!-- ================= TIMELINE QUICK FILTER DOCK ================= -->
-  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-full border border-slate-200 shadow-xl flex items-center space-x-1.5 sm:space-x-2 max-w-[94vw] overflow-x-auto">
+  <nav id="timeline-bar" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-full border border-slate-200 shadow-xl flex items-center space-x-1.5 sm:space-x-2 max-w-[94vw] overflow-x-auto">
     <div class="flex items-center space-x-1 text-slate-500 pl-1.5 pr-1 text-xs font-semibold uppercase tracking-wider hidden md:flex">
       <i data-lucide="clock" class="w-3.5 h-3.5 text-purple-600 mr-1"></i>
       <span>Niên biểu:</span>
@@ -507,7 +511,7 @@
   </nav>
 
   <!-- ================= CANVAS & VIEWPORT ================= -->
-  <main id="viewport" class="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing bg-white bg-pastel-grid">
+  <main id="viewport" style="isolation: isolate !important; z-index: 10 !important;" class="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing bg-white bg-pastel-grid">
 
     <!-- Scalable Mindmap Canvas -->
     <div id="mindmap-canvas" class="absolute left-0 top-0 origin-top-left" style="width: 4600px; height: 3000px;">
@@ -565,9 +569,9 @@
   </main>
 
   <!-- ================= SLIDE-IN DETAIL DRAWER ================= -->
-  <div id="drawer-backdrop" style="z-index: 9998 !important;" class="fixed inset-0 z-[9998] bg-slate-900/40 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300"></div>
+  <div id="drawer-backdrop" style="z-index: 99998 !important; background-color: rgba(15, 23, 42, 0.45) !important;" class="fixed inset-0 hidden opacity-0 transition-opacity duration-300"></div></div>
 
-  <aside id="detail-drawer" style="z-index: 9999 !important; background-color: #FFFFFF !important;" class="fixed top-0 right-0 bottom-0 z-[9999] w-full sm:w-[500px] md:w-[560px] bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col">
+  <aside id="detail-drawer" style="z-index: 99999 !important; background-color: #FFFFFF !important; opacity: 1 !important;" class="fixed top-0 right-0 bottom-0 w-full sm:w-[500px] md:w-[560px] bg-white border-l border-slate-200 shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-out">
     
     <!-- Drawer Header -->
     <div class="p-6 border-b border-slate-100 relative flex-shrink-0 bg-slate-50/80">
@@ -2516,465 +2520,323 @@
     function renderNodes() {
       nodesContainer.innerHTML = '';
 
-      // Dynamic Non-Colliding Layout for Expanded / Detail Cards
+      // Clean, reliable two-pass rendering for 100% collision-free layout
       const visibleNodes = NODES.filter(n => isNodeVisible(n.id));
-      const colGroups = new Map();
 
-      visibleNodes.forEach(node => {
-        if (node.isCenter) return;
-        // Group into vertical columns by X (nodes within 70px)
-        let foundGroupKey = null;
-        for (const key of colGroups.keys()) {
-          if (Math.abs(key - node.x) < 70) {
-            foundGroupKey = key;
-            break;
-          }
-        }
-        const groupKey = (foundGroupKey !== null) ? foundGroupKey : node.x;
-        if (!colGroups.has(groupKey)) colGroups.set(groupKey, []);
-        colGroups.get(groupKey).push(node);
-      });
-
-      const nodeDynamicY = new Map();
-      colGroups.forEach((group) => {
-        group.sort((a, b) => a.y - b.y);
-        let curY = 0;
-        group.forEach(n => {
-          const isExpanded = isDeepDetailMode || expandedNodeIds.has(n.id);
-          const estHeight = isExpanded ? (n.imageUrl ? 620 : 520) : n.height;
-          const posY = Math.max(n.y, curY);
-          nodeDynamicY.set(n.id, posY);
-          curY = posY + estHeight + 40;
-        });
-      });
-
-      // Breakthrough subchildren: align with their parent's dynamic Y if their parent was shifted
-      const breakthroughChildSuffixes = ['_mauthan', '_paris', '_hochiminh', '_dongkhoi', '_campaigns'];
-      visibleNodes.forEach(n => {
-        if (n.parentId && nodeDynamicY.has(n.parentId)) {
-          if (breakthroughChildSuffixes.some(s => n.id.endsWith(s))) {
-            nodeDynamicY.set(n.id, nodeDynamicY.get(n.parentId));
-          }
-        }
-      });
-
-      // Branch 7 bottom positioning: ensure branch_7 and its children always clear center, branch_3 and branch_6
-      const isAnyExpanded = isDeepDetailMode || expandedNodeIds.size > 0;
-      if (isAnyExpanded) {
-        const b3Bottom = nodeDynamicY.has('branch_3') ? (nodeDynamicY.get('branch_3') + (isDeepDetailMode ? 620 : 230)) : 2260;
-        const b6Bottom = nodeDynamicY.has('branch_6') ? (nodeDynamicY.get('branch_6') + (isDeepDetailMode ? 620 : 230)) : 2260;
-        const centerBottom = 1250 + (isDeepDetailMode ? 650 : 220);
-        const maxBottom = Math.max(b3Bottom, b6Bottom, centerBottom);
-
-        const b7Y = maxBottom + 60;
-        nodeDynamicY.set('branch_7', b7Y);
-
-        const b7KidsY = b7Y + (isDeepDetailMode ? 620 : 230) + 50;
-        nodeDynamicY.set('b7_meaning', b7KidsY);
-        nodeDynamicY.set('b7_lessons', b7KidsY);
-        nodeDynamicY.set('b7_critique', b7KidsY);
-      }
-
-      NODES.forEach((node) => {
-        if (!isNodeVisible(node.id)) return;
+      // PASS 1: Create all node elements and append to DOM so browser can layout & size them
+      visibleNodes.forEach((node) => {
         const theme = PASTEL_THEMES[node.branchId] || PASTEL_THEMES.b1;
         const d = node.detail || {};
         const isExpanded = isDeepDetailMode || expandedNodeIds.has(node.id);
-
-        const hasKids = childrenMap.has(node.id);
-        const isBranchCollapsed = collapsedNodeIds.has(node.id);
-        const descCount = hasKids ? getDescendantIds(node.id).length : 0;
+        const cardWidth = isExpanded ? Math.max(node.width, 360) : node.width;
 
         const el = document.createElement('div');
         el.id = `node-${node.id}`;
         el.dataset.nodeId = node.id;
         el.dataset.filterYear = node.filterYear || 'all';
-
-        const cardWidth = isExpanded ? Math.max(node.width, 360) : node.width;
-        const finalY = nodeDynamicY.has(node.id) ? nodeDynamicY.get(node.id) : node.y;
         el.style.left = `${node.x}px`;
-        el.style.top = `${finalY}px`;
+        el.style.top = `${node.y}px`;
         el.style.width = `${cardWidth}px`;
 
         if (node.isCenter) {
-          // ================= CENTER NODE =================
           el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden bg-purple-950 border-2 border-purple-400 shadow-center z-30 animate-center-glow`;
           
           if (!isExpanded) {
-            el.style.height = `${node.height}px`;
             el.innerHTML = `
-              <div class="h-28 w-full overflow-hidden relative group">
-                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+              <div class="relative h-28 w-full overflow-hidden">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center filter brightness-90 hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-purple-950 via-purple-950/40 to-transparent"></div>
-                <div class="absolute top-2 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-purple-950 tracking-wider shadow-sm flex items-center gap-1">
-                  <i data-lucide="star" class="w-3 h-3 fill-current"></i> ${node.year}
+                <div class="absolute top-2.5 left-2.5 flex items-center space-x-1.5">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-purple-950 shadow-xs flex items-center gap-1">
+                    <i data-lucide="star" class="w-3 h-3 fill-purple-950 text-purple-950"></i>
+                    ${node.year}
+                  </span>
                 </div>
-                <div class="absolute top-2 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/20 text-white backdrop-blur-xs">
-                  TRỌNG TÂM LỊCH SỬ
-                </div>
-                <div class="absolute bottom-1.5 left-3 right-3 text-[10px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
-                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
-                  <span class="truncate">${node.imageCaption}</span>
+                <div class="absolute top-2.5 right-2.5">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold tracking-wider uppercase bg-purple-800/80 text-purple-200 border border-purple-600/40">
+                    ${node.category}
+                  </span>
                 </div>
               </div>
-              <div class="p-3.5 flex flex-col justify-between flex-1 bg-pastel-purple text-white">
+              <div class="p-3.5 flex flex-col justify-between flex-1">
                 <div>
-                  <h3 class="font-bold text-sm text-white leading-snug tracking-tight">
+                  <h3 class="font-extrabold text-sm text-white leading-tight hover:text-amber-300 transition">
                     ${node.title}
                   </h3>
-                  <p class="text-[11px] text-purple-100 mt-0.5 line-clamp-2 leading-relaxed">
+                  <p class="text-[11px] text-purple-200/90 font-medium mt-1 leading-snug">
                     ${node.subtitle}
                   </p>
                 </div>
-                <div class="flex items-center justify-between pt-2 border-t border-white/20 text-[10px] text-purple-100">
-                  <button class="branch-toggle-btn font-bold text-amber-950 bg-amber-400 hover:bg-amber-300 px-2.5 py-0.5 rounded-full shadow-xs flex items-center gap-1 transition" title="Mở rộng hoặc thu gọn tất cả 7 nhánh chính">
-                    <i data-lucide="${isBranchCollapsed ? 'plus-circle' : 'minus-circle'}" class="w-3 h-3"></i>
-                    <span>${isBranchCollapsed ? '+ 7 nhánh' : 'Thu 7 nhánh'}</span>
-                  </button>
+                <div class="mt-2.5 pt-2 border-t border-purple-800/50 flex items-center justify-between text-[10px]">
                   <div class="flex items-center space-x-1">
-                    <button class="toggle-card-btn font-bold text-purple-950 bg-amber-200 hover:bg-amber-100 px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1">
-                      <i data-lucide="book-open" class="w-3 h-3"></i> 5 mục
+                    <button class="toggle-card-btn font-bold text-amber-950 bg-amber-400 hover:bg-amber-300 px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1 transition" title="Mở rộng 5 mục chi tiết trên thẻ này">
+                      <i data-lucide="book-open" class="w-3 h-3 text-amber-950"></i>
+                      <span>Mở 5 mục</span>
                     </button>
-                    <span class="font-bold text-white flex items-center bg-white/20 px-2 py-0.5 rounded-full drawer-link">Chi tiết <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></span>
                   </div>
+                  <span class="text-amber-300 font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-3 h-3 ml-0.5"></i></span>
                 </div>
               </div>
             `;
           } else {
-            // CENTER NODE EXPANDED WITH 5 FULL SECTIONS
-            el.style.height = 'auto';
             el.innerHTML = `
-              <div class="h-32 w-full overflow-hidden relative group">
-                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-top" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+              <div class="relative h-36 w-full overflow-hidden">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center filter brightness-90 hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
                 <div class="absolute inset-0 bg-gradient-to-t from-purple-950 via-purple-950/40 to-transparent"></div>
-                <div class="absolute top-2 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-purple-950 tracking-wider shadow-sm flex items-center gap-1">
-                  <i data-lucide="star" class="w-3 h-3 fill-current"></i> ${node.year}
+                <div class="absolute top-2.5 left-2.5 flex items-center space-x-1.5">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-purple-950 shadow-xs flex items-center gap-1">
+                    <i data-lucide="star" class="w-3 h-3 fill-purple-950 text-purple-950"></i>
+                    ${node.year}
+                  </span>
                 </div>
-                <div class="absolute top-2 right-2.5 flex items-center gap-1">
-                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-purple-950 hover:bg-amber-300 transition flex items-center gap-1 shadow-sm">
-                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
-                  </button>
-                </div>
-                <div class="absolute bottom-1.5 left-3 right-3 text-[10px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
+                <button class="collapse-card-btn absolute top-2.5 right-2.5 px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-900/90 text-purple-200 border border-purple-700 hover:bg-purple-800 transition flex items-center gap-1 no-print">
+                  <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
+                </button>
+                <div class="absolute bottom-2 left-3 right-3 text-[10px] text-amber-300 font-bold flex items-center gap-1">
                   <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
-                  <span class="truncate">${node.imageCaption}</span>
+                  <span class="truncate">${node.imageCaption || 'Chủ tịch Hồ Chí Minh bắt nhịp bài ca Kết đoàn'}</span>
                 </div>
               </div>
-
-              <div class="p-4 bg-purple-900 text-white border-b border-purple-800">
-                <h3 class="font-bold text-sm md:text-base text-white leading-snug tracking-tight">
-                  ${node.title}
-                </h3>
-                <p class="text-[11px] text-purple-200 mt-1 leading-relaxed">
-                  ${node.subtitle}
-                </p>
+              <div class="p-4 flex flex-col justify-between flex-1 text-white space-y-3">
+                <div>
+                  <h3 class="font-extrabold text-sm text-amber-300 leading-snug">
+                    ${node.title}
+                  </h3>
+                  <p class="text-[11px] text-purple-200 font-semibold mt-1">
+                    ${node.subtitle}
+                  </p>
+                </div>
+                <div class="space-y-2 text-[11px] leading-relaxed">
+                  <div class="bg-purple-900/60 p-2.5 rounded-xl border border-purple-700/50">
+                    <span class="font-bold text-amber-300 uppercase text-[9px] block mb-1">1. Bối cảnh lịch sử</span>
+                    <p class="text-purple-100 text-[10.5px]">${d.context || ''}</p>
+                  </div>
+                  <div class="bg-purple-900/60 p-2.5 rounded-xl border border-purple-700/50">
+                    <span class="font-bold text-amber-300 uppercase text-[9px] block mb-1">2. Quyết sách chiến lược của Đảng</span>
+                    <p class="text-purple-100 text-[10.5px]">${d.decisions || ''}</p>
+                  </div>
+                  <div class="bg-purple-900/60 p-2.5 rounded-xl border border-purple-700/50">
+                    <span class="font-bold text-amber-300 uppercase text-[9px] block mb-1">3. Diễn biến chính (4 Chiến lược của Mỹ)</span>
+                    <p class="text-purple-100 text-[10.5px]">${d.developments || ''}</p>
+                  </div>
+                </div>
+                <div class="pt-2 border-t border-purple-800/60 flex items-center justify-between text-[11px]">
+                  <span class="text-amber-300 font-bold flex items-center drawer-link cursor-pointer hover:underline">
+                    Xem hồ sơ chi tiết & tư liệu <i data-lucide="arrow-right" class="w-3.5 h-3.5 ml-1"></i>
+                  </span>
+                </div>
               </div>
-
-              <!-- 5 FULL EXPANDED SECTIONS -->
-              <div class="p-3.5 space-y-2.5 bg-slate-900 text-slate-100 text-xs max-h-[500px] overflow-y-auto">
-                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
-                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
-                    <i data-lucide="compass" class="w-3.5 h-3.5"></i> 1. BỐI CẢNH LỊCH SỬ
-                  </div>
-                  <p class="text-[11px] text-purple-100 leading-relaxed">${d.context || ''}</p>
+            `;
+          }
+        } else if (node.parentId === 'center') {
+          // Major Branch Headers
+          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden bg-white border-2 border-slate-300 shadow-xl z-20`;
+          
+          let bannerHtml = '';
+          if (node.imageUrl) {
+            bannerHtml = `
+              <div class="relative h-28 w-full overflow-hidden bg-slate-100">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center filter brightness-95 hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                <div class="absolute top-2.5 left-2.5 flex items-center space-x-1.5">
+                  <span class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-white/95 text-slate-800 shadow-xs">
+                    ${node.year}
+                  </span>
                 </div>
-
-                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
-                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
-                    <i data-lucide="flag" class="w-3.5 h-3.5"></i> 2. QUYẾT SÁCH CHIẾN LƯỢC CỦA ĐẢNG
-                  </div>
-                  <p class="text-[11px] text-purple-100 leading-relaxed font-medium">${d.decisions || ''}</p>
+                <div class="absolute top-2.5 right-2.5">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wide uppercase bg-slate-900/70 text-white backdrop-blur-xs">
+                    ${node.category}
+                  </span>
                 </div>
-
-                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
-                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
-                    <i data-lucide="swords" class="w-3.5 h-3.5"></i> 3. DIỄN BIẾN CHÍNH (4 CHIẾN LƯỢC CỦA MỸ)
-                  </div>
-                  <p class="text-[11px] text-purple-100 leading-relaxed">${d.developments || ''}</p>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
-                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1.5">
-                    <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> 4. SỐ LIỆU & QUY MÔ CUỘC KHÁNG CHIẾN
-                  </div>
-                  <div class="grid grid-cols-2 gap-1.5">
-                    ${(d.dataStats || []).map(s => `
-                      <div class="p-1.5 bg-purple-900/80 rounded-lg border border-purple-700">
-                        <div class="text-[9px] text-purple-300">${s.label}</div>
-                        <div class="text-[11px] font-bold text-amber-200">${s.val}</div>
-                      </div>
-                    `).join('')}
-                  </div>
-                </div>
-
-                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
-                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
-                    <i data-lucide="award" class="w-3.5 h-3.5"></i> 5. Ý NGHĨA LỊCH SỬ THỜI ĐẠI
-                  </div>
-                  <p class="text-[11px] text-purple-100 leading-relaxed font-medium">${d.significance || ''}</p>
-                </div>
-
-                <div class="p-2 rounded-lg bg-purple-950 border border-purple-800 text-[10px] text-purple-300 flex items-center justify-between">
-                  <span class="flex items-center gap-1 font-semibold text-amber-300"><i data-lucide="book-open" class="w-3 h-3"></i> ${d.bookRef || 'Trang 180 – 236'}</span>
-                  <button class="collapse-card-btn text-[10px] font-bold text-amber-300 hover:text-white flex items-center gap-0.5">
-                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
-                  </button>
+                <div class="absolute bottom-1.5 left-2.5 right-2.5 text-[9.5px] text-white/90 font-medium truncate drop-shadow-xs">
+                  ${node.imageCaption || ''}
                 </div>
               </div>
             `;
           }
 
-        } else if (isExpanded) {
-          // ================= EXPANDED CARD WITH 5 SECTIONS =================
-          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden bg-white border-2 border-slate-300 shadow-xl z-20`;
-          el.style.height = 'auto';
-
-          el.innerHTML = `
-            <!-- CARD HEADER WITH REAL PHOTO BANNER -->
-            ${node.imageUrl ? `
-              <div class="h-28 w-full overflow-hidden border-b border-slate-200 relative group">
-                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
-                <div class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider ${theme.badge} shadow-xs">
-                  ${node.year}
-                </div>
-                <div class="absolute top-2 right-2 flex items-center gap-1">
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-white/95 text-slate-800 shadow-xs">
-                    ${node.category}
-                  </span>
-                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[9px] font-bold bg-white text-slate-800 hover:bg-slate-200 transition flex items-center gap-0.5 shadow-xs">
-                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
-                  </button>
-                </div>
-                <div class="absolute bottom-1 left-2.5 right-2.5 text-[9px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
-                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
-                  <span class="truncate">${node.imageCaption}</span>
-                </div>
-              </div>
-            ` : `
-              <div class="p-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${theme.badge}">${node.year}</span>
-                <div class="flex items-center gap-1">
-                  <span class="text-[9px] text-slate-500 font-semibold">${node.category}</span>
-                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-800 hover:bg-slate-300 flex items-center gap-0.5">
-                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
-                  </button>
-                </div>
-              </div>
-            `}
-
-            <!-- TITLE & SUBTITLE -->
-            <div class="p-3 border-b border-slate-100 bg-white">
-              <h4 class="font-bold text-xs sm:text-sm ${theme.title} leading-snug">
-                ${node.title}
-              </h4>
-              <p class="text-[10px] ${theme.desc} mt-0.5 leading-relaxed">
-                ${node.subtitle}
-              </p>
-            </div>
-
-            <!-- 5 DETAILED SECTIONS (User Requested Complete Expansion) -->
-            <div class="p-3 space-y-2 bg-slate-50/60 text-xs max-h-[460px] overflow-y-auto">
-              <!-- 1. BỐI CẢNH LỊCH SỬ -->
-              <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                <div class="font-bold text-[10px] text-indigo-700 flex items-center gap-1.5 mb-1 tracking-tight">
-                  <i data-lucide="compass" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i> 1. BỐI CẢNH LỊCH SỬ
-                </div>
-                <p class="text-[11px] text-slate-600 leading-relaxed">${d.context || 'Đang cập nhật bối cảnh...'}</p>
-              </div>
-
-              <!-- 2. QUYẾT SÁCH CỦA ĐẢNG -->
-              <div class="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/90 shadow-2xs">
-                <div class="font-bold text-[10px] text-amber-900 flex items-center gap-1.5 mb-1 tracking-tight">
-                  <i data-lucide="flag" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i> 2. QUYẾT SÁCH CỦA ĐẢNG
-                </div>
-                <p class="text-[11px] text-slate-800 leading-relaxed font-medium">${d.decisions || 'Đang cập nhật quyết sách...'}</p>
-              </div>
-
-              <!-- 3. DIỄN BIẾN CHÍNH & CÁC MỐC QUAN TRỌNG -->
-              <div class="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200/90 shadow-2xs">
-                <div class="font-bold text-[10px] text-emerald-900 flex items-center gap-1.5 mb-1 tracking-tight">
-                  <i data-lucide="swords" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i> 3. DIỄN BIẾN CHÍNH & MỐC QUAN TRỌNG
-                </div>
-                <p class="text-[11px] text-slate-700 leading-relaxed">${d.developments || 'Đang cập nhật diễn biến...'}</p>
-              </div>
-
-              <!-- 4. SỐ LIỆU & CHIẾN CÔNG CHIẾN TRƯỜNG -->
-              <div class="p-2.5 rounded-xl bg-sky-50/80 border border-sky-200/90 shadow-2xs">
-                <div class="font-bold text-[10px] text-sky-900 flex items-center gap-1.5 mb-1.5 tracking-tight">
-                  <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-sky-600 shrink-0"></i> 4. SỐ LIỆU & CHIẾN CÔNG CHIẾN TRƯỜNG
-                </div>
-                <div class="grid grid-cols-2 gap-1.5">
-                  ${(d.dataStats || []).map(st => `
-                    <div class="p-1.5 bg-white/95 rounded-lg border border-sky-200/60 shadow-2xs">
-                      <div class="text-[9px] text-slate-500 font-medium leading-tight">${st.label}</div>
-                      <div class="text-[11px] font-bold text-sky-950 mt-0.5 leading-snug">${st.val}</div>
-                    </div>
-                  `).join('')}
-                </div>
-              </div>
-
-              <!-- 5. Ý NGHĨA LỊCH SỬ & BÀI HỌC -->
-              <div class="p-2.5 rounded-xl bg-purple-50/80 border border-purple-200/90 shadow-2xs">
-                <div class="font-bold text-[10px] text-purple-900 flex items-center gap-1.5 mb-1 tracking-tight">
-                  <i data-lucide="award" class="w-3.5 h-3.5 text-purple-600 shrink-0"></i> 5. Ý NGHĨA LỊCH SỬ & BÀI HỌC
-                </div>
-                <p class="text-[11px] text-slate-800 leading-relaxed font-medium">${d.significance || 'Đang cập nhật ý nghĩa...'}</p>
-              </div>
-
-              <!-- FOOTER BOOK REFERENCE -->
-              <div class="p-2 rounded-lg bg-slate-100 border border-slate-200 text-[10px] text-slate-600 flex items-center justify-between">
-                <span class="flex items-center gap-1 font-semibold text-slate-700">
-                  <i data-lucide="book-open" class="w-3 h-3 text-indigo-600"></i> ${d.bookRef || 'Giáo trình Lịch sử Đảng'}
-                </span>
-                <button class="collapse-card-btn text-[10px] font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-0.5">
-                  <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
-                </button>
-              </div>
-            </div>
-          `;
-
-        } else {
-          // ================= COMPACT OVERVIEW MODE =================
-          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden ${theme.card || ''} z-10`;
-          el.style.height = `${node.height}px`;
-
-          if (node.hasCardImage && node.imageUrl) {
-            // CARD WITH ARCHIVAL PHOTO BANNER (Compact)
+          if (!isExpanded) {
             el.innerHTML = `
-              <div class="h-20 w-full overflow-hidden border-b border-slate-200/60 relative group">
-                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
-                <div class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider ${theme.badge} shadow-xs">
-                  ${node.year}
-                </div>
-                <div class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-white/90 text-slate-800 shadow-xs">
-                  ${node.category}
-                </div>
-                <div class="absolute bottom-1 left-2.5 right-2.5 text-[9px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
-                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
-                  <span class="truncate">${node.imageCaption}</span>
-                </div>
-              </div>
-              <div class="p-3 flex flex-col justify-between flex-1">
+              ${bannerHtml}
+              <div class="p-3.5 flex flex-col justify-between flex-1">
                 <div>
-                  <h4 class="font-bold text-xs ${theme.title} line-clamp-2 leading-snug">
+                  <h3 class="font-bold text-xs text-slate-800 leading-snug hover:text-purple-700 transition">
                     ${node.title}
-                  </h4>
-                  <p class="text-[10px] ${theme.desc} mt-0.5 line-clamp-2 leading-relaxed">
+                  </h3>
+                  <p class="text-[10.5px] text-slate-500 mt-1 leading-snug">
                     ${node.subtitle}
                   </p>
                 </div>
-                <div class="flex items-center justify-between text-[10px] pt-1.5 border-t border-slate-200/50 mt-1">
-                  <div class="flex items-center space-x-1.5">
-                    <button class="branch-toggle-btn px-2 py-0.5 rounded-full font-bold transition flex items-center gap-1 shadow-xs ${isBranchCollapsed ? 'bg-amber-400 hover:bg-amber-300 text-amber-950 border border-amber-500 animate-pulse' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200'}" title="Mở rộng xẻ nhánh theo phong cách NotebookLM">
-                      <i data-lucide="${isBranchCollapsed ? 'git-fork' : 'minus-circle'}" class="w-3 h-3"></i>
-                      <span>${isBranchCollapsed ? `+ ${descCount} nhánh` : 'Thu nhánh'}</span>
-                    </button>
-                    <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
-                      <i data-lucide="book-open" class="w-2.5 h-2.5"></i> 5 mục
+                <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                  <div class="flex items-center space-x-1">
+                    <button class="toggle-card-btn font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-300 px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1 transition" title="Mở rộng 5 mục chi tiết trên thẻ này">
+                      <i data-lucide="book-open" class="w-3 h-3 text-amber-700"></i>
+                      <span>Mở 5 mục</span>
                     </button>
                   </div>
-                  <span class="${theme.tag} font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-3 h-3 ml-0.5"></i></span>
+                  <span class="text-purple-700 font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-2.5 h-2.5 ml-0.5"></i></span>
                 </div>
               </div>
             `;
           } else {
-            // LEAF PILL CARD (Compact)
             el.innerHTML = `
-              <div class="p-3 flex flex-col justify-between h-full">
-                <div class="flex items-center justify-between">
-                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${theme.badge}">
+              ${bannerHtml}
+              <div class="p-4 flex flex-col justify-between flex-1 space-y-3">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <h3 class="font-bold text-xs text-slate-900 leading-snug">
+                      ${node.title}
+                    </h3>
+                    <p class="text-[10.5px] text-slate-500 font-medium mt-1">
+                      ${node.subtitle}
+                    </p>
+                  </div>
+                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[10px] font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0 ml-2 no-print">
+                    <i data-lucide="chevron-up" class="w-3 h-3 inline"></i> Thu gọn
+                  </button>
+                </div>
+                <div class="space-y-2 text-[11px] leading-relaxed">
+                  <div class="bg-purple-50/70 p-2.5 rounded-xl border border-purple-200/60">
+                    <span class="font-bold text-purple-800 uppercase text-[9px] block mb-0.5">1. Bối cảnh lịch sử</span>
+                    <p class="text-slate-700 text-[10.5px]">${d.context || ''}</p>
+                  </div>
+                  <div class="bg-rose-50/70 p-2.5 rounded-xl border border-rose-200/60">
+                    <span class="font-bold text-rose-800 uppercase text-[9px] block mb-0.5">2. Quyết sách của Đảng</span>
+                    <p class="text-slate-700 text-[10.5px]">${d.decisions || ''}</p>
+                  </div>
+                  <div class="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200/60">
+                    <span class="font-bold text-emerald-800 uppercase text-[9px] block mb-0.5">3. Diễn biến chính & Mốc quan trọng</span>
+                    <p class="text-slate-700 text-[10.5px]">${d.developments || ''}</p>
+                  </div>
+                  ${d.dataStats && d.dataStats.length ? `
+                  <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200/60">
+                    <span class="font-bold text-amber-800 uppercase text-[9px] block mb-1">4. Số liệu & Chiến công chiến trường</span>
+                    <div class="grid grid-cols-2 gap-1.5">
+                      ${d.dataStats.map(s => `<div class="bg-white/80 p-1 rounded border border-amber-200/50 text-[10px]"><strong class="text-slate-800 block">${s.val}</strong><span class="text-slate-500 text-[9px]">${s.label}</span></div>`).join('')}
+                    </div>
+                  </div>` : ''}
+                </div>
+                <div class="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px]">
+                  <span class="text-purple-700 font-bold flex items-center drawer-link cursor-pointer hover:underline">
+                    Xem hồ sơ chi tiết & tư liệu <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i>
+                  </span>
+                </div>
+              </div>
+            `;
+          }
+        } else {
+          // Standard Event & Sub-Event Cards
+          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden ${theme.card || ''} z-10`;
+
+          let bannerHtml = '';
+          if (node.imageUrl && (node.hasCardImage || isExpanded)) {
+            bannerHtml = `
+              <div class="relative h-28 w-full overflow-hidden bg-slate-100">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center filter brightness-95 hover:scale-105 transition duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback || 'images/center_ket_doan.jpg'}'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent"></div>
+                <div class="absolute top-2 left-2 flex items-center space-x-1">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/95 text-slate-800 shadow-xs">
                     ${node.year}
                   </span>
-                  <span class="text-[9px] text-slate-500 font-semibold">${node.category}</span>
                 </div>
-                <div class="my-1">
-                  <h5 class="font-bold text-xs ${theme.title} leading-snug">
+                <div class="absolute top-2 right-2">
+                  <span class="px-2 py-0.5 rounded-full text-[8.5px] font-bold tracking-wide uppercase bg-slate-900/70 text-white backdrop-blur-xs">
+                    ${node.category}
+                  </span>
+                </div>
+                <div class="absolute bottom-1 left-2 right-2 text-[9px] text-white/90 font-medium truncate drop-shadow-xs">
+                  ${node.imageCaption || ''}
+                </div>
+              </div>
+            `;
+          }
+
+          if (!isExpanded) {
+            el.innerHTML = `
+              ${bannerHtml}
+              <div class="p-3 flex flex-col justify-between flex-1">
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <span class="text-[9.5px] font-bold ${theme.accent}">${node.year}</span>
+                    <span class="text-[8.5px] font-semibold text-slate-500 uppercase">${node.category}</span>
+                  </div>
+                  <h4 class="font-bold text-[11.5px] text-slate-800 leading-snug">
                     ${node.title}
-                  </h5>
-                  <p class="text-[10px] ${theme.desc} mt-0.5 line-clamp-2 leading-snug">
+                  </h4>
+                  <p class="text-[10px] text-slate-500 mt-0.5 leading-snug line-clamp-2">
                     ${node.subtitle}
                   </p>
                 </div>
-                <div class="flex items-center justify-between pt-1 border-t border-slate-200/50 text-[9px]">
+                <div class="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[9.5px]">
                   <div class="flex items-center space-x-1">
-                    ${hasKids ? `
-                    <button class="branch-toggle-btn px-2 py-0.5 rounded-full font-bold transition flex items-center gap-0.5 ${isBranchCollapsed ? 'bg-amber-400 text-amber-950 border border-amber-500 animate-pulse' : 'bg-slate-100 text-slate-700 border border-slate-200'}" title="Mở bước đột phá">
-                      <i data-lucide="${isBranchCollapsed ? 'plus-circle' : 'minus-circle'}" class="w-2.5 h-2.5"></i>
-                      <span>${isBranchCollapsed ? `+ ${descCount}` : 'Thu'}</span>
-                    </button>
-                    ` : ''}
-                    <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
-                      <i data-lucide="book-open" class="w-2.5 h-2.5"></i> 5 mục
+                    <button class="toggle-card-btn font-bold text-amber-900 bg-amber-100 hover:bg-amber-200 border border-amber-300 px-2 py-0.5 rounded-full shadow-xs flex items-center gap-1 transition" title="Mở rộng 5 mục chi tiết trên thẻ này">
+                      <i data-lucide="book-open" class="w-2.5 h-2.5 text-amber-700"></i>
+                      <span>Mở 5 mục</span>
                     </button>
                   </div>
                   <span class="${theme.tag} font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-2.5 h-2.5 ml-0.5"></i></span>
                 </div>
               </div>
             `;
-          }
-        }
-
-        // Prominent Branch Expand Button (Positioned completely outside the card)
-        if (hasKids) {
-          const isRight = (node.x >= 2000) || (node.id === 'b4_battles' || node.id === 'b5_dienbienphu' || node.id === 'b6_huedanang');
-          const isBottom = (node.id === 'branch_7');
-
-          let posStyle = '';
-          let dirStemClass = 'dock-stem-left';
-
-          if (isBottom) {
-            posStyle = 'top: calc(100% + 14px); left: 50%; transform: translateX(-50%);';
-            dirStemClass = 'dock-stem-bottom';
-          } else if (isRight) {
-            posStyle = 'left: calc(100% + 14px); top: 50%; transform: translateY(-50%);';
-            dirStemClass = 'dock-stem-right';
           } else {
-            posStyle = 'right: calc(100% + 14px); top: 50%; transform: translateY(-50%);';
-            dirStemClass = 'dock-stem-left';
+            el.innerHTML = `
+              ${bannerHtml}
+              <div class="p-3.5 flex flex-col justify-between flex-1 space-y-2.5">
+                <div class="flex items-start justify-between">
+                  <div>
+                    <div class="flex items-center space-x-1.5 mb-1">
+                      <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">${node.year}</span>
+                      <span class="text-[9px] font-semibold text-slate-500 uppercase">${node.category}</span>
+                    </div>
+                    <h4 class="font-bold text-xs text-slate-900 leading-snug">
+                      ${node.title}
+                    </h4>
+                    <p class="text-[10.5px] text-slate-500 font-medium mt-0.5">
+                      ${node.subtitle}
+                    </p>
+                  </div>
+                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[9.5px] font-bold bg-slate-100 text-slate-600 hover:bg-slate-200 transition shrink-0 ml-2 no-print">
+                    <i data-lucide="chevron-up" class="w-3 h-3 inline"></i> Thu gọn
+                  </button>
+                </div>
+                <div class="space-y-2 text-[10.5px] leading-relaxed">
+                  <div class="bg-purple-50/70 p-2 rounded-xl border border-purple-200/60">
+                    <span class="font-bold text-purple-800 uppercase text-[8.5px] block mb-0.5">1. Bối cảnh lịch sử</span>
+                    <p class="text-slate-700 text-[10px]">${d.context || ''}</p>
+                  </div>
+                  <div class="bg-rose-50/70 p-2 rounded-xl border border-rose-200/60">
+                    <span class="font-bold text-rose-800 uppercase text-[8.5px] block mb-0.5">2. Quyết sách của Đảng</span>
+                    <p class="text-slate-700 text-[10px]">${d.decisions || ''}</p>
+                  </div>
+                  <div class="bg-emerald-50/70 p-2 rounded-xl border border-emerald-200/60">
+                    <span class="font-bold text-emerald-800 uppercase text-[8.5px] block mb-0.5">3. Diễn biến chính & Mốc quan trọng</span>
+                    <p class="text-slate-700 text-[10px]">${d.developments || ''}</p>
+                  </div>
+                  ${d.dataStats && d.dataStats.length ? `
+                  <div class="bg-amber-50/70 p-2 rounded-xl border border-amber-200/60">
+                    <span class="font-bold text-amber-800 uppercase text-[8.5px] block mb-1">4. Số liệu & Chiến công chiến trường</span>
+                    <div class="grid grid-cols-2 gap-1">
+                      ${d.dataStats.map(s => `<div class="bg-white/80 p-1 rounded border border-amber-200/50 text-[9.5px]"><strong class="text-slate-800 block">${s.val}</strong><span class="text-slate-500 text-[8.5px]">${s.label}</span></div>`).join('')}
+                    </div>
+                  </div>` : ''}
+                </div>
+                <div class="pt-1.5 border-t border-slate-100 flex items-center justify-between text-[10px]">
+                  <span class="text-purple-700 font-bold flex items-center drawer-link cursor-pointer hover:underline">
+                    Xem hồ sơ chi tiết & tư liệu <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i>
+                  </span>
+                </div>
+              </div>
+            `;
           }
-
-          const dockBtn = document.createElement('button');
-          dockBtn.style.cssText = posStyle;
-          dockBtn.className = `branch-dock-btn absolute ${dirStemClass} ${isBranchCollapsed ? 'pulse-beacon min-w-[42px] h-[38px] px-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-amber-950 border-2 border-white shadow-lg ring-2 ring-amber-400/80' : 'w-[38px] h-[38px] rounded-full bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 shadow-md'} flex items-center justify-center font-bold z-40 transition-all hover:scale-115 active:scale-90 cursor-pointer`;
-          dockBtn.title = isBranchCollapsed ? `Mở rộng xẻ ${descCount} nhánh sự kiện` : 'Thu gọn nhánh';
-          dockBtn.innerHTML = isBranchCollapsed 
-            ? `<span class="flex items-center gap-1 text-xs font-black pointer-events-none"><i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i><span>${descCount}</span></span>`
-            : `<i data-lucide="minus" class="w-5 h-5 stroke-[3] pointer-events-none"></i>`;
-
-          // Event isolation: prevent card click / drawer open
-          dockBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            e.preventDefault();
-            toggleBranch(node.id, e);
-          });
-          dockBtn.addEventListener('mousedown', (e) => e.stopPropagation());
-          dockBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
-
-          el.appendChild(dockBtn);
         }
 
-        // Branch Toggle inside card
-        el.querySelectorAll('.branch-toggle-btn').forEach(btn => {
-          btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleBranch(node.id, e);
-          });
-        });
-
-        // Click to Toggle Expand / Collapse or Open Drawer
+        // Card button click events
         el.querySelectorAll('.toggle-card-btn').forEach(btn => {
           btn.addEventListener('click', (e) => {
             e.stopPropagation();
             expandedNodeIds.add(node.id);
             renderNodes();
             requestAnimationFrame(() => renderConnections());
-            lucide.createIcons();
-            const targetEl = document.getElementById(`node-${node.id}`);
-            if (targetEl) {
-              gsap.from(targetEl, { scale: 0.94, duration: 0.3, ease: 'back.out(1.5)', clearProps: 'transform' });
-            }
           });
         });
 
@@ -2983,7 +2845,6 @@
             e.stopPropagation();
             expandedNodeIds.delete(node.id);
             if (isDeepDetailMode) {
-              // If global deep mode is on, turn it off so this card collapses
               isDeepDetailMode = false;
               NODES.forEach(other => {
                 if (other.id !== node.id) expandedNodeIds.add(other.id);
@@ -3003,24 +2864,135 @@
         });
 
         el.addEventListener('click', (e) => {
-          // If clicking card outside buttons and dock button
-          if (e.target.closest('button') || e.target.closest('.branch-dock-btn')) {
-            return;
-          }
+          if (e.target.closest('button') || e.target.closest('.branch-dock-btn')) return;
           openDrawer(node.id);
         });
 
-        // Hover Effect
         el.addEventListener('mouseenter', () => highlightNodeConnections(node.id, true));
         el.addEventListener('mouseleave', () => highlightNodeConnections(node.id, false));
 
         nodesContainer.appendChild(el);
       });
 
+      // PASS 2: Dynamic Two-Pass Non-Colliding Layout using real DOM offsetHeight
+      const colGroups = new Map();
+      const visibleCards = Array.from(document.querySelectorAll('.node-card:not(#node-center)'));
+      visibleCards.forEach(c => {
+        const x = parseFloat(c.style.left);
+        let foundKey = null;
+        for (const k of colGroups.keys()) {
+          if (Math.abs(k - x) < 70) { foundKey = k; break; }
+        }
+        const key = (foundKey !== null) ? foundKey : x;
+        if (!colGroups.has(key)) colGroups.set(key, []);
+        colGroups.get(key).push(c);
+      });
+
+      colGroups.forEach(group => {
+        group.sort((a, b) => {
+          const na = NODES.find(n => n.id === a.dataset.nodeId);
+          const nb = NODES.find(n => n.id === b.dataset.nodeId);
+          return (na ? na.y : 0) - (nb ? nb.y : 0);
+        });
+        let curY = 0;
+        group.forEach(card => {
+          const n = NODES.find(item => item.id === card.dataset.nodeId);
+          const origY = n ? n.y : 0;
+          const newY = Math.max(origY, curY);
+          card.style.top = newY + 'px';
+          curY = newY + card.offsetHeight + 45;
+        });
+      });
+
+      // Position Branch 7 below all outer columns
+      const b7El = document.getElementById('node-branch_7');
+      if (b7El) {
+        let maxColY = 0;
+        document.querySelectorAll('.node-card:not(#node-branch_7):not(#node-b7_meaning):not(#node-b7_lessons):not(#node-b7_critique):not(#node-center)').forEach(c => {
+          const bottom = parseFloat(c.style.top) + c.offsetHeight;
+          if (bottom > maxColY) maxColY = bottom;
+        });
+        const b7Y = maxColY + 80;
+        b7El.style.top = b7Y + 'px';
+        const b7KidsY = b7Y + b7El.offsetHeight + 60;
+        ['node-b7_meaning', 'node-b7_lessons', 'node-b7_critique'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.top = b7KidsY + 'px';
+        });
+      }
+
+      // PASS 3: Create Branch Expand / Collapse Dock Buttons (OUTSIDE cards, in nodesContainer)
+      visibleNodes.forEach(node => {
+        const hasKids = childrenMap.has(node.id);
+        if (!hasKids) return;
+
+        const cardEl = document.getElementById(`node-${node.id}`);
+        if (!cardEl) return;
+
+        const isBranchCollapsed = collapsedNodeIds.has(node.id);
+        const descCount = getDescendantIds(node.id).length;
+        const cardX = parseFloat(cardEl.style.left);
+        const cardY = parseFloat(cardEl.style.top);
+        const cardW = cardEl.offsetWidth;
+        const cardH = cardEl.offsetHeight;
+
+        const isRight = (node.x >= 2000) || (node.id === 'b4_battles' || node.id === 'b5_dienbienphu' || node.id === 'b6_huedanang');
+        const isBottom = (node.id === 'branch_7');
+
+        let btnX, btnY;
+        let dirStemClass = 'dock-stem-left';
+
+        if (isBottom) {
+          btnX = cardX + cardW / 2 - 20;
+          btnY = cardY + cardH + 24;
+          dirStemClass = 'dock-stem-bottom';
+        } else if (isRight) {
+          btnX = cardX + cardW + 24;
+          btnY = cardY + Math.min(cardH / 2, 110) - 20;
+          dirStemClass = 'dock-stem-right';
+        } else {
+          btnX = cardX - 44 - 24;
+          btnY = cardY + Math.min(cardH / 2, 110) - 20;
+          dirStemClass = 'dock-stem-left';
+        }
+
+        const dockBtn = document.createElement('button');
+        dockBtn.id = `dock-btn-${node.id}`;
+        dockBtn.dataset.parentNodeId = node.id;
+        dockBtn.style.position = 'absolute';
+        dockBtn.style.left = `${btnX}px`;
+        dockBtn.style.top = `${btnY}px`;
+        dockBtn.style.zIndex = '50';
+        dockBtn.className = `branch-dock-btn ${dirStemClass} ${isBranchCollapsed ? 'pulse-beacon min-w-[44px] h-[40px] px-2.5 rounded-full bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-300 hover:to-amber-400 text-amber-950 border-2 border-white shadow-xl ring-2 ring-amber-400/80' : 'w-[40px] h-[40px] rounded-full bg-white hover:bg-slate-100 text-slate-800 border-2 border-slate-300 shadow-lg'} flex items-center justify-center font-bold transition-all hover:scale-115 active:scale-90 cursor-pointer no-print`;
+        dockBtn.title = isBranchCollapsed ? `Mở rộng xẻ ${descCount} nhánh sự kiện` : 'Thu gọn nhánh';
+        dockBtn.innerHTML = isBranchCollapsed 
+          ? `<span class="flex items-center gap-1 text-xs font-black pointer-events-none"><i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i><span>${descCount}</span></span>`
+          : `<i data-lucide="minus" class="w-5 h-5 stroke-[3] pointer-events-none"></i>`;
+
+        dockBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          e.preventDefault();
+          toggleBranch(node.id, e);
+        });
+        dockBtn.addEventListener('mousedown', (e) => e.stopPropagation());
+        dockBtn.addEventListener('pointerdown', (e) => e.stopPropagation());
+
+        nodesContainer.appendChild(dockBtn);
+      });
+
+      // Update SVG canvas bounds to wrap all cards plus bottom clearance
+      let maxCanvasY = 3200;
+      document.querySelectorAll('.node-card').forEach(c => {
+        const bot = parseFloat(c.style.top) + c.offsetHeight;
+        if (bot > maxCanvasY) maxCanvasY = bot;
+      });
+      canvasEl.style.height = `${maxCanvasY + 450}px`;
+      const svgEl = document.getElementById('connections-svg');
+      if (svgEl) svgEl.setAttribute('height', `${maxCanvasY + 450}`);
+
       lucide.createIcons();
     }
 
-    // Exact Edge-to-Edge Anchor Calculation Function (Reads live DOM bounding boxes)
     function getAnchors(parent, child) {
       const pEl = document.getElementById('node-' + parent.id);
       const cEl = document.getElementById('node-' + child.id);
@@ -3055,19 +3027,26 @@
         return { startX, startY, endX, endY, isHorizontal, dx, dy };
       }
 
+      // Check if parent has an external dock button
+      const pDockBtn = document.getElementById('dock-btn-' + parent.id);
+      let pAnchorY = pCenterY;
+      if (pDockBtn) {
+        pAnchorY = parseFloat(pDockBtn.style.top) + 20;
+      }
+
       // Primary horizontal routing if dx dominates dy * 0.55
       if (Math.abs(dx) >= Math.abs(dy) * 0.55) {
         isHorizontal = true;
         if (dx > 0) {
           // Child is to the RIGHT of parent
           startX = pX + pW;
-          startY = pCenterY;
+          startY = pAnchorY;
           endX = cX;
           endY = cCenterY;
         } else {
           // Child is to the LEFT of parent
           startX = pX;
-          startY = pCenterY;
+          startY = pAnchorY;
           endX = cX + cW;
           endY = cCenterY;
         }
@@ -3348,6 +3327,10 @@
         scale: currentScale,
         transformOrigin: '0 0'
       });
+      if (typeof Draggable !== 'undefined') {
+        const d = Draggable.get(canvasEl);
+        if (d) d.update();
+      }
     }
 
     function smoothZoom(targetScale, mouseX, mouseY) {
@@ -3393,7 +3376,7 @@
         y: currentPan.y,
         scale: currentScale,
         duration: 0.6,
-        ease: 'power3.out'
+        ease: 'power3.out', onUpdate: updateTransform
       });
     }
 
@@ -3409,7 +3392,7 @@
         y: currentPan.y,
         scale: currentScale,
         duration: 0.6,
-        ease: 'power3.out'
+        ease: 'power3.out', onUpdate: updateTransform
       });
     }
 
@@ -3652,9 +3635,8 @@
       const backdrop = document.getElementById('drawer-backdrop');
 
       backdrop.classList.remove('hidden');
-      gsap.to(backdrop, { opacity: 1, duration: 0.25 });
-      drawer.classList.remove('translate-x-full');
-      gsap.to(drawer, { x: '0%', duration: 0.35, ease: 'power3.out' });
+      backdrop.style.opacity = '1';
+      drawer.style.transform = 'translateX(0)';
 
       // SMART AUTO-PAN: Center the selected node in the visible area to the left of the drawer
       const visibleWidth = Math.max(window.innerWidth - 560, 420);
@@ -3676,14 +3658,11 @@
       const drawer = document.getElementById('detail-drawer');
       const backdrop = document.getElementById('drawer-backdrop');
 
-      gsap.to(drawer, { x: '100%', duration: 0.3, ease: 'power3.in' });
-      gsap.to(backdrop, {
-        opacity: 0,
-        duration: 0.3,
-        onComplete: () => {
-          backdrop.classList.add('hidden');
-        }
-      });
+      drawer.style.transform = 'translateX(100%)';
+      backdrop.style.opacity = '0';
+      setTimeout(() => {
+        backdrop.classList.add('hidden');
+      }, 300);
     }
 
     function setupPdfExport() {
@@ -3749,41 +3728,63 @@
       <!-- Modal Body (3 Options) -->
       <div class="p-6 space-y-3.5">
         
-        <!-- OPTION 1: Direct Single-Page PDF File Download -->
-        <div class="p-4 rounded-2xl border-2 border-purple-200 bg-purple-50/60 hover:bg-purple-50 transition flex items-center justify-between group">
+        <!-- OPTION 1: Master 5-Section Detailed PDF (Recommended for VNR202 exam revision) -->
+        <div class="p-4 rounded-2xl border-2 border-purple-300 bg-purple-50/80 hover:bg-purple-100/80 transition flex items-center justify-between group">
           <div class="flex items-start space-x-3.5">
-            <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
-              <i data-lucide="file-check-2" class="w-5 h-5"></i>
+            <div class="w-10 h-10 rounded-2xl bg-purple-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="book-open-check" class="w-5 h-5"></i>
             </div>
             <div>
               <div class="flex items-center space-x-2">
-                <h4 class="font-bold text-xs sm:text-sm text-purple-950">Tệp PDF Chuẩn 1 Trang Duy Nhất (Vector Siêu Nét)</h4>
-                <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-purple-600 text-white">KHUYÊN DÙNG</span>
+                <h4 class="font-bold text-xs sm:text-sm text-purple-950">Tệp PDF Chi Tiết Toàn Bộ 5 Mục (Chuẩn Ôn Thi VNR202)</h4>
+                <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-purple-600 text-white shadow-xs">KHUYÊN DÙNG</span>
               </div>
-              <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
-                Đã được tối ưu nguyên khối <strong>1 trang duy nhất</strong>, không bị đứt đoạn, đầy đủ 34 sự kiện, 14 ảnh thật và mọi đường nối.
+              <p class="text-[11px] text-slate-700 mt-1 leading-relaxed">
+                Đầy đủ trọn vẹn <strong>5 mục nghiên cứu</strong> trên toàn bộ 34 sự kiện: <em>1. Bối cảnh • 2. Quyết sách • 3. Diễn biến • 4. Số liệu chiến trường • 5. Ý nghĩa & Bài học</em> cùng 14 ảnh thật và trích dẫn giáo trình trang 180 – 236.
               </p>
             </div>
           </div>
-          <a href="mindmap_1954_1975.pdf" target="_blank" download="Lich_Su_Dang_1954_1975_Mindmap.pdf" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
-            <i data-lucide="download" class="w-3.5 h-3.5"></i>
-            <span>Tải PDF</span>
+          <a href="mindmap_1954_1975.pdf" target="_blank" download="Lich_Su_Dang_1954_1975_Chi_Tiet_5_Muc.pdf" class="shrink-0 ml-3 px-3.5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md transition flex items-center space-x-1.5">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Tải PDF 5 Mục</span>
           </a>
         </div>
 
-        <!-- OPTION 2: High-Resolution PNG Image Download -->
-        <div class="p-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 transition flex items-center justify-between">
+        <!-- OPTION 2: Compact Overview PDF -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-slate-100/70 transition flex items-center justify-between">
           <div class="flex items-start space-x-3.5">
-            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
-              <i data-lucide="image" class="w-5 h-5"></i>
+            <div class="w-9 h-9 rounded-xl bg-slate-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="layout-grid" class="w-4 h-4"></i>
             </div>
             <div>
               <div class="flex items-center space-x-2">
-                <h4 class="font-bold text-xs sm:text-sm text-emerald-950">Tệp Ảnh PNG Toàn Cảnh (4350 × 2700 px)</h4>
+                <h4 class="font-bold text-xs sm:text-sm text-slate-800">Tệp PDF Bản Tóm Tắt Gọn Gàng (Tổng Quan 1 Trang)</h4>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-200 text-slate-700">TỔNG QUAN</span>
+              </div>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Sơ đồ tư duy dạng thẻ gọn, cấu trúc phân nhánh tinh gọn 1 trang vector siêu nét cho cái nhìn toàn cảnh nhanh.
+              </p>
+            </div>
+          </div>
+          <a href="mindmap_1954_1975_tong_quan.pdf" target="_blank" download="Lich_Su_Dang_1954_1975_Tong_Quan.pdf" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-slate-700 hover:bg-slate-800 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Tải Bản Gọn</span>
+          </a>
+        </div>
+
+        <!-- OPTION 3: High-Resolution PNG Image Download -->
+        <div class="p-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 transition flex items-center justify-between">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="image" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-xs sm:text-sm text-emerald-950">Tệp Ảnh PNG Toàn Cảnh (Siêu Nét Chèn Slide / Word)</h4>
                 <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">DỄ DÙNG</span>
               </div>
               <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
-                Độ phân giải siêu cao, nền trong suốt sạch sẽ, lý tưởng để chèn thẳng vào slide thuyết trình PowerPoint, Word hoặc báo cáo bài tập.
+                Độ phân giải siêu cao, nền sạch sẽ, lý tưởng để chèn thẳng vào slide thuyết trình PowerPoint, Word hoặc in ấn đồ án.
               </p>
             </div>
           </div>
@@ -3793,16 +3794,16 @@
           </a>
         </div>
 
-        <!-- OPTION 3: Browser Print to PDF -->
+        <!-- OPTION 4: Browser Print to PDF -->
         <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-slate-50 transition flex items-center justify-between">
           <div class="flex items-start space-x-3.5">
             <div class="w-9 h-9 rounded-xl bg-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-0.5">
-              <i data-lucide="printer" class="w-5 h-5"></i>
+              <i data-lucide="printer" class="w-4 h-4"></i>
             </div>
             <div>
-              <h4 class="font-bold text-xs sm:text-sm text-slate-800">In / Lưu PDF qua Trình duyệt</h4>
+              <h4 class="font-bold text-xs sm:text-sm text-slate-800">In / Lưu PDF qua Trình duyệt (Ctrl+P)</h4>
               <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
-                Mở hộp thoại in mặc định (Ctrl+P) với bố cục in tự động ẩn thanh công cụ và căn chuẩn toàn bộ sơ đồ tư duy.
+                Mở hộp thoại in trình duyệt với bố cục in tự động ẩn thanh công cụ và định dạng theo chế độ xem hiện tại của bạn.
               </p>
             </div>
           </div>
@@ -3812,9 +3813,7 @@
           </button>
         </div>
 
-      </div>
-
-      <!-- Modal Footer -->
+      </div><!-- Modal Footer -->
       <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
         <span class="flex items-center gap-1">
           <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
