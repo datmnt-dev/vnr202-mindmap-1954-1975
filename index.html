@@ -1,0 +1,3337 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full w-full overflow-hidden select-none bg-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch sử Đảng Giai đoạn 1954 – 1975 | Interactive Pastel Mind Map VNR202</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Arial", "'Helvetica Neue'", "Helvetica", "sans-serif"],
+            serif: ["Arial", "'Helvetica Neue'", "Helvetica", "sans-serif"],
+          },
+          colors: {
+            pastel: {
+              purple: '#8E82E0',
+              purpleLight: '#F8F5FF',
+              purpleBorder: '#DDD6FE',
+              purpleText: '#5B21B6',
+
+              peach: '#FFE8D6',
+              peachLight: '#FFF5EC',
+              peachBorder: '#FFD2B8',
+              peachText: '#9A3412',
+
+              pink: '#FFD6D9',
+              pinkLight: '#FFF0F3',
+              pinkBorder: '#FFC2CD',
+              pinkText: '#9F1239',
+
+              mint: '#D8F3DC',
+              mintLight: '#EDFAF1',
+              mintBorder: '#B9E9C8',
+              mintText: '#166534',
+
+              coral: '#FFDFD3',
+              coralLight: '#FFF1EC',
+              coralBorder: '#FFC9B8',
+              coralText: '#991B1B',
+
+              blue: '#D0E8FF',
+              blueLight: '#F0F7FF',
+              blueBorder: '#BEDBFE',
+              blueText: '#1E40AF',
+
+              yellow: '#FEF08A',
+              yellowLight: '#FEFCE8',
+              yellowBorder: '#FEF08A',
+              yellowText: '#854D0E',
+            }
+          },
+          boxShadow: {
+            'pastel-sm': '0 2px 6px -1px rgba(71, 85, 105, 0.1)',
+            'pastel': '0 6px 18px -3px rgba(71, 85, 105, 0.12), 0 2px 6px -1px rgba(71, 85, 105, 0.06)',
+            'pastel-hover': '0 12px 26px -4px rgba(71, 85, 105, 0.18), 0 4px 10px -2px rgba(71, 85, 105, 0.08)',
+            'center': '0 10px 30px -4px rgba(142, 130, 224, 0.45)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- GSAP & Draggable CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/Draggable.min.js"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Universal Font Override to Arial */
+    *, html, body {
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+    }
+
+    /* Clean Subtle Grid / Dots Pattern on White Canvas */
+    .bg-pastel-grid {
+      background-color: #FFFFFF;
+      background-image: 
+        radial-gradient(#CBD5E1 1.2px, transparent 1.2px),
+        radial-gradient(#CBD5E1 1.2px, #FFFFFF 1.2px);
+      background-size: 32px 32px;
+      background-position: 0 0, 16px 16px;
+    }
+
+    /* Smooth Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 7px;
+      height: 7px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F8FAFC;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+
+    /* Node Card Hover & Micro-interactions */
+    .node-card {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease, border-color 0.22s ease;
+    }
+    .node-card:hover {
+      transform: translateY(-4px) scale(1.02);
+      z-index: 50 !important;
+    }
+
+    /* Path Animation for active / hovered connections */
+    @keyframes strokeFlow {
+      0% { stroke-dashoffset: 40; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .path-flow {
+      stroke-dasharray: 6 5;
+      animation: strokeFlow 1.6s linear infinite;
+    }
+
+    /* Center Node Subtle Breathing Glow */
+    @keyframes centerGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 8px 18px rgba(142, 130, 224, 0.35)); }
+      50% { transform: scale(1.025); filter: drop-shadow(0 14px 28px rgba(142, 130, 224, 0.55)); }
+    }
+    .animate-center-glow {
+      animation: centerGlow 3.6s ease-in-out infinite;
+    }
+  
+    
+    /* ================= PRINT / PDF STYLING ================= */
+    @media print {
+      @page {
+        size: 4350px 2700px;
+        margin: 0;
+      }
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      html, body {
+        width: 4350px !important;
+        height: 2700px !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        overflow: hidden !important;
+        color: #0F172A !important;
+      }
+      header,
+      nav,
+      aside,
+      #bottom-bar,
+      #timeline-bar,
+      #zoom-controls,
+      #search-results-dropdown,
+      #detail-drawer,
+      #drawer-backdrop,
+      #pdf-export-modal,
+      .no-print {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      #viewport {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 4350px !important;
+        height: 2700px !important;
+        overflow: hidden !important;
+        background: none !important;
+      }
+      #mindmap-canvas {
+        position: absolute !important;
+        left: -120px !important;
+        top: -60px !important;
+        transform: scale(1) !important;
+        transform-origin: 0 0 !important;
+        box-shadow: none !important;
+      }
+      .node-card {
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+      }
+    }
+
+  </style>
+</head>
+
+<body class="h-full w-full overflow-hidden bg-white text-slate-800 antialiased">
+
+  <!-- ================= TOP NAVIGATION BAR ================= -->
+  <header class="fixed top-0 left-0 right-0 z-40 h-16 bg-white/95 backdrop-blur-md border-b border-slate-200 px-4 md:px-6 flex items-center justify-between shadow-sm">
+    <!-- Left: Title & Badge -->
+    <div class="flex items-center space-x-3">
+      <div class="w-10 h-10 rounded-2xl bg-pastel-purple flex items-center justify-center text-white shadow-md flex-shrink-0">
+        <i data-lucide="layers" class="w-5 h-5 text-white"></i>
+      </div>
+      <div>
+        <div class="flex items-center space-x-2">
+          <h1 class="font-bold text-sm md:text-base text-slate-800 tracking-tight">LỊCH SỬ ĐẢNG GIAI ĐOẠN 1954 – 1975</h1>
+          <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-700 border border-purple-200">VNR202</span>
+        </div>
+        <p class="text-xs text-slate-500 hidden sm:block">Giáo trình Lịch sử Đảng Cộng sản Việt Nam • Trang 180 – 236</p>
+      </div>
+    </div>
+
+    <!-- Center: Mode Switcher & Search Input -->
+    <div class="flex items-center space-x-2 md:space-x-3">
+      <!-- Mode Segmented Control -->
+      <div class="flex items-center bg-slate-100 p-1 rounded-2xl border border-slate-200 shadow-inner">
+        <button id="mode-compact-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-purple-900 shadow-xs border border-purple-200" title="Chế độ xem gọn gàng sơ đồ tư duy">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5 text-purple-600"></i>
+          <span class="hidden sm:inline">Tổng quan</span>
+        </button>
+        <button id="mode-expanded-btn" class="px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5" title="Mở rộng trực tiếp 5 mục chi tiết trên mọi thẻ">
+          <i data-lucide="book-open" class="w-3.5 h-3.5 text-amber-600"></i>
+          <span class="font-bold">Mở rộng 5 mục</span>
+          <span class="text-[9px] px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 font-extrabold hidden md:inline">CHI TIẾT</span>
+        </button>
+      </div>
+
+      <!-- Search Input -->
+      <div class="relative w-36 sm:w-60 md:w-72">
+      <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+      <input 
+        id="search-input" 
+        type="text" 
+        placeholder="Tìm kiếm: Ấp Bắc, Mậu Thân, NQ 15, Paris..." 
+        class="w-full bg-slate-100/90 hover:bg-slate-100 focus:bg-white border border-slate-200 focus:border-purple-400 rounded-full pl-9 pr-8 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition-all shadow-inner"
+      />
+      <button id="search-clear-btn" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 hidden">
+        <i data-lucide="x" class="w-3.5 h-3.5"></i>
+      </button>
+      <div id="search-results-dropdown" class="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden hidden max-h-80 overflow-y-auto z-50"></div>
+    </div>
+
+    <!-- Right: Viewport Action Controls -->
+    <div class="flex items-center space-x-1 sm:space-x-2">
+      <!-- Export PDF Button -->
+      <button id="export-pdf-modal-btn" class="px-2.5 sm:px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition flex items-center space-x-1.5 shadow-sm shadow-purple-200" title="Tải xuống tệp PDF sơ đồ tư duy">
+        <i data-lucide="file-down" class="w-4 h-4 text-white"></i>
+        <span class="hidden sm:inline">Tải PDF</span>
+      </button>
+
+      <!-- Color Legend Button -->
+      <button id="legend-btn" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition flex items-center space-x-1 text-xs" title="Bảng màu pastel">
+        <i data-lucide="palette" class="w-4 h-4 text-purple-600"></i>
+        <span class="hidden lg:inline text-xs font-semibold">Bảng màu</span>
+      </button>
+
+      <div class="h-5 w-px bg-slate-200 mx-1"></div>
+
+      <!-- Zoom In -->
+      <button id="zoom-in-btn" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition" title="Phóng to (+)">
+        <i data-lucide="zoom-in" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Zoom Out -->
+      <button id="zoom-out-btn" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition" title="Thu nhỏ (-)">
+        <i data-lucide="zoom-out" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Reset View -->
+      <button id="reset-view-btn" class="p-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 transition" title="Về trung tâm (Phím 0)">
+        <i data-lucide="locate-fixed" class="w-4 h-4"></i>
+      </button>
+
+      <!-- Fit Screen -->
+      <button id="fit-screen-btn" class="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 transition hidden sm:block" title="Toàn cảnh">
+        <i data-lucide="maximize-2" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= COLOR LEGEND POPUP MODAL ================= -->
+  <div id="legend-modal" class="fixed top-20 right-6 z-50 bg-white rounded-3xl p-5 border border-slate-200 shadow-2xl w-80 hidden backdrop-blur-md">
+    <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+      <div class="flex items-center space-x-2">
+        <i data-lucide="palette" class="w-4 h-4 text-purple-600"></i>
+        <h4 class="text-xs font-bold text-slate-800 uppercase tracking-wide">QUY ƯỚC MÀU SẮC PASTEL</h4>
+      </div>
+      <button id="legend-close-btn" class="text-slate-400 hover:text-slate-700">
+        <i data-lucide="x" class="w-4 h-4"></i>
+      </button>
+    </div>
+    <div class="space-y-2 text-xs">
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-purple shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>Tím Pastel:</strong> Node trung tâm & Tổng kết bài học</span>
+      </div>
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-peach border border-pastel-peachBorder shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>Cam Đào:</strong> Đại hội III (1960) & Kế hoạch 5 năm</span>
+      </div>
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-pink border border-pastel-pinkBorder shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>Hồng Phấn:</strong> Nghị quyết 15 & Phong trào Đồng khởi</span>
+      </div>
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-mint border border-pastel-mintBorder shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>Xanh Bạc Hà:</strong> Đánh bại "Chiến tranh đặc biệt"</span>
+      </div>
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-coral border border-pastel-coralBorder shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>San Hô:</strong> Chiến tranh cục bộ & Mậu Thân</span>
+      </div>
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-blue border border-pastel-blueBorder shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>Xanh Da Trời:</strong> Việt Nam hóa & Hiệp định Paris</span>
+      </div>
+      <div class="flex items-center space-x-2.5 p-1 rounded-lg hover:bg-slate-50">
+        <div class="w-4 h-4 rounded-full bg-pastel-yellow border border-pastel-yellowBorder shadow-sm flex-shrink-0"></div>
+        <span class="text-slate-700"><strong>Vàng Kem:</strong> Đại thắng mùa Xuân 1975</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TIMELINE QUICK FILTER DOCK ================= -->
+  <nav class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 bg-white/95 backdrop-blur-md px-3.5 py-2 rounded-full border border-slate-200 shadow-xl flex items-center space-x-1.5 sm:space-x-2 max-w-[94vw] overflow-x-auto">
+    <div class="flex items-center space-x-1 text-slate-500 pl-1.5 pr-1 text-xs font-semibold uppercase tracking-wider hidden md:flex">
+      <i data-lucide="clock" class="w-3.5 h-3.5 text-purple-600 mr-1"></i>
+      <span>Niên biểu:</span>
+    </div>
+
+    <button data-filter="all" class="timeline-filter-btn active px-3.5 py-1.5 rounded-full text-xs font-bold bg-pastel-purple text-white shadow-sm transition-all whitespace-nowrap">
+      Tất cả
+    </button>
+    <button data-filter="1954" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      1954 - Khôi phục
+    </button>
+    <button data-filter="1960" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      1960 - Đại hội III & Đồng Khởi
+    </button>
+    <button data-filter="1965" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      1961 - 1965 Đánh Mỹ
+    </button>
+    <button data-filter="1968" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      1968 - Tết Mậu Thân
+    </button>
+    <button data-filter="1973" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      1973 - Hiệp định Paris
+    </button>
+    <button data-filter="1975" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      1975 - Mùa Xuân Toàn Thắng
+    </button>
+    <button data-filter="Tổng kết" class="timeline-filter-btn px-3.5 py-1.5 rounded-full text-xs font-semibold text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all whitespace-nowrap">
+      Bài học & Ôn tập
+    </button>
+  </nav>
+
+  <!-- ================= FLOATING QUICK STATS CARD ================= -->
+  <aside class="fixed bottom-6 left-6 z-30 bg-white/95 backdrop-blur-md rounded-3xl p-4 border border-slate-200 shadow-xl hidden lg:block w-72">
+    <div class="flex items-center space-x-2 mb-2.5 pb-2 border-b border-slate-100">
+      <i data-lucide="sparkles" class="w-4 h-4 text-purple-600"></i>
+      <h5 class="text-xs font-bold text-slate-800 uppercase tracking-wide">CỘT MỐC LỊCH SỬ VNR202</h5>
+    </div>
+    <div class="grid grid-cols-2 gap-2 text-[11px]">
+      <div class="bg-purple-50 p-2.5 rounded-2xl border border-purple-100">
+        <span class="text-slate-500 block text-[10px]">Thời gian</span>
+        <strong class="text-purple-700 text-sm block">21 Năm</strong>
+        <span class="text-[9px] text-purple-500 block">1954 – 1975</span>
+      </div>
+      <div class="bg-rose-50 p-2.5 rounded-2xl border border-rose-100">
+        <span class="text-slate-500 block text-[10px]">Mỹ thất bại</span>
+        <strong class="text-rose-700 text-sm block">4 Chiến lược</strong>
+        <span class="text-[9px] text-rose-500 block">Đơn phương, ĐB, CB, VNH</span>
+      </div>
+      <div class="bg-emerald-50 p-2.5 rounded-2xl border border-emerald-100">
+        <span class="text-slate-500 block text-[10px]">Tổng tiến công</span>
+        <strong class="text-emerald-700 text-sm block">55 Ngày đêm</strong>
+        <span class="text-[9px] text-emerald-600 block">Mùa Xuân 1975</span>
+      </div>
+      <div class="bg-sky-50 p-2.5 rounded-2xl border border-sky-100">
+        <span class="text-slate-500 block text-[10px]">Kinh nghiệm</span>
+        <strong class="text-sky-700 text-sm block">4 Bài học</strong>
+        <span class="text-[9px] text-sky-600 block">Trang 235 Giáo trình</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= CANVAS & VIEWPORT ================= -->
+  <main id="viewport" class="relative w-full h-full overflow-hidden cursor-grab active:cursor-grabbing bg-white bg-pastel-grid">
+
+    <!-- Scalable Mindmap Canvas -->
+    <div id="mindmap-canvas" class="absolute left-0 top-0 origin-top-left" style="width: 4600px; height: 3000px;">
+      
+      <!-- SVG CONNECTOR PATHS LAYER -->
+      <svg id="connections-svg" class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Sharp, high-visibility branch-colored arrowheads -->
+          <marker id="arrow-default" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#475569"/>
+          </marker>
+          <marker id="arrow-center" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#7C3AED"/>
+          </marker>
+          <marker id="arrow-b1" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#2563EB"/>
+          </marker>
+          <marker id="arrow-b2" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#DC2626"/>
+          </marker>
+          <marker id="arrow-b3" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#059669"/>
+          </marker>
+          <marker id="arrow-b4" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#D97706"/>
+          </marker>
+          <marker id="arrow-b5" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#7C3AED"/>
+          </marker>
+          <marker id="arrow-b6" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#E11D48"/>
+          </marker>
+          <marker id="arrow-b7" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#CA8A04"/>
+          </marker>
+          <marker id="arrow-active" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#4F46E5"/>
+          </marker>
+          <marker id="arrow-cross1" viewBox="0 0 12 12" refX="9" refY="6" markerWidth="8" markerHeight="8" orient="auto">
+            <path d="M 0 2 L 10 6 L 0 10 z" fill="#D97706"/>
+          </marker>
+        </defs>
+
+        <!-- Hierarchy paths group -->
+        <g id="hierarchy-paths-group"></g>
+
+        <!-- Macro cross-links group -->
+        <g id="cross-links-group"></g>
+      </svg>
+
+      <!-- HTML NODES LAYER -->
+      <div id="nodes-container" class="absolute inset-0 w-full h-full z-20"></div>
+
+    </div>
+  </main>
+
+  <!-- ================= SLIDE-IN DETAIL DRAWER ================= -->
+  <div id="drawer-backdrop" class="fixed inset-0 z-50 bg-slate-900/25 backdrop-blur-xs hidden opacity-0 transition-opacity duration-300"></div>
+
+  <aside id="detail-drawer" class="fixed top-0 right-0 bottom-0 z-50 w-full sm:w-[500px] md:w-[560px] bg-white border-l border-slate-200 shadow-2xl transform translate-x-full transition-transform duration-300 ease-out flex flex-col">
+    
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-slate-100 relative flex-shrink-0 bg-slate-50/80">
+      <button id="drawer-close-btn" class="absolute top-5 right-5 p-2 rounded-full bg-slate-200/80 hover:bg-slate-300 text-slate-600 hover:text-slate-900 transition">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center space-x-2.5 mb-2">
+        <span id="drawer-badge-category" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200">
+          Chuyên đề
+        </span>
+        <span id="drawer-badge-period" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-slate-200/70 text-slate-700">
+          1954 - 1975
+        </span>
+      </div>
+
+      <h2 id="drawer-title" class="font-bold text-xl md:text-2xl text-slate-800 leading-snug">
+        Tiêu đề chi tiết sự kiện
+      </h2>
+      <p id="drawer-subtitle" class="text-xs text-slate-500 mt-1">
+        Trích xuất từ Giáo trình Lịch sử Đảng Cộng sản Việt Nam
+      </p>
+    </div>
+
+    <!-- Drawer Body -->
+    <div class="flex-1 overflow-y-auto p-6 space-y-6">
+      
+      <!-- Visual Banner / Woodcut Propaganda Artwork -->
+      <div id="drawer-banner-container" class="w-full h-44 rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-sm flex items-center justify-center"></div>
+
+      <!-- Quote Box -->
+      <div id="drawer-quote-box" class="p-4 rounded-2xl bg-amber-50/80 border-l-4 border-amber-400 text-slate-700 text-xs italic leading-relaxed">
+        <p id="drawer-quote-text">"Không có gì quý hơn độc lập, tự do!"</p>
+        <span id="drawer-quote-author" class="block text-right text-[11px] font-bold text-amber-800 mt-1.5 not-italic">— Chủ tịch Hồ Chí Minh</span>
+      </div>
+
+      <!-- Section 1: Bối cảnh -->
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2 text-xs font-bold text-purple-700 uppercase tracking-wide">
+          <i data-lucide="landmark" class="w-4 h-4 text-purple-600"></i>
+          <span>1. Bối cảnh & Tình thế lịch sử</span>
+        </div>
+        <p id="drawer-context" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70">
+          Nội dung bối cảnh...
+        </p>
+      </div>
+
+      <!-- Section 2: Quyết sách của Đảng -->
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2 text-xs font-bold text-rose-700 uppercase tracking-wide">
+          <i data-lucide="file-text" class="w-4 h-4 text-rose-600"></i>
+          <span>2. Quyết sách & Nghị quyết của Đảng</span>
+        </div>
+        <div id="drawer-decisions" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70 whitespace-pre-line">
+          Nội dung quyết sách...
+        </div>
+      </div>
+
+      <!-- Section 3: Diễn biến chính -->
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2 text-xs font-bold text-emerald-700 uppercase tracking-wide">
+          <i data-lucide="swords" class="w-4 h-4 text-emerald-600"></i>
+          <span>3. Diễn biến chính & Các mốc quan trọng</span>
+        </div>
+        <div id="drawer-developments" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70 whitespace-pre-line">
+          Nội dung diễn biến...
+        </div>
+      </div>
+
+      <!-- Section 4: Bảng Số liệu chiến trường -->
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2 text-xs font-bold text-sky-700 uppercase tracking-wide">
+          <i data-lucide="bar-chart-2" class="w-4 h-4 text-sky-600"></i>
+          <span>4. Số liệu & Chiến công chiến trường</span>
+        </div>
+        <div id="drawer-stats-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5"></div>
+      </div>
+
+      <!-- Section 5: Ý nghĩa lịch sử -->
+      <div class="space-y-2">
+        <div class="flex items-center space-x-2 text-xs font-bold text-purple-700 uppercase tracking-wide">
+          <i data-lucide="award" class="w-4 h-4 text-purple-600"></i>
+          <span>5. Ý nghĩa lịch sử & Bài học</span>
+        </div>
+        <p id="drawer-significance" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-2xl border border-slate-200/70">
+          Nội dung ý nghĩa...
+        </p>
+      </div>
+
+      <!-- Book Reference -->
+      <div class="p-3.5 rounded-2xl bg-slate-100 border border-slate-200 flex items-center space-x-3 text-xs text-slate-600">
+        <i data-lucide="book-marked" class="w-5 h-5 text-purple-600 flex-shrink-0"></i>
+        <div>
+          <span class="font-bold text-slate-800 block text-[11px]">Trích dẫn Giáo trình chuẩn môn VNR202:</span>
+          <span id="drawer-book-ref" class="text-purple-700 font-semibold text-[11px]">Trang 180 – 236</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Drawer Footer -->
+    <div class="p-4 border-t border-slate-100 bg-slate-50/80 flex items-center justify-between text-xs text-slate-500">
+      <span>Nhấn <kbd class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-700 text-[10px]">ESC</kbd> để đóng</span>
+      <button id="drawer-close-btn-bottom" class="px-4 py-2 rounded-xl bg-purple-600 text-white font-bold hover:bg-purple-700 transition shadow-sm">
+        Đóng cửa sổ
+      </button>
+    </div>
+  </aside>
+
+  <!-- ================= EMBEDDED JAVASCRIPT LOGIC ================= -->
+  <script>
+    const NODES = [
+  {
+    "id": "center",
+    "branchId": "center",
+    "title": "ĐẢNG LÃNH ĐẠO KHÁNG CHIẾN CHỐNG MỸ & XÂY DỰNG CNXH",
+    "subtitle": "Giai đoạn lịch sử 1954 – 1975 • Giải phóng miền Nam, thống nhất non sông",
+    "year": "1954 - 1975",
+    "category": "Trung tâm",
+    "x": 2000,
+    "y": 1250,
+    "width": 380,
+    "height": 220,
+    "color": "gold",
+    "icon": "star",
+    "isCenter": true,
+    "detail": {
+      "title": "Đảng Lãnh đạo Kháng chiến chống Mỹ, cứu nước & Xây dựng CNXH ở miền Bắc (1954 - 1975)",
+      "period": "1954 – 1975 (21 năm)",
+      "tag": "Trục tư tưởng chiến lược cốt lõi",
+      "bookRef": "Trang 180 – 236, Giáo trình Lịch sử Đảng Cộng sản Việt Nam",
+      "quote": "Chiến tranh có thể kéo dài 5 năm, 10 năm, 20 năm hoặc lâu hơn nữa. Hà Nội, Hải Phòng và một số thành phố, xí nghiệp có thể bị tàn phá, song nhân dân Việt Nam quyết không sợ! Không có gì quý hơn độc lập, tự do!",
+      "authorQuote": "Chủ tịch Hồ Chí Minh (Lời kêu gọi ngày 17/7/1966)",
+      "context": "Sau thắng lợi Điện Biên Phủ và Hiệp định Giơnevơ năm 1954, đất nước ta tạm thời bị chia cắt làm hai miền với hai chế độ chính trị - xã hội đối lập: Miền Bắc hoàn toàn giải phóng đi lên CNXH; Miền Nam trở thành thuộc địa kiểu mới và căn cứ quân sự của đế quốc Mỹ. Phong trào cách mạng thế giới đang trên đà phát triển nhưng bắt đầu xuất hiện những bất đồng trong phe XHCN.",
+      "decisions": "Đảng đã đề ra đường lối giương cao đồng thời hai ngọn cờ độc lập dân tộc và chủ nghĩa xã hội: Tiến hành song song hai chiến lược cách mạng ở hai miền nhằm thực hiện một mục tiêu chung là hoàn thành giải phóng dân tộc, thống nhất Tổ quốc. Đây là đường lối độc lập, tự chủ, sáng tạo chưa từng có tiền lệ trong lịch sử cách mạng thế giới.",
+      "developments": "Trải qua 21 năm trường kỳ kháng chiến, Đảng đã lãnh đạo nhân dân tuần tự đánh bại 4 chiến lược chiến tranh thực dân mới của đế quốc Mỹ: Chiến tranh đơn phương (1954-1960), Chiến tranh đặc biệt (1961-1965), Chiến tranh cục bộ (1965-1968), và Việt Nam hóa chiến tranh (1969-1973); kết thúc bằng cuộc Tổng tiến công và nổi dậy mùa Xuân 1975 giải phóng trọn vẹn non sông.",
+      "dataStats": [
+        {
+          "label": "Thời gian kháng chiến",
+          "val": "21 năm (1954 - 1975)"
+        },
+        {
+          "label": "Đời Tổng thống Mỹ",
+          "val": "5 đời (Eisenhower, Kennedy, Johnson, Nixon, Ford)"
+        },
+        {
+          "label": "Chiến lược chiến tranh Mỹ",
+          "val": "4 chiến lược thất bại hoàn toàn"
+        },
+        {
+          "label": "Hiệp định quốc tế",
+          "val": "Giơnevơ (1954) & Paris (1973)"
+        }
+      ],
+      "significance": "Thắng lợi vĩ đại nhất của lịch sử đấu tranh giải phóng dân tộc thế kỷ XX, chấm dứt vĩnh viễn hơn 1 thế kỷ đô hộ của chủ nghĩa thực dân cũ và mới, non sông thu về một mối, đưa cả nước bước vào kỷ nguyên độc lập dân tộc gắn liền với chủ nghĩa xã hội."
+    },
+    "imageUrl": "images/center_ket_doan.jpg",
+    "imageCaption": "Chủ tịch Hồ Chí Minh bắt nhịp bài ca Kết đoàn tại Đại hội Đảng lần thứ III (9/1960)",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/3/3c/B%C3%A1c_H%E1%BB%93_b%E1%BA%AFt_nh%E1%BB%8Bp_b%C3%A0i_ca_K%E1%BA%BFt_%C4%91o%C3%A0n.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "branch_1",
+    "branchId": "b1",
+    "parentId": "center",
+    "title": "ĐƯỜNG LỐI CHIẾN LƯỢC HAI MIỀN (ĐẠI HỘI III)",
+    "subtitle": "Đại hội Xây dựng CNXH ở miền Bắc & Đấu tranh thống nhất nước nhà",
+    "year": "9/1960",
+    "category": "Đại hội & Đường lối",
+    "x": 1420,
+    "y": 450,
+    "width": 320,
+    "height": 210,
+    "color": "gold",
+    "icon": "compass",
+    "filterYear": "1960",
+    "detail": {
+      "title": "Đại hội đại biểu toàn quốc lần thứ III của Đảng (9/1960)",
+      "period": "Tháng 9/1960 tại Thủ đô Hà Nội",
+      "tag": "Cương lĩnh chỉ đạo chiến lược xuyên suốt",
+      "bookRef": "Trang 193 – 198, Giáo trình Lịch sử Đảng Cộng sản Việt Nam",
+      "quote": "Đại hội lần này là Đại hội xây dựng chủ nghĩa xã hội ở miền Bắc và đấu tranh vì hòa bình thống nhất nước nhà.",
+      "authorQuote": "Chủ tịch Hồ Chí Minh (Diễn văn khai mạc Đại hội III)",
+      "context": "Sau khi miền Bắc hoàn thành khôi phục kinh tế và cải tạo XHCN, miền Nam giành thắng lợi vang dội trong phong trào Đồng khởi, tình hình cách mạng hai miền có những bước chuyển biến căn bản đòi hỏi Đảng phải vạch ra đường lối chiến lược toàn diện cho cả nước.",
+      "decisions": "Đại hội III xác định rõ vị trí, vai trò của cách mạng mỗi miền: Cách mạng XHCN ở miền Bắc giữ vai trò QUYẾT ĐỊNH NHẤT đối với toàn bộ cách mạng Việt Nam; Cách mạng DTDC nhân dân ở miền Nam giữ vai trò QUYẾT ĐỊNH TRỰC TIẾP đối với giải phóng miền Nam. Hai nhiệm vụ có quan hệ hữu cơ, gắn bó mật thiết.",
+      "developments": "Đại hội bầu Ban Chấp hành Trung ương mới gồm 47 ủy viên chính thức và 31 ủy viên dự khuyết; đồng chí Hồ Chí Minh được bầu lại làm Chủ tịch Đảng, đồng chí Lê Duẩn được bầu làm Bí thư Thứ nhất Ban Chấp hành Trung ương. Đề ra Kế hoạch 5 năm lần thứ nhất (1961 - 1965).",
+      "dataStats": [
+        {
+          "label": "Đại biểu tham dự",
+          "val": "525 chính thức + 51 dự khuyết"
+        },
+        {
+          "label": "Thay mặt cho",
+          "val": "Hơn 500.000 đảng viên"
+        },
+        {
+          "label": "Ủy viên Trung ương",
+          "val": "47 chính thức + 31 dự khuyết"
+        },
+        {
+          "label": "Kế hoạch 5 năm",
+          "val": "Lần I (1961 - 1965)"
+        }
+      ],
+      "significance": "Hoàn chỉnh đường lối chiến lược cách mạng Việt Nam trong thời kỳ mới. Việc xác định cùng lúc hai chiến lược cách mạng khác nhau trên hai miền đất nước là một sáng tạo lý luận độc đáo, khoa học của Đảng ta."
+    },
+    "imageUrl": "images/b1_daihoi3.jpg",
+    "imageCaption": "Chủ tịch Hồ Chí Minh tại Đại hội III (9/1960) đề ra đường lối chiến lược hai miền",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/0/07/Ho_Chi_Minh_-_1946_Portrait.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b1_north",
+    "branchId": "b1",
+    "parentId": "branch_1",
+    "title": "Miền Bắc: Cách mạng XHCN",
+    "subtitle": "Vai trò QUYẾT ĐỊNH NHẤT đối với toàn bộ cách mạng",
+    "year": "1960 - 1965",
+    "category": "Miền Bắc",
+    "x": 860,
+    "y": 200,
+    "width": 290,
+    "height": 130,
+    "color": "gold",
+    "icon": "shield-check",
+    "filterYear": "1960",
+    "detail": {
+      "title": "Vai trò Cách mạng Xã hội chủ nghĩa ở miền Bắc",
+      "period": "Từ Đại hội III (1960)",
+      "tag": "Hậu phương lớn chiến lược",
+      "bookRef": "Trang 194 – 196, Giáo trình Lịch sử Đảng",
+      "quote": "Miền Bắc là căn cứ địa chung cho cả nước, sự vững mạnh của miền Bắc là nhân tố quyết định thắng lợi của cách mạng giải phóng miền Nam.",
+      "authorQuote": "Văn kiện Đại hội III của Đảng",
+      "context": "Miền Bắc là cái nôi nuôi dưỡng, chi viện sức người sức của cho tiền tuyến lớn; là chỗ dựa tinh thần và vật chất không thể thiếu của đồng bào miền Nam đánh Mỹ.",
+      "decisions": "Xây dựng chế độ mới, nền kinh tế mới, văn hóa mới và con người mới XHCN; củng cố quốc phòng, sẵn sàng đánh bại mọi âm mưu khiêu khích chiến tranh của đế quốc Mỹ.",
+      "developments": "Thực hiện đường lối công nghiệp hóa XHCN, phát triển nông nghiệp toàn diện, củng cố các hợp tác xã nông nghiệp và xí nghiệp quốc doanh.",
+      "dataStats": [
+        {
+          "label": "Hợp tác hóa nông nghiệp",
+          "val": "85.8% hộ nông dân vào HTX"
+        },
+        {
+          "label": "Xí nghiệp quốc doanh",
+          "val": "Hơn 1.000 xí nghiệp hình thành"
+        },
+        {
+          "label": "Lương thực chi viện",
+          "val": "Hàng trăm ngàn tấn gạo"
+        }
+      ],
+      "significance": "Biến miền Bắc thành hậu phương vững chắc cả về chính trị, quân sự, kinh tế và tinh thần, chuẩn bị đón nhận thử thách tàn khốc của chiến tranh phá hoại."
+    },
+    "imageUrl": "images/b1_daihoi3.jpg",
+    "imageCaption": "Miền Bắc tiến hành cách mạng XHCN - Vai trò quyết định nhất đối với cả nước",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/0/07/Ho_Chi_Minh_-_1946_Portrait.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b1_south",
+    "branchId": "b1",
+    "parentId": "branch_1",
+    "title": "Miền Nam: Cách mạng DTDC",
+    "subtitle": "Vai trò QUYẾT ĐỊNH TRỰC TIẾP giải phóng miền Nam",
+    "year": "1960 - 1965",
+    "category": "Miền Nam",
+    "x": 860,
+    "y": 450,
+    "width": 290,
+    "height": 130,
+    "color": "red",
+    "icon": "flame",
+    "filterYear": "1960",
+    "detail": {
+      "title": "Vai trò Cách mạng Dân tộc Dân chủ Nhân dân ở miền Nam",
+      "period": "Từ Đại hội III (1960)",
+      "tag": "Tiền tuyến lớn anh hùng",
+      "bookRef": "Trang 194 – 195, Giáo trình Lịch sử Đảng",
+      "quote": "Cách mạng miền Nam có tác dụng quyết định trực tiếp đối với sự nghiệp giải phóng miền Nam khỏi ách thống trị của đế quốc Mỹ và bè lũ tay sai.",
+      "authorQuote": "Nghị quyết Đại hội III của Đảng",
+      "context": "Nhân dân miền Nam chịu ách kìm kẹp khắc nghiệt của chủ nghĩa thực dân mới, đứng trước nhiệm vụ trực tiếp tiêu diệt sinh lực địch, phá vỡ bộ máy kìm kẹp.",
+      "decisions": "Tiếp tục giương cao ngọn cờ dân tộc dân chủ, đoàn kết toàn dân trong Mặt trận Dân tộc Giải phóng, kết hợp đấu tranh chính trị với đấu tranh vũ trang để đánh đổ ngụy quyền tay sai.",
+      "developments": "Xây dựng lực lượng vũ trang giải phóng 3 thứ quân (bộ đội chủ lực, bộ đội địa phương, dân quân du kích), mở rộng vùng giải phóng, phát triển phong trào đô thị.",
+      "dataStats": [
+        {
+          "label": "Lực lượng vũ trang",
+          "val": "Thành lập Quân Giải phóng (2/1961)"
+        },
+        {
+          "label": "Chính quyền cơ sở",
+          "val": "Hàng ngàn xã tự quản thành lập"
+        },
+        {
+          "label": "Mặt trận đoàn kết",
+          "val": "Quy tụ mọi tầng lớp nhân dân"
+        }
+      ],
+      "significance": "Định hướng rõ ràng con đường chiến đấu trực tiếp cho đồng bào và chiến sĩ miền Nam, tạo niềm tin tất thắng vào sự nghiệp thống nhất non sông."
+    },
+    "imageUrl": "images/b2_nguyen_thi_dinh.jpg",
+    "imageCaption": "Miền Nam: Cách mạng DTDC nhân dân - Vai trò quyết định trực tiếp giải phóng miền Nam",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/5/56/Nguyen_Thi_Binh_and_Dinh.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b1_plan",
+    "branchId": "b1",
+    "parentId": "branch_1",
+    "title": "Kế hoạch 5 năm lần I (1961 - 1965)",
+    "subtitle": "Khí thế thi đua 'Ba Sẵn Sàng', 'Ba Đảm Đang'",
+    "year": "1961 - 1965",
+    "category": "Kinh tế - Xã hội",
+    "x": 860,
+    "y": 700,
+    "width": 290,
+    "height": 130,
+    "color": "gold",
+    "icon": "trending-up",
+    "filterYear": "1960",
+    "detail": {
+      "title": "Kế hoạch Nhà nước 5 năm lần thứ nhất (1961 - 1965)",
+      "period": "1961 – 1965",
+      "tag": "Xây dựng cơ sở vật chất CNXH",
+      "bookRef": "Trang 198 – 200, Giáo trình Lịch sử Đảng",
+      "quote": "Tất cả vì tiền tuyến, tất cả vì miền Nam ruột thịt!",
+      "authorQuote": "Khẩu hiệu thi đua toàn miền Bắc",
+      "context": "Miền Bắc bước vào giai đoạn kiến thiết hòa bình, xây dựng cơ sở kỹ thuật vật chất đầu tiên cho nền sản xuất lớn XHCN.",
+      "decisions": "Đảng chủ trương ưu tiên phát triển công nghiệp nặng một cách hợp lý, đồng thời ra sức phát triển nông nghiệp và công nghiệp nhẹ.",
+      "developments": "Các phong trào thi đua nở rộ: 'Sóng Duyên Hải' (công nghiệp), 'Gió Đại Phong' (nông nghiệp), 'Cờ Ba Nhất' (quân đội), 'Ba sẵn sàng' (thanh niên), 'Ba đảm đang' (phụ nữ).",
+      "dataStats": [
+        {
+          "label": "Công trình công nghiệp",
+          "val": "Khu gang thép Thái Nguyên, Nhiệt điện Uông Bí"
+        },
+        {
+          "label": "Năng suất lúa",
+          "val": "Nhiều HTX đạt 5 tấn/ha"
+        },
+        {
+          "label": "Thanh niên xung phong",
+          "val": "Hàng triệu thanh niên ghi tên sẵn sàng"
+        }
+      ],
+      "significance": "Tạo ra tiềm lực kinh tế và quốc phòng mạnh mẽ, bảo đảm cho miền Bắc có đủ khả năng đứng vững trước bom đạn Mỹ và chi viện sức người sức của cho chiến trường miền Nam."
+    },
+    "imageUrl": "images/b1_daihoi3.jpg",
+    "imageCaption": "Kế hoạch 5 năm lần thứ nhất (1961 - 1965) xây dựng cơ sở vật chất CNXH ở miền Bắc",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/0/07/Ho_Chi_Minh_-_1946_Portrait.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "branch_2",
+    "branchId": "b2",
+    "parentId": "center",
+    "title": "CHUYỂN SANG THẾ TIẾN CÔNG (1954 - 1960)",
+    "subtitle": "Từ giữ gìn lực lượng đến Phong trào Đồng Khởi thần kỳ",
+    "year": "1954 - 1960",
+    "category": "Khởi nghĩa & Bước ngoặt",
+    "x": 1420,
+    "y": 1250,
+    "width": 320,
+    "height": 210,
+    "color": "red",
+    "icon": "zap",
+    "filterYear": "1954",
+    "detail": {
+      "title": "Khôi phục miền Bắc & Chuyển cách mạng miền Nam sang thế tiến công (1954 - 1960)",
+      "period": "1954 – 1960",
+      "tag": "Bước ngoặt bảo vệ và phát triển lực lượng",
+      "bookRef": "Trang 180 – 193, Giáo trình Lịch sử Đảng",
+      "quote": "Con đường phát triển cơ bản của cách mạng Việt Nam ở miền Nam là khởi nghĩa giành chính quyền về tay nhân dân.",
+      "authorQuote": "Nghị quyết Hội nghị Trung ương 15 (1/1959)",
+      "context": "Mỹ hất cẳng Pháp, dựng lên chính quyền tay sai Ngô Đình Diệm, ráo riết thi hành chính sách khủng bố đẫm máu nhằm xóa sổ phong trào cách mạng.",
+      "decisions": "Đảng chỉ đạo miền Bắc khôi phục kinh tế, hoàn thành cải cách ruộng đất và cải tạo XHCN; miền Nam chuyển hướng từ đấu tranh chính trị thuần túy sang kết hợp bạo lực vũ trang theo Nghị quyết 15.",
+      "developments": "Phong trào Đồng khởi bùng nổ dữ dội từ Bến Tre lan rộng khắp miền Nam, phá vỡ từng mảng bộ máy thống trị của địch ở cơ sở, đưa cách mạng miền Nam từ thế giữ gìn lực lượng chuyển hẳn sang thế tiến công.",
+      "dataStats": [
+        {
+          "label": "Ruộng đất chia cho dân",
+          "val": "810.000 ha cho hơn 2 triệu hộ"
+        },
+        {
+          "label": "Xã nổi dậy Đồng khởi",
+          "val": "1.383 xã trên toàn miền Nam"
+        },
+        {
+          "label": "Chính quyền tự quản",
+          "val": "Thành lập tại phần lớn vùng nông thôn"
+        },
+        {
+          "label": "Ngày lập MTDTGP",
+          "val": "20/12/1960 tại Tây Ninh"
+        }
+      ],
+      "significance": "Làm sụp đổ bước đầu mưu đồ thống trị bằng bạo lực của Mỹ - Diệm, mở ra trang sử cách mạng tiến công giải phóng miền Nam."
+    },
+    "imageUrl": "images/b2_nguyen_thi_dinh.jpg",
+    "imageCaption": "Nữ tướng Nguyễn Thị Định & Phong trào Đồng khởi (1959-1960) chuyển cách mạng sang thế tiến công",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/5/56/Nguyen_Thi_Binh_and_Dinh.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b2_north_recovery",
+    "branchId": "b2",
+    "parentId": "branch_2",
+    "title": "Khôi phục kinh tế & Cải cách ruộng đất",
+    "subtitle": "Ổn định đời sống & Sửa sai Hội nghị TW 10 (1956)",
+    "year": "1954 - 1957",
+    "category": "Miền Bắc",
+    "x": 860,
+    "y": 1000,
+    "width": 290,
+    "height": 130,
+    "color": "gold",
+    "icon": "refresh-cw",
+    "filterYear": "1954",
+    "detail": {
+      "title": "Khôi phục kinh tế, hoàn thành Cải cách ruộng đất ở miền Bắc",
+      "period": "1954 – 1957",
+      "tag": "Hàn gắn vết thương sau 9 năm kháng chiến",
+      "bookRef": "Trang 181 – 186, Giáo trình Lịch sử Đảng",
+      "quote": "Phải thành khẩn tự phê bình và sửa chữa những sai lầm trong cải cách ruộng đất để củng cố đoàn kết, củng cố lòng tin của nhân dân.",
+      "authorQuote": "Hội nghị Trung ương 10 (khóa II - 9/1956)",
+      "context": "Miền Bắc vừa bước ra khỏi 9 năm kháng chiến chống Pháp, cơ sở hạ tầng bị tàn phá nặng nề, nông nghiệp kiệt quệ, nạn đói đe dọa.",
+      "decisions": "Đảng đề ra kế hoạch 3 năm khôi phục kinh tế (1955-1957). Đẩy mạnh cải cách ruộng đất để thực hiện quyền làm chủ của giai cấp nông dân.",
+      "developments": "Qua 5 đợt cải cách ruộng đất, hàng triệu nông dân nghèo đã có ruộng cày. Tuy nhiên, do giáo điều và áp dụng máy móc nên đã phạm sai lầm nghiêm trọng trong quy kết thành phần. Hội nghị TW 10 (tháng 9/1956) đã dũng cảm kiểm điểm và kiên quyết sửa sai.",
+      "dataStats": [
+        {
+          "label": "Diện tích ruộng đất chia",
+          "val": "Hơn 810.000 ha"
+        },
+        {
+          "label": "Trâu bò chia cho dân",
+          "val": "Hơn 100.000 con"
+        },
+        {
+          "label": "Nông dân hưởng lợi",
+          "val": "Hơn 2.1 triệu hộ nông dân"
+        }
+      ],
+      "significance": "Xóa bỏ vĩnh viễn giai cấp địa chủ phong kiến, củng cố vững chắc liên minh công - nông, đưa kinh tế miền Bắc phục hồi ngang mức trước chiến tranh (1939)."
+    },
+    "imageUrl": "images/center_ket_doan.jpg",
+    "imageCaption": "Miền Bắc khôi phục kinh tế sau kháng chiến chống Pháp, cải cách ruộng đất và cải tạo XHCN",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/3/3c/B%C3%A1c_H%E1%BB%93_b%E1%BA%AFt_nh%E1%BB%8Bp_b%C3%A0i_ca_K%E1%BA%BFt_%C4%91o%C3%A0n.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b2_south_terror",
+    "branchId": "b2",
+    "parentId": "branch_2",
+    "title": "Chống khủng bố & Luật 10/59",
+    "subtitle": "Giữ gìn cơ sở Đảng & Đề cương đ/c Lê Duẩn (1956)",
+    "year": "1954 - 1958",
+    "category": "Miền Nam",
+    "x": 860,
+    "y": 1250,
+    "width": 290,
+    "height": 190,
+    "color": "red",
+    "icon": "shield-alert",
+    "filterYear": "1954",
+    "detail": {
+      "title": "Đấu tranh chống khủng bố, giữ gìn lực lượng cách mạng miền Nam",
+      "period": "1954 – 1958",
+      "tag": "Thời kỳ thử thách cam go nhất",
+      "bookRef": "Trang 187 – 190, Giáo trình Lịch sử Đảng",
+      "quote": "Nhân dân miền Nam muốn tự giải phóng khỏi ách đế quốc phong kiến thì chỉ có con đường cứu nước duy nhất là con đường cách mạng bạo lực.",
+      "authorQuote": "Đề cương đường lối cách mạng miền Nam - Đồng chí Lê Duẩn (8/1956)",
+      "context": "Chính quyền Ngô Đình Diệm ban hành Luật 10/59, lê máy chém đi khắp miền Nam, lập các 'khu trù mật', 'khu dinh điền' để tiêu diệt cộng sản.",
+      "decisions": "Chuyển hướng hoạt động sang bí mật, kết hợp đấu tranh chính trị đòi dân sinh dân chủ với bảo toàn cơ sở cốt cán. Đề cương cách mạng miền Nam xác định rõ bản chất bạo lực.",
+      "developments": "Hàng vạn cán bộ, đảng viên bị sát hại hoặc tù đày, nhưng các 'đốm lửa' cách mạng vẫn được nuôi dưỡng bền bỉ trong lòng quần chúng nhân dân kiên trung.",
+      "dataStats": [
+        {
+          "label": "Đảng viên bị sát hại",
+          "val": "Hàng chục ngàn đồng chí"
+        },
+        {
+          "label": "Cơ sở Đảng bị vỡ",
+          "val": "Nhiều huyện chỉ còn vài chi bộ"
+        },
+        {
+          "label": "Biện pháp tàn độc",
+          "val": "Tòa án quân sự đặc biệt, máy chém"
+        }
+      ],
+      "significance": "Bảo vệ được hạt giống cách mạng cốt tử, tích lũy sự căm phẫn của nhân dân để chuẩn bị cho một cơn bão táp quật khởi giải phóng."
+    },
+    "imageUrl": "images/b2_guillotine_1059.jpg",
+    "imageCaption": "Máy chém chính quyền Ngô Đình Diệm lê khắp miền Nam theo Luật 10/59",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/8/8f/Guillotine_%28mus%C3%A9e_des_Souvenirs_de_guerre%2C_H%C3%B4_Chi_Minh_Ville%29_%286751760919%29.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b2_nq15",
+    "branchId": "b2",
+    "parentId": "branch_2",
+    "title": "Nghị quyết Trung ương 15 (1/1959)",
+    "subtitle": "BẬT ĐÈN XANH cho Khởi nghĩa Vũ trang",
+    "year": "1/1959",
+    "category": "Quyết sách lịch sử",
+    "x": 860,
+    "y": 1550,
+    "width": 290,
+    "height": 130,
+    "color": "red",
+    "icon": "file-text",
+    "filterYear": "1960",
+    "detail": {
+      "title": "Nghị quyết Hội nghị lần thứ 15 Ban Chấp hành Trung ương Đảng",
+      "period": "Tháng 1/1959 (hoàn chỉnh tháng 5/1959)",
+      "tag": "Nghị quyết lịch sử xoay chuyển tình thế",
+      "bookRef": "Trang 190 – 192, Giáo trình Lịch sử Đảng",
+      "quote": "Con đường cứu nước duy nhất của nhân dân miền Nam là con đường khởi nghĩa giành chính quyền về tay nhân dân bằng con đường bạo lực cách mạng.",
+      "authorQuote": "Nghị quyết Trung ương 15 (khóa II)",
+      "context": "Quần chúng nhân dân miền Nam đã không thể sống dưới ách kìm kẹp ngột ngạt của Mỹ - Diệm được nữa; phong trào tự phát diệt ác trừ gian bùng nổ đòi hỏi phải có sự chỉ đạo chính thức từ Trung ương.",
+      "decisions": "Xác định nhiệm vụ cơ bản là giải phóng miền Nam; phương hướng phát triển là kết hợp lực lượng chính trị với lực lượng vũ trang, lấy khởi nghĩa từng phần giành chính quyền về tay nhân dân làm phương châm hành động.",
+      "developments": "Mở ra đường Trường Sơn vận chuyển vũ khí và cán bộ vào Nam (Đoàn 559 trên bộ và Đoàn 759 trên biển).",
+      "dataStats": [
+        {
+          "label": "Thời điểm ban hành",
+          "val": "1/1959 (sau đó mở đường 559)"
+        },
+        {
+          "label": "Phương pháp đấu tranh",
+          "val": "Kết hợp chính trị + vũ trang"
+        },
+        {
+          "label": "Mục tiêu trước mắt",
+          "val": "Đánh đổ tập đoàn Ngô Đình Diệm"
+        }
+      ],
+      "significance": "Đáp ứng đúng nguyện vọng cháy bỏng của nhân dân miền Nam, ngọn đuốc soi đường trực tiếp dẫn tới cơn bão táp Đồng khởi năm 1959 - 1960."
+    },
+    "imageUrl": "images/b2_nguyen_thi_dinh.jpg",
+    "imageCaption": "Nghị quyết Hội nghị Trung ương 15 (1/1959) - Quyết sách lịch sử mở đường khởi nghĩa vũ trang",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/5/56/Nguyen_Thi_Binh_and_Dinh.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b2_dongkhoi",
+    "branchId": "b2",
+    "parentId": "b2_nq15",
+    "title": "Phong trào Đồng Khởi (1959 - 1960)",
+    "subtitle": "Ngọn đuốc Bến Tre & Thành lập MTDT Giải phóng",
+    "year": "1959 - 1960",
+    "category": "Khởi nghĩa",
+    "x": 280,
+    "y": 1550,
+    "width": 300,
+    "height": 190,
+    "color": "red",
+    "icon": "flame",
+    "filterYear": "1960",
+    "detail": {
+      "title": "Phong trào Đồng Khởi thần kỳ và Sự ra đời của Mặt trận Dân tộc Giải phóng",
+      "period": "1959 – 1960 (Đỉnh cao ngày 17/1/1960)",
+      "tag": "Cơn bão táp quật khởi của nhân dân",
+      "bookRef": "Trang 191 – 193, Giáo trình Lịch sử Đảng",
+      "quote": "Anh em binh lính hãy thức tỉnh, quay súng về với nhân dân!",
+      "authorQuote": "Khẩu hiệu Đội quân tóc dài Bến Tre",
+      "context": "Dưới ánh sáng soi đường của Nghị quyết 15, nhân dân đồng loạt nổi dậy diệt ác ôn, phá đồn bốt, thành lập chính quyền cách mạng tự quản.",
+      "decisions": "Phát động khởi nghĩa từng phần, dùng bạo lực quần chúng kết hợp binh vận làm tan rã từng mảng chính quyền tay sai địch.",
+      "developments": "Bắt đầu từ 3 xã Định Thủy, Phước Hiệp, Bình Khánh (huyện Mỏ Cày, Bến Tre) do đồng chí Nguyễn Thị Định lãnh đạo, phong trào lan rộng khắp Nam Bộ và Nam Trung Bộ. Ngày 20/12/1960, Mặt trận Dân tộc Giải phóng miền Nam Việt Nam được thành lập tại Tây Ninh.",
+      "dataStats": [
+        {
+          "label": "Ngày nổ ra tại Bến Tre",
+          "val": "17/1/1960"
+        },
+        {
+          "label": "Địa bàn kiểm soát mới",
+          "val": "Hàng triệu hecta đất giải phóng"
+        },
+        {
+          "label": "Quần chúng nổi dậy",
+          "val": "Hàng triệu lượt người tham gia"
+        }
+      ],
+      "significance": "Đánh dấu bước phát triển nhảy vọt của cách mạng miền Nam: Chuyển hẳn từ thế giữ gìn lực lượng sang thế tiến công liên tục; khai tử chiến lược 'Chiến tranh đơn phương' của đế quốc Mỹ."
+    },
+    "imageUrl": "images/b2_nguyen_thi_dinh.jpg",
+    "imageCaption": "Đội quân tóc dài Bến Tre trong Phong trào Đồng khởi (1960) phá vỡ thế kìm kẹp của địch",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/5/56/Nguyen_Thi_Binh_and_Dinh.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "branch_3",
+    "branchId": "b3",
+    "parentId": "center",
+    "title": "ĐÁNH BẠI 'CHIẾN TRANH ĐẶC BIỆT' (1961 - 1965)",
+    "subtitle": "Phá Ấp chiến lược & Đánh sập các chiến thuật trực thăng vận",
+    "year": "1961 - 1965",
+    "category": "Chiến trường",
+    "x": 1420,
+    "y": 2050,
+    "width": 320,
+    "height": 210,
+    "color": "green",
+    "icon": "shield",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Lãnh đạo đánh bại chiến lược 'Chiến tranh đặc biệt' của đế quốc Mỹ",
+      "period": "1961 – 1965",
+      "tag": "Chiến lược thực dân mới quy mô lớn đầu tiên của Mỹ",
+      "bookRef": "Trang 198 – 205, Giáo trình Lịch sử Đảng",
+      "quote": "Bình Giã, Ba Gia, Đồng Xoài chứng minh quân chủ lực ngụy đã không còn khả năng tự đứng vững trước các đòn tiến công của Quân Giải phóng.",
+      "authorQuote": "Văn kiện Đảng",
+      "context": "Sau thất bại của Chiến tranh đơn phương, Tổng thống Kennedy triển khai chiến lược 'Chiến tranh đặc biệt' với kế hoạch Staley-Taylor nhằm 'bình định miền Nam trong 18 tháng'.",
+      "decisions": "Thành lập Trung ương Cục miền Nam (10/1961), hợp nhất lực lượng vũ trang thành Quân Giải phóng miền Nam (2/1961). Chỉ đạo phương châm 'hai chân, ba mũi, ba vùng chiến lược'.",
+      "developments": "Quân và dân ta kiên cường bẻ gãy quốc sách ấp chiến lược, lập nên chiến thắng lẫy lừng Ấp Bắc (1/1963), lật đổ chế độ Diệm (11/1963) và tung các đòn quyết định qua các chiến dịch Bình Giã, Ba Gia, Đồng Xoài (1964 - 1965).",
+      "dataStats": [
+        {
+          "label": "Ấp chiến lược bị phá",
+          "val": "Hơn 8.000 ấp chiến lược bị phá vỡ"
+        },
+        {
+          "label": "Quân Mỹ tại miền Nam",
+          "val": "Tăng từ 2.000 lên hơn 23.000 cố vấn"
+        },
+        {
+          "label": "Khủng hoảng chính trị ngụy",
+          "val": "10 cuộc đảo chính liên tiếp sau khi Diệm chết"
+        }
+      ],
+      "significance": "Làm phá sản hoàn toàn chiến lược 'Chiến tranh đặc biệt', đẩy Mỹ vào ngõ cụt chiến lược, buộc Washington phải tính đến phương án liều lĩnh đưa quân viễn chinh Mỹ trực tiếp tham chiến."
+    },
+    "imageUrl": "images/b3_apbac_heli.jpg",
+    "imageCaption": "Xác máy bay trực thăng Mỹ bị quân dân ta bắn hạ tại Chiến thắng Ấp Bắc (2/1/1963)",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Chopper_wreck_at_Ap_Bac-LF.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b3_us_scheme",
+    "branchId": "b3",
+    "parentId": "branch_3",
+    "title": "Âm mưu Mỹ & Kế hoạch Staley-Taylor",
+    "subtitle": "Quân Sài Gòn + Cố vấn Mỹ + 'Quốc sách' Ấp chiến lược",
+    "year": "1961 - 1963",
+    "category": "Âm mưu địch",
+    "x": 860,
+    "y": 1850,
+    "width": 290,
+    "height": 130,
+    "color": "charcoal",
+    "icon": "target",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Âm mưu của đế quốc Mỹ trong chiến lược 'Chiến tranh đặc biệt'",
+      "period": "1961 – 1963",
+      "tag": "Chiến lược 'Phản ứng linh hoạt' của Kennedy",
+      "bookRef": "Trang 198 – 201, Giáo trình Lịch sử Đảng",
+      "quote": "Dùng người Việt đánh người Việt, lấy tài nguyên xương máu người Việt phục vụ mưu đồ thực dân mới của Mỹ.",
+      "authorQuote": "Bản chất chiến tranh đặc biệt",
+      "context": "Mỹ muốn biến miền Nam thành bãi thử nghiệm cho học thuyết 'chống chiến tranh du kích' để áp dụng trên toàn thế giới.",
+      "decisions": "Kế hoạch Staley-Taylor (1961-1963) đặt mục tiêu bình định miền Nam trong 18 tháng, sau đó nâng lên thành Kế hoạch Johnson-McNamara (1964-1965).",
+      "developments": "Địch dồn 10 triệu nông dân vào 16.000 'ấp chiến lược' biến làng quê thành trại tập trung khổng lồ, sử dụng chiến thuật cơ động hiện đại 'trực thăng vận' và 'thiết xa vận'.",
+      "dataStats": [
+        {
+          "label": "Dự kiến ấp chiến lược",
+          "val": "16.000 ấp"
+        },
+        {
+          "label": "Mục tiêu thời gian",
+          "val": "18 tháng bình định"
+        },
+        {
+          "label": "Chiến thuật chủ yếu",
+          "val": "Trực thăng vận, thiết xa vận"
+        }
+      ],
+      "significance": "Biến chiến trường miền Nam thành nơi đọ sức quyết liệt giữa chiến thuật chiến tranh công nghệ cao của Mỹ với chiến tranh nhân dân mưu trí của ta."
+    },
+    "imageUrl": "images/b3_apbac_heli.jpg",
+    "imageCaption": "Mỹ triển khai Kế hoạch Staley-Taylor, gom dân lập Ấp chiến lược với cố vấn và vũ khí tối tân",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Chopper_wreck_at_Ap_Bac-LF.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b3_guidelines",
+    "branchId": "b3",
+    "parentId": "branch_3",
+    "title": "Phương châm: 2 chân, 3 mũi, 3 vùng",
+    "subtitle": "Nghệ thuật Chiến tranh Nhân dân độc đáo của Đảng",
+    "year": "1961 - 1965",
+    "category": "Đường lối",
+    "x": 860,
+    "y": 2050,
+    "width": 290,
+    "height": 130,
+    "color": "green",
+    "icon": "sliders",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Phương châm chiến lược: Hai chân, Ba mũi, Ba vùng chiến lược",
+      "period": "Chỉ đạo của Bộ Chính trị (1/1961 và 2/1962)",
+      "tag": "Đỉnh cao nghệ thuật quân sự Việt Nam",
+      "bookRef": "Trang 201 – 203, Giáo trình Lịch sử Đảng",
+      "quote": "Đánh địch trên cả hai chân quân sự và chính trị; bằng cả ba mũi giáp công quân sự, chính trị, binh vận; trên cả ba vùng chiến lược: rừng núi, nông thôn đồng bằng và đô thị.",
+      "authorQuote": "Nghị quyết Trung ương Cục miền Nam",
+      "context": "Đối đầu với quân đội Sài Gòn đông hơn gấp bội được trang bị vũ khí tối tân đòi hỏi ta phải phát huy sức mạnh tổng hợp của toàn dân tộc.",
+      "decisions": "Chủ trương kết hợp đấu tranh quân sự với đấu tranh chính trị song song; kết hợp đánh nhỏ, đánh vừa và đánh lớn của 3 thứ quân.",
+      "developments": "Xây dựng 'làng chiến đấu', bám đất bám làng; phong trào sinh viên, học sinh, phật tử đô thị biểu tình làm tê liệt chính quyền Sài Gòn.",
+      "dataStats": [
+        {
+          "label": "2 chân",
+          "val": "Quân sự & Chính trị"
+        },
+        {
+          "label": "3 mũi",
+          "val": "Quân sự, Chính trị, Binh vận"
+        },
+        {
+          "label": "3 vùng",
+          "val": "Rừng núi, Đồng bằng, Đô thị"
+        }
+      ],
+      "significance": "Tạo ra thế trận liên hoàn, làm địch luôn bị phân tán, bị đánh bất ngờ từ mọi hướng, biến hậu phương địch thành tiền tuyến của ta."
+    },
+    "imageUrl": "images/b4_mauthan_sworn.jpg",
+    "imageCaption": "Phương châm: 2 chân (quân sự + chính trị), 3 mũi giáp công, 3 vùng chiến lược",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Viet_Cong_Sworn_In.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b3_apbac",
+    "branchId": "b3",
+    "parentId": "branch_3",
+    "title": "Chiến thắng Ấp Bắc (2/1/1963)",
+    "subtitle": "Bắn rơi trực thăng, tiêu diệt thiết xa vận M-113",
+    "year": "2/1/1963",
+    "category": "Chiến dịch",
+    "x": 860,
+    "y": 2280,
+    "width": 300,
+    "height": 190,
+    "color": "green",
+    "icon": "award",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Chiến thắng vang dội Ấp Bắc (Mỹ Tho)",
+      "period": "Ngày 2 tháng 1 năm 1963",
+      "tag": "Đòn mở màn phá tan chiến thuật mới của Mỹ",
+      "bookRef": "Trang 203 – 204, Giáo trình Lịch sử Đảng",
+      "quote": "Chiến thắng Ấp Bắc chứng minh quân dân ta hoàn toàn có thể đánh bại các chiến thuật quân sự hiện đại nhất của đế quốc Mỹ.",
+      "authorQuote": "Báo cáo Trung ương Cục",
+      "context": "Địch huy động hơn 2.000 quân chủ lực có trực thăng, xe bọc thép M-113 và máy bay chiến đấu yểm trợ để càn quét vào căn cứ Ấp Bắc nhỏ bé.",
+      "decisions": "Ta kiên quyết bám công sự, phân công xạ thủ bắn tỉa, đánh địch bằng lòng dũng cảm và trận địa phục kích thông minh.",
+      "developments": "Sau một ngày chiến đấu kiên cường, một đại đội bộ đội địa phương và du kích đã đẩy lùi mọi đợt tấn công của địch, bắn rơi 8 máy bay trực thăng, phá hủy 3 xe M-113.",
+      "dataStats": [
+        {
+          "label": "Quân địch tham chiến",
+          "val": "Hơn 2.000 lính + cố vấn Mỹ"
+        },
+        {
+          "label": "Thiệt hại địch",
+          "val": "450 tên bị tiêu diệt, 8 trực thăng rơi"
+        },
+        {
+          "label": "Phong trào phát động",
+          "val": "'Thi đua Ấp Bắc, giết giặc lập công'"
+        }
+      ],
+      "significance": "Chứng minh trên thực tế khả năng quân dân miền Nam có thể đánh bại các chiến thuật 'trực thăng vận' và 'thiết xa vận' của Mỹ, cổ vũ tinh thần diệt giặc trên toàn chiến trường."
+    },
+    "imageUrl": "images/b3_apbac_stamp.jpg",
+    "imageCaption": "Chiến thắng Ấp Bắc (2/1/1963) - Đánh bại chiến thuật 'trực thăng vận' và 'thiết xa vận'",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/0/0d/Vietnam_stamp%2C_Battle_of_%E1%BA%A4p_B%E1%BA%AFc.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b3_campaigns",
+    "branchId": "b3",
+    "parentId": "b3_guidelines",
+    "title": "Đòn quyết định: Bình Giã, Ba Gia, Đồng Xoài",
+    "subtitle": "Xóa sổ từng trung đoàn chủ lực ngụy (1964 - 1965)",
+    "year": "1964 - 1965",
+    "category": "Chiến dịch",
+    "x": 280,
+    "y": 2050,
+    "width": 290,
+    "height": 130,
+    "color": "green",
+    "icon": "swords",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Các chiến dịch lớn: Bình Giã, An Lão, Ba Gia, Đồng Xoài",
+      "period": "Đông Xuân 1964 – 1965",
+      "tag": "Đòn cáo chung cho Chiến tranh đặc biệt",
+      "bookRef": "Trang 204 – 205, Giáo trình Lịch sử Đảng",
+      "quote": "Sau chiến dịch Bình Giã, chiến lược 'Chiến tranh đặc biệt' của Mỹ coi như đã bị phá sản về cơ bản.",
+      "authorQuote": "Bộ Chính trị Trung ương Đảng nhận định",
+      "context": "Quân Giải phóng miền Nam đã lớn mạnh vượt bậc, có khả năng mở các chiến dịch quy mô cấp trung đoàn, sư đoàn đánh tiêu diệt lớn quân chủ lực địch.",
+      "decisions": "Bộ Chính trị quyết định mở chiến dịch Đông Xuân 1964 - 1965 tiêu diệt sinh lực địch, làm sụp đổ hoàn toàn chỗ dựa của chính quyền ngụy.",
+      "developments": "Chiến dịch Bình Giã (12/1964 - 1/1965) tại Bà Rịa loại khỏi vòng chiến đấu 2 tiểu đoàn dù và biệt động quân; tiếp theo là các đòn sấm sét tại Ba Gia (Quảng Ngãi), Đồng Xoài (Bình Phước).",
+      "dataStats": [
+        {
+          "label": "Chiến dịch Bình Giã",
+          "val": "Tiêu diệt 1 chi đoàn bọc thép, 2 tiểu đoàn cơ động"
+        },
+        {
+          "label": "Trận Ba Gia",
+          "val": "Xóa sổ 1 chiến đoàn hỗn hợp tinh nhuệ ngụy"
+        },
+        {
+          "label": "Kết quả chung",
+          "val": "Quân đội Sài Gòn đứng trước nguy cơ tan rã hoàn toàn"
+        }
+      ],
+      "significance": "Đánh dấu sự phá sản hoàn toàn của 'Chiến tranh đặc biệt', khẳng định bước nhảy vọt về nghệ thuật tác chiến hiệp đồng chiến dịch của Quân Giải phóng."
+    },
+    "imageUrl": "images/b3_apbac_heli.jpg",
+    "imageCaption": "Chuỗi chiến thắng Bình Giã, Ba Gia, Đồng Xoài (1964-1965) làm phá sản Chiến tranh đặc biệt",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/6/6d/Chopper_wreck_at_Ap_Bac-LF.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "branch_4",
+    "branchId": "b4",
+    "parentId": "center",
+    "title": "ĐÁNH BẠI 'CHIẾN TRANH CỤC BỘ' (1965 - 1968)",
+    "subtitle": "Đỉnh cao Mậu Thân 1968 & Đập tan 2 mùa khô phản công",
+    "year": "1965 - 1968",
+    "category": "Chiến trường",
+    "x": 2660,
+    "y": 450,
+    "width": 320,
+    "height": 210,
+    "color": "red",
+    "icon": "flame",
+    "filterYear": "1968",
+    "detail": {
+      "title": "Lãnh đạo đánh bại chiến lược 'Chiến tranh cục bộ' của đế quốc Mỹ",
+      "period": "1965 – 1968",
+      "tag": "Giai đoạn đụng đầu lịch sử khốc liệt nhất",
+      "bookRef": "Trang 205 – 220, Giáo trình Lịch sử Đảng",
+      "quote": "Không có gì quý hơn độc lập, tự do!",
+      "authorQuote": "Chủ tịch Hồ Chí Minh (17/7/1966)",
+      "context": "Trước nguy cơ sụp đổ của ngụy quyền Sài Gòn, Tổng thống Johnson ồ ạt đổ hơn nửa triệu quân viễn chinh Mỹ và chư hầu vào miền Nam, đồng thời leo thang dùng không quân, hải quân bắn phá miền Bắc.",
+      "decisions": "Nghị quyết Trung ương 11 (3/1965) và TW 12 (12/1965) phát động toàn dân đánh Mỹ, kiên định quyết tâm 'Đánh thắng giặc Mỹ xâm lược' trên cả hai miền.",
+      "developments": "Mở đầu bằng chiến thắng Vạn Tường (8/1965), bẻ gãy 2 cuộc phản công mùa khô 1965-1966 và 1966-1967 của Mỹ, đỉnh cao là đòn sấm sét Tổng tiến công và nổi dậy Tết Mậu Thân 1968.",
+      "dataStats": [
+        {
+          "label": "Quân Mỹ tối đa",
+          "val": "Hơn 540.000 quân viễn chinh"
+        },
+        {
+          "label": "Quân chư hầu",
+          "val": "Hơn 70.000 lính (Hàn Quốc, Thái Lan...)"
+        },
+        {
+          "label": "Máy bay Mỹ bị bắn rơi ở miền Bắc",
+          "val": "3.243 máy bay (đợt 1)"
+        },
+        {
+          "label": "Mậu Thân 1968",
+          "val": "Tấn công 4/6 thành phố lớn, 37 thị xã"
+        }
+      ],
+      "significance": "Giáng đòn quyết định vào ý chí xâm lược của chính giới Mỹ, buộc Mỹ phải tuyên bố 'phi Mỹ hóa' chiến tranh, đơn phương ngừng ném bom miền Bắc từ vĩ tuyến 20 trở ra và chấp nhận ngồi vào bàn đàm phán tại Paris."
+    },
+    "imageUrl": "images/b4_mauthan_sworn.jpg",
+    "imageCaption": "Chiến sĩ Quân Giải phóng tuyên thệ xuất quân đánh bại Chiến tranh cục bộ (1965 - 1968)",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Viet_Cong_Sworn_In.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b4_resolution",
+    "branchId": "b4",
+    "parentId": "branch_4",
+    "title": "Nghị quyết TW 11 & 12 (1965)",
+    "subtitle": "Quyết tâm đánh thắng giặc Mỹ xâm lược",
+    "year": "1965",
+    "category": "Đường lối",
+    "x": 3250,
+    "y": 200,
+    "width": 290,
+    "height": 130,
+    "color": "red",
+    "icon": "flag",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Đường lối kháng chiến chống Mỹ trong giai đoạn mới (Hội nghị TW 11 & 12)",
+      "period": "Tháng 3 và Tháng 12 năm 1965",
+      "tag": "Lời thề non nước trước họa xâm lăng",
+      "bookRef": "Trang 205 – 208, Giáo trình Lịch sử Đảng",
+      "quote": "Tuy đế quốc Mỹ đưa vào miền Nam hàng chục vạn quân viễn chinh, nhưng so sánh lực lượng căn bản trên chiến trường vẫn không thay đổi.",
+      "authorQuote": "Nghị quyết Hội nghị Trung ương 12",
+      "context": "Mỹ đưa quân ồ ạt vào Đà Nẵng, Chu Lai; chiến tranh lan rộng ra cả nước, đặt đất nước ta trước thử thách sống còn.",
+      "decisions": "Khẳng định cuộc kháng chiến của ta là chính nghĩa; nêu cao phương châm kháng chiến lâu dài, dựa vào sức mình là chính, kiên quyết tiến công địch.",
+      "developments": "Huy động toàn bộ tiềm lực đất nước, phát động phong trào 'Tất cả cho tiền tuyến, tất cả để đánh thắng giặc Mỹ xâm lược'.",
+      "dataStats": [
+        {
+          "label": "Khẩu hiệu miền Bắc",
+          "val": "'Tay búa, tay súng' / 'Tay cày, tay súng'"
+        },
+        {
+          "label": "Khẩu hiệu miền Nam",
+          "val": "'Bám đất bám làng', 'Tìm Mỹ mà đánh'"
+        },
+        {
+          "label": "Ngoại giao",
+          "val": "Hội nghị TW 13 (1/1967) mở mặt trận ngoại giao"
+        }
+      ],
+      "significance": "Thống nhất ý chí chiến đấu của toàn Đảng, toàn quân, toàn dân, đập tan mọi dao động lo sợ trước sức mạnh bom đạn của đế quốc Mỹ."
+    },
+    "imageUrl": "images/b4_mauthan_sworn.jpg",
+    "imageCaption": "Nghị quyết Trung ương 11 & 12 (1965) - Quyết tâm đánh thắng giặc Mỹ xâm lược",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/3/3e/Viet_Cong_Sworn_In.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b4_battles",
+    "branchId": "b4",
+    "parentId": "branch_4",
+    "title": "Vạn Tường & 2 Mùa khô phản công",
+    "subtitle": "'Tìm Mỹ mà đánh, lùng ngụy mà diệt' (1965 - 1967)",
+    "year": "1965 - 1967",
+    "category": "Chiến dịch",
+    "x": 3250,
+    "y": 450,
+    "width": 290,
+    "height": 130,
+    "color": "red",
+    "icon": "shield",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Chiến thắng Vạn Tường & Bẻ gãy hai cuộc phản công chiến lược mùa khô",
+      "period": "1965 – 1967",
+      "tag": "Thực tiễn chứng minh: Ta có thể đánh và thắng Mỹ",
+      "bookRef": "Trang 213 – 216, Giáo trình Lịch sử Đảng",
+      "quote": "Vạn Tường mở đầu cho cao trào đánh Mỹ, diệt Mỹ của quân dân miền Nam.",
+      "authorQuote": "Văn kiện Đảng",
+      "context": "Tướng Westmoreland chỉ huy quân viễn chinh mở cuộc hành quân 'Ánh sáng sao' tấn công thôn Vạn Tường (Quảng Ngãi) hòng nghiền nát trung đoàn chủ lực ta.",
+      "decisions": "Ta chủ động đón đánh địch, phối hợp giữa bộ đội chủ lực với du kích địa phương tạo thành 'vành đai diệt Mỹ'.",
+      "developments": "Tại Vạn Tường (18/8/1965), ta tiêu diệt hơn 900 lính thủy đánh bộ Mỹ; tiếp đó đánh bại cuộc phản công mùa khô lần 1 (1965-1966) và cuộc hành quân Junction City trong mùa khô lần 2 (1966-1967).",
+      "dataStats": [
+        {
+          "label": "Trận Vạn Tường",
+          "val": "Loại khỏi vòng chiến 900 lính Mỹ, 22 xe bọc thép"
+        },
+        {
+          "label": "Mùa khô 1965-1966",
+          "val": "Bẻ gãy 450 cuộc hành quân của địch"
+        },
+        {
+          "label": "Hành quân Junction City",
+          "val": "Cuộc hành quân lớn nhất của Mỹ bị đập tan"
+        }
+      ],
+      "significance": "Chứng minh hùng hồn: Quân Giải phóng hoàn toàn có đủ khả năng đánh bại quân viễn chinh Mỹ thiện chiến, giáng đòn nặng nề vào học thuyết 'tìm và diệt'."
+    },
+    "imageUrl": "images/b4_mauthan_cholon.jpg",
+    "imageCaption": "Chiến thắng Vạn Tường (8/1965) và đập tan 2 cuộc phản công mùa khô (1965 - 1967)",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Cholon_after_Tet_Offensive_operations_1968.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b4_north_airwar",
+    "branchId": "b4",
+    "parentId": "branch_4",
+    "title": "Miền Bắc: Chống chiến tranh phá hoại lần 1",
+    "subtitle": "Đảm bảo giao thông, chi viện qua đường Trường Sơn",
+    "year": "1965 - 1968",
+    "category": "Miền Bắc",
+    "x": 3250,
+    "y": 700,
+    "width": 290,
+    "height": 130,
+    "color": "gold",
+    "icon": "truck",
+    "filterYear": "1965",
+    "detail": {
+      "title": "Miền Bắc vừa sản xuất vừa đánh trả chiến tranh phá hoại lần thứ nhất của Mỹ",
+      "period": "1965 – 1968",
+      "tag": "Chiến công bảo vệ hậu phương lớn",
+      "bookRef": "Trang 209 – 213, Giáo trình Lịch sử Đảng",
+      "quote": "Xe chưa qua, nhà không tiếc; đường chưa thông, không tiếc máu xương!",
+      "authorQuote": "Khẩu hiệu thanh niên xung phong hỏa tuyến",
+      "context": "Mỹ mở chiến dịch ném bom 'Sấm rền' (Rolling Thunder) hòng phá hủy tiềm lực kinh tế, cắt đứt chi viện từ miền Bắc cho chiến trường miền Nam.",
+      "decisions": "Đảng chủ trương chuyển hướng xây dựng kinh tế từ thời bình sang thời chiến; triệt để sơ tán, phân tán sản xuất; tổ chức lưới lửa phòng không nhân dân nhiều tầng nhiều lớp.",
+      "developments": "Quân dân miền Bắc kiên cường bắn rơi hàng ngàn máy bay Mỹ; tuyến đường vận tải chiến lược Trường Sơn (Đoàn 559) ngày đêm thông suốt.",
+      "dataStats": [
+        {
+          "label": "Máy bay Mỹ bị bắn rơi",
+          "val": "3.243 máy bay (gồm cả B-52)"
+        },
+        {
+          "label": "Tàu chiến Mỹ bị bắn cháy",
+          "val": "143 lần chiếc"
+        },
+        {
+          "label": "Hàng chi viện vào Nam",
+          "val": "Tăng gấp 10 lần so với giai đoạn trước"
+        }
+      ],
+      "significance": "Đế quốc Mỹ không đạt được bất kỳ mục tiêu chiến lược nào; miền Bắc không những không bị khuất phục mà ngày càng củng cố thế trận hậu phương vững chắc."
+    },
+    "imageUrl": "images/b5_dienbienphu_b52.jpg",
+    "imageCaption": "Quân dân miền Bắc kiên cường bắn rơi hàng nghìn máy bay Mỹ trong chiến tranh phá hoại lần 1",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/6/67/B52_WRECKAGE_B52_VICTORY_CENTRE_HUU_TIEP_LAKE_BA_DINH_DISTRICT_HANOI_FEB_2012_%286817999066%29.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b4_mauthan",
+    "branchId": "b4",
+    "parentId": "b4_battles",
+    "title": "Tổng tiến công Tết Mậu Thân 1968",
+    "subtitle": "Đột phá chiến lược làm rung chuyển Nhà Trắng",
+    "year": "1968",
+    "category": "Chiến dịch",
+    "x": 3810,
+    "y": 450,
+    "width": 300,
+    "height": 190,
+    "color": "red",
+    "icon": "zap",
+    "filterYear": "1968",
+    "detail": {
+      "title": "Cuộc Tổng tiến công và nổi dậy Tết Mậu Thân năm 1968",
+      "period": "Đêm giao thừa Tết Mậu Thân (30 - 31/1/1968)",
+      "tag": "Cú sốc địa chấn quân sự thế kỷ XX",
+      "bookRef": "Trang 216 – 220, Giáo trình Lịch sử Đảng",
+      "quote": "Xuân này hơn hẳn mấy xuân qua, / Thắng trận tin vui khắp nước nhà. / Nam Bắc thi đua đánh giặc Mỹ, / Tiến lên! Toàn thắng ắt về ta!",
+      "authorQuote": "Thơ chúc Tết Mậu Thân 1968 của Bác Hồ",
+      "context": "Mỹ đang rêu rao 'đã nhìn thấy ánh sáng cuối đường hầm' và cho rằng Quân Giải phóng đã kiệt sức không thể mở đòn tiến công lớn.",
+      "decisions": "Hội nghị Trung ương 14 (1/1968) thông qua quyết định táo bạo: Chuyển cuộc chiến tranh cách mạng sang thời kỳ mới - thời kỳ giành thắng lợi quyết định bằng đòn tập kích đồng loạt vào các đô thị.",
+      "developments": "Đêm 30 rạng ngày 31/1/1968, quân ta đồng loạt nổ súng đánh vào Tòa Đại sứ Mỹ, Dinh Độc Lập, Bộ Tổng tham mưu ngụy, Đài phát thanh Sài Gòn và 64 thành phố, thị xã trên toàn miền Nam.",
+      "dataStats": [
+        {
+          "label": "Mục tiêu bị tấn công",
+          "val": "Tòa Đại sứ Mỹ, Dinh Độc Lập, sân bay Tân Sơn Nhất..."
+        },
+        {
+          "label": "Thành phố, thị xã nổ súng",
+          "val": "4 thành phố lớn, 37 thị xã, hàng trăm thị trấn"
+        },
+        {
+          "label": "Phản ứng của Mỹ",
+          "val": "Tổng thống Johnson tuyên bố không tái tranh cử"
+        }
+      ],
+      "significance": "Giáng đòn sét đánh làm đảo lộn thế bố trí chiến lược của địch; làm lung lay tận gốc ý chí xâm lược của chính giới Mỹ; buộc Mỹ phải tuyên bố 'phi Mỹ hóa', xuống thang chiến tranh và bắt đầu đàm phán tại Paris."
+    },
+    "imageUrl": "images/b4_mauthan_cholon.jpg",
+    "imageCaption": "Tổng tiến công và nổi dậy Tết Mậu Thân 1968 - Buộc Mỹ tuyên bố 'phi Mỹ hóa' và đàm phán Paris",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/f/f1/Cholon_after_Tet_Offensive_operations_1968.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "branch_5",
+    "branchId": "b5",
+    "parentId": "center",
+    "title": "ĐÁNH BẠI 'VIỆT NAM HÓA CHIẾN TRANH' (1969 - 1973)",
+    "subtitle": "Điện Biên Phủ trên không & Buộc Mỹ ký Hiệp định Paris",
+    "year": "1969 - 1973",
+    "category": "Chiến trường",
+    "x": 2660,
+    "y": 1250,
+    "width": 320,
+    "height": 210,
+    "color": "blue",
+    "icon": "crosshair",
+    "filterYear": "1973",
+    "detail": {
+      "title": "Lãnh đạo đánh bại chiến lược 'Việt Nam hóa chiến tranh' của Mỹ",
+      "period": "1969 – 1973",
+      "tag": "Cuộc đấu trí và đấu lực cam go",
+      "bookRef": "Trang 220 – 228, Giáo trình Lịch sử Đảng",
+      "quote": "Đánh cho Mỹ cút, đánh cho ngụy nhào!",
+      "authorQuote": "Thơ chúc Tết Kỷ Dậu 1969 của Bác Hồ",
+      "context": "Tổng thống Nixon lên nắm quyền, thực hiện học thuyết Nixon nhằm rút dần quân Mỹ nhưng tăng cường hỏa lực tối đa cho quân ngụy để 'thay màu da trên xác chết'; mở rộng chiến tranh sang Campuchia và Lào.",
+      "decisions": "Hội nghị Trung ương 18 (1/1970) và TW 19 (1/1971) chủ trương kiên trì đẩy mạnh kháng chiến; phối hợp chặt chẽ với cách mạng Lào và Campuchia; kết hợp đòn tiến công quân sự với đàm phán ngoại giao.",
+      "developments": "Đánh bại cuộc hành quân Lam Sơn 719 tại Đường 9 - Nam Lào (1971), mở cuộc tiến công chiến lược 1972, đập tan cuộc tập kích B-52 trong trận 'Điện Biên Phủ trên không' (12/1972), ký kết Hiệp định Paris (27/1/1973).",
+      "dataStats": [
+        {
+          "label": "Pháo đài bay B-52 bị hạ",
+          "val": "34 chiếc (trong 12 ngày đêm 12/1972)"
+        },
+        {
+          "label": "Phi công Mỹ bị bắt sống",
+          "val": "Nhiều phi công sừng sỏ"
+        },
+        {
+          "label": "Quân Mỹ rút về nước",
+          "val": "Toàn bộ quân viễn chinh Mỹ rút sạch sau 29/3/1973"
+        }
+      ],
+      "significance": "Hoàn thành xuất sắc mục tiêu 'Đánh cho Mỹ cút', tạo ra bước ngoặt thay đổi căn bản tương quan so sánh lực lượng trên chiến trường có lợi cho ta, mở đường tiến tới giải phóng hoàn toàn miền Nam."
+    },
+    "imageUrl": "images/b5_dienbienphu_b52.jpg",
+    "imageCaption": "Xác máy bay B-52 tại hồ Hữu Tiệp - Hà Nội trong trận 'Điện Biên Phủ trên không' (12/1972)",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/6/67/B52_WRECKAGE_B52_VICTORY_CENTRE_HUU_TIEP_LAKE_BA_DINH_DISTRICT_HANOI_FEB_2012_%286817999066%29.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b5_nixon",
+    "branchId": "b5",
+    "parentId": "branch_5",
+    "title": "Học thuyết Nixon & Đông Dương hóa",
+    "subtitle": "'Dùng người Việt đánh người Việt' & Mở rộng chiến tranh",
+    "year": "1969 - 1971",
+    "category": "Âm mưu địch",
+    "x": 3250,
+    "y": 1000,
+    "width": 290,
+    "height": 130,
+    "color": "charcoal",
+    "icon": "globe",
+    "filterYear": "1973",
+    "detail": {
+      "title": "Chiến lược 'Việt Nam hóa chiến tranh' và 'Đông Dương hóa chiến tranh'",
+      "period": "1969 – 1971",
+      "tag": "Chiến lược thâm độc của tập đoàn Nixon - Kissinger",
+      "bookRef": "Trang 220 – 223, Giáo trình Lịch sử Đảng",
+      "quote": "Mỹ rút quân nhưng cuộc chiến tranh không hề giảm bớt tính chất tàn khốc mà còn nguy hiểm hơn về thủ đoạn chính trị và ngoại giao.",
+      "authorQuote": "Văn kiện Đảng",
+      "context": "Chính quyền Mỹ đối mặt với phong trào phản chiến dâng cao trong nước và khủng hoảng kinh tế do chi phí chiến tranh khổng lồ.",
+      "decisions": "Mỹ hiện đại hóa quân đội ngụy Sài Gòn (lên hơn 1 triệu quân), đẩy mạnh bình định nông thôn, dùng không quân phong tỏa cảng Hải Phòng và ném bom dữ dội.",
+      "developments": "Tháng 3/1970, Mỹ giật dây đảo chính ở Campuchia; tháng 2/1971 mở cuộc hành quân Lam Sơn 719 hòng cắt đứt đường Trường Sơn.",
+      "dataStats": [
+        {
+          "label": "Quân đội Sài Gòn",
+          "val": "Tăng lên hơn 1 triệu quân trang bị hiện đại"
+        },
+        {
+          "label": "Vũ khí Mỹ viện trợ",
+          "val": "Máy bay, xe tăng, pháo binh tăng vọt"
+        },
+        {
+          "label": "Mở rộng chiến trường",
+          "val": "Trực tiếp lôi kéo Lào và Campuchia vào chiến tranh"
+        }
+      ],
+      "significance": "Âm mưu biến bán đảo Đông Dương thành một chiến trường duy nhất đã vấp phải khối liên minh chiến đấu bền vững của nhân dân ba nước Việt - Miên - Lào."
+    },
+    "imageUrl": "images/b5_paris_signing.jpg",
+    "imageCaption": "Đánh bại học thuyết Nixon 'Dùng người Việt đánh người Việt' và âm mưu mở rộng chiến tranh sang Đông Dương",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Vietnam_peace_agreement_signing.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b5_namlao",
+    "branchId": "b5",
+    "parentId": "branch_5",
+    "title": "Đường 9 Nam Lào & Tiến công 1972",
+    "subtitle": "Liên minh 3 nước Đông Dương & Chọc thủng phòng tuyến địch",
+    "year": "1971 - 1972",
+    "category": "Chiến dịch",
+    "x": 3250,
+    "y": 1250,
+    "width": 290,
+    "height": 130,
+    "color": "blue",
+    "icon": "shield-check",
+    "filterYear": "1973",
+    "detail": {
+      "title": "Thắng lợi Đường 9 - Nam Lào (1971) và Cuộc tiến công chiến lược năm 1972",
+      "period": "1971 – 1972",
+      "tag": "Đập tan xương sống quân đội ngụy",
+      "bookRef": "Trang 223 – 226, Giáo trình Lịch sử Đảng",
+      "quote": "Cuộc tiến công năm 1972 đã làm thay đổi hẳn cục diện chiến tranh, đẩy quân đội Sài Gòn vào thế suy sụp nghiêm trọng.",
+      "authorQuote": "Nhận định của Bộ Tổng tư lệnh",
+      "context": "Mỹ dùng toàn bộ lực lượng tinh nhuệ nhất của quân ngụy (dù, thủy quân lục chiến) có không quân Mỹ yểm trợ tối đa để thử nghiệm khả năng tự đứng vững.",
+      "decisions": "Bộ Chính trị quyết định phối hợp với Quân Giải phóng Lào mở chiến dịch phản công tiêu diệt quân địch tại Đường 9 - Nam Lào.",
+      "developments": "Đập tan hoàn toàn cuộc hành quân Lam Sơn 719 (3/1971); năm 1972 mở cuộc tiến công chiến lược đồng loạt giải phóng Quảng Trị, chọc thủng phòng tuyến Tây Nguyên và Đông Nam Bộ.",
+      "dataStats": [
+        {
+          "label": "Đường 9 - Nam Lào",
+          "val": "Tiêu diệt hơn 20.000 tên địch, bắn rơi 500 máy bay"
+        },
+        {
+          "label": "Chiến dịch Quảng Trị 1972",
+          "val": "81 ngày đêm bảo vệ Thành cổ lịch sử"
+        },
+        {
+          "label": "Vùng giải phóng",
+          "val": "Mở rộng thêm hàng triệu dân"
+        }
+      ],
+      "significance": "Đánh sập chiếc 'xương sống' quân sự của chiến lược 'Việt Nam hóa chiến tranh', đẩy Mỹ vào thế bế tắc không lối thoát trên chiến trường."
+    },
+    "imageUrl": "images/b6_taynguyen.jpg",
+    "imageCaption": "Chiến thắng Đường 9 - Nam Lào (1971) và Cuộc tiến công chiến lược năm 1972",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/9/9e/BanMeThuot.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b5_dienbienphu",
+    "branchId": "b5",
+    "parentId": "branch_5",
+    "title": "12 Ngày đêm 'Điện Biên Phủ trên không'",
+    "subtitle": "Vùi dập B-52 trên bầu trời Hà Nội (12/1972)",
+    "year": "18 - 30/12/1972",
+    "category": "Chiến dịch",
+    "x": 3250,
+    "y": 1500,
+    "width": 300,
+    "height": 190,
+    "color": "blue",
+    "icon": "crosshair",
+    "filterYear": "1973",
+    "detail": {
+      "title": "Trận quyết chiến 12 ngày đêm 'Điện Biên Phủ trên không' trên bầu trời Hà Nội",
+      "period": "Từ đêm 18 đến rạng sáng 30/12/1972",
+      "tag": "Chiến thắng huyền thoại của bản lĩnh và trí tuệ Việt Nam",
+      "bookRef": "Trang 226 – 227, Giáo trình Lịch sử Đảng",
+      "quote": "Bác Hồ đã từng tiên lượng từ năm 1962: 'Ở Việt Nam, Mỹ nhất định thua, nhưng nó chỉ chịu thua sau khi thua trên bầu trời Hà Nội'.",
+      "authorQuote": "Lời dạy tiên tri của Chủ tịch Hồ Chí Minh",
+      "context": "Nhằm ép ta chấp nhận các điều khoản có lợi cho Mỹ tại Hội nghị Paris, Nixon liều lĩnh mở chiến dịch Linebacker II, dùng hàng trăm 'pháo đài bay' B-52 rải thảm bom tàn bạo xuống Hà Nội, Hải Phòng.",
+      "decisions": "Trung ương Đảng và Bộ Quốc phòng đã chuẩn bị chu đáo phương án tác chiến đánh B-52 từ trước; phát huy tối đa sức mạnh của lực lượng phòng không - không quân và tên lửa SAM-2.",
+      "developments": "Trong 12 ngày đêm kiên cường, quân dân ta đã bắn rơi 81 máy bay các loại, trong đó có 34 chiếc B-52 được mệnh danh là 'bất khả xâm phạm'.",
+      "dataStats": [
+        {
+          "label": "Máy bay B-52 bị bắn rơi",
+          "val": "34 chiếc (16 chiếc rơi tại chỗ)"
+        },
+        {
+          "label": "Máy bay chiến thuật bị hạ",
+          "val": "47 chiếc (trong đó có 5 chiếc F-111)"
+        },
+        {
+          "label": "Thời gian chiến dịch",
+          "val": "12 ngày đêm (18/12 - 30/12/1972)"
+        }
+      ],
+      "significance": "Đập tan canh bạc quân sự cuối cùng của Mỹ; làm sụp đổ hoàn toàn uy danh của không lực Hoa Kỳ; buộc Tổng thống Nixon phải ra lệnh ngừng ném bom vô điều kiện và ký kết Hiệp định Paris."
+    },
+    "imageUrl": "images/b5_dienbienphu_b52.jpg",
+    "imageCaption": "12 ngày đêm Hà Nội - Điện Biên Phủ trên không (12/1972) đập tan dã tâm ném bom B-52 của Nixon",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/6/67/B52_WRECKAGE_B52_VICTORY_CENTRE_HUU_TIEP_LAKE_BA_DINH_DISTRICT_HANOI_FEB_2012_%286817999066%29.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b5_paris",
+    "branchId": "b5",
+    "parentId": "b5_dienbienphu",
+    "title": "Hiệp định Paris (27/1/1973)",
+    "subtitle": "Mỹ rút sạch quân • Hoàn thành 'Đánh cho Mỹ cút'",
+    "year": "27/1/1973",
+    "category": "Hiệp định",
+    "x": 3810,
+    "y": 1500,
+    "width": 300,
+    "height": 190,
+    "color": "blue",
+    "icon": "book-open",
+    "filterYear": "1973",
+    "detail": {
+      "title": "Ký kết Hiệp định Paris về chấm dứt chiến tranh, lập lại hòa bình ở Việt Nam",
+      "period": "Ký chính thức ngày 27 tháng 1 năm 1973 tại Paris (Pháp)",
+      "tag": "Thắng lợi ngoại giao lẫy lừng",
+      "bookRef": "Trang 227 – 228, Giáo trình Lịch sử Đảng",
+      "quote": "Hoa Kỳ và các nước cam kết tôn trọng độc lập, chủ quyền, thống nhất và toàn vẹn lãnh thổ của nước Việt Nam.",
+      "authorQuote": "Điều 1, Hiệp định Paris 1973",
+      "context": "Sau thất bại thảm hại trong trận 'Điện Biên Phủ trên không', Mỹ không còn cách nào khác ngoài việc ký kết bản dự thảo Hiệp định mà trước đó họ đã từ chối.",
+      "decisions": "Đảng chỉ đạo kết hợp nhuần nhuyễn giữa 'đánh' và 'đàm'; kiên quyết giữ vững nguyên tắc buộc Mỹ phải rút hết quân, tôn trọng quyền tự quyết của nhân dân miền Nam.",
+      "developments": "Bộ trưởng Ngoại giao 4 bên ký kết; ngày 29/3/1973, những binh lính Mỹ cuối cùng rút khỏi Việt Nam dưới sự giám sát của ta.",
+      "dataStats": [
+        {
+          "label": "Thời gian đàm phán",
+          "val": "4 năm 8 tháng 16 ngày (201 phiên công khai)"
+        },
+        {
+          "label": "Quân viễn chinh rút",
+          "val": "Toàn bộ quân Mỹ và chư hầu rút về nước"
+        },
+        {
+          "label": "Lực lượng ta ở miền Nam",
+          "val": "Được giữ nguyên nguyên trạng tại chỗ"
+        }
+      ],
+      "significance": "Thắng lợi ngoại giao vĩ đại nhất lịch sử cách mạng Việt Nam; hoàn thành xuất sắc lời Bác Hồ căn dặn 'Đánh cho Mỹ cút', tạo thời cơ chiến lược mở toang cánh cửa dẫn tới Đại thắng mùa Xuân 1975."
+    },
+    "imageUrl": "images/b5_paris_signing.jpg",
+    "imageCaption": "Ký kết Hiệp định Paris (27/1/1973) - Buộc quân đội Mỹ và chư hầu rút sạch về nước ('Đánh cho Mỹ cút')",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/2/2e/Vietnam_peace_agreement_signing.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "branch_6",
+    "branchId": "b6",
+    "parentId": "center",
+    "title": "ĐẠI THẮNG MÙA XUÂN 1975",
+    "subtitle": "55 ngày đêm thần tốc • Giải phóng hoàn toàn miền Nam",
+    "year": "1973 - 1975",
+    "category": "Toàn thắng non sông",
+    "x": 2660,
+    "y": 2050,
+    "width": 320,
+    "height": 210,
+    "color": "gold",
+    "icon": "trophy",
+    "filterYear": "1975",
+    "detail": {
+      "title": "Cuộc Tổng tiến công và nổi dậy mùa Xuân 1975 giải phóng trọn vẹn non sông",
+      "period": "Đầu năm 1975 (Cao điểm từ 4/3 đến 2/5/1975)",
+      "tag": "Chiến công hiển hách nhất thế kỷ XX",
+      "bookRef": "Trang 228 – 233, Giáo trình Lịch sử Đảng",
+      "quote": "Thần tốc, thần tốc hơn nữa; táo bạo, táo bạo hơn nữa; tranh thủ từng giờ, từng phút, xốc tới mặt trận, giải phóng miền Nam! Quyết chiến và toàn thắng!",
+      "authorQuote": "Bức điện mật lịch sử của Đại tướng Võ Nguyên Giáp (7/4/1975)",
+      "context": "Sau Hiệp định Paris, quân Mỹ đã rút, so sánh lực lượng thay đổi căn bản có lợi cho ta; ngụy quyền Nguyễn Văn Thiệu liên tục vi phạm hiệp định, ra sức 'tràn ngập lãnh thổ'.",
+      "decisions": "Nghị quyết 21 (7/1973) kiên quyết giữ vững bạo lực cách mạng. Hội nghị Bộ Chính trị (cuối 1974 - đầu 1975) đề ra kế hoạch 2 năm 1975-1976, nhưng nhấn mạnh: 'Nếu thời cơ đến vào đầu hoặc cuối năm 1975 thì lập tức giải phóng miền Nam ngay trong năm 1975'.",
+      "developments": "Trải qua 3 chiến dịch chiến lược mang tính quyết định: Chiến dịch Tây Nguyên (4/3 - 24/3), Chiến dịch Huế - Đà Nẵng (21/3 - 29/3), và Chiến dịch Hồ Chí Minh lịch sử (26/4 - 30/4/1975).",
+      "dataStats": [
+        {
+          "label": "Thời gian chiến dịch",
+          "val": "55 ngày đêm tổng tiến công"
+        },
+        {
+          "label": "Giờ lịch sử thống nhất",
+          "val": "11 giờ 30 phút ngày 30/4/1975"
+        },
+        {
+          "label": "Lực lượng địch bị tiêu diệt",
+          "val": "Toàn bộ hơn 1 triệu quân đội ngụy Sài Gòn"
+        },
+        {
+          "label": "Tổng thống ngụy đầu hàng",
+          "val": "Dương Văn Minh tuyên bố đầu hàng không điều kiện"
+        }
+      ],
+      "significance": "Kết thúc oanh liệt 21 năm kháng chiến chống Mỹ và 30 năm chiến tranh cách mạng giải phóng dân tộc, bảo vệ vẹn toàn lãnh thổ từ địa đầu Móng Cái đến mũi Cà Mau, mở ra kỷ nguyên mới của dân tộc."
+    },
+    "imageUrl": "images/b6_tank390_saigon.jpg",
+    "imageCaption": "Xe tăng 390 húc tung cổng Dinh Độc Lập trưa ngày 30/4/1975 - Chiến dịch Hồ Chí Minh toàn thắng",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/2/23/30thang4.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b6_decision",
+    "branchId": "b6",
+    "parentId": "branch_6",
+    "title": "Nghị quyết 21 & Kế hoạch giải phóng 2 năm",
+    "subtitle": "Trận trinh sát Phước Long & Quyết tâm của Bộ Chính trị",
+    "year": "7/1973 - 1/1975",
+    "category": "Quyết sách",
+    "x": 3250,
+    "y": 1850,
+    "width": 290,
+    "height": 130,
+    "color": "gold",
+    "icon": "check-circle",
+    "filterYear": "1975",
+    "detail": {
+      "title": "Chủ trương chiến lược của Đảng giải phóng hoàn toàn miền Nam",
+      "period": "Từ Hội nghị TW 21 (7/1973) đến Hội nghị Bộ Chính trị (1/1975)",
+      "tag": "Nghệ thuật nắm bắt và chớp thời cơ chiến lược",
+      "bookRef": "Trang 229 – 231, Giáo trình Lịch sử Đảng",
+      "quote": "Chúng ta phải nắm vững thời cơ chiến lược, quyết tâm thực hiện tổng tiến công và nổi dậy kết thúc thắng lợi cuộc kháng chiến chống Mỹ, cứu nước.",
+      "authorQuote": "Kết luận của Hội nghị Bộ Chính trị (1/1975)",
+      "context": "Chính quyền Thiệu ngoan cố thực hiện chiến dịch 'tràn ngập lãnh thổ', xua quân lấn chiếm vùng giải phóng, bắt bính, đôn quân.",
+      "decisions": "Hội nghị TW 21 khẳng định con đường bạo lực cách mạng, kiên quyết phản công. Chiến thắng giải phóng thị xã Phước Long (6/1/1975) là đòn trinh sát chiến lược chứng minh ngụy quân bất lực và Mỹ không thể can thiệp trở lại.",
+      "developments": "Bộ Chính trị họp mở rộng hạ quyết tâm giải phóng miền Nam trong hai năm 1975 - 1976; nếu thời cơ đến thì giải phóng ngay trong năm 1975.",
+      "dataStats": [
+        {
+          "label": "Chiến thắng Phước Long",
+          "val": "Thị xã đầu tiên ở miền Nam được giải phóng"
+        },
+        {
+          "label": "Thời cơ xác định",
+          "val": "Ngay trong năm 1975 trước mùa mưa"
+        },
+        {
+          "label": "Khả năng Mỹ can thiệp",
+          "val": "Được khẳng định là không thể đảo ngược"
+        }
+      ],
+      "significance": "Quyết sách lịch sử thể hiện tư duy quân sự sắc sảo, tài thao lược kiệt xuất của Trung ương Đảng và Quân ủy Trung ương."
+    },
+    "imageUrl": "images/b6_taynguyen.jpg",
+    "imageCaption": "Hội nghị Bộ Chính trị (cuối 1974 - đầu 1975) đề ra kế hoạch giải phóng miền Nam trong 2 năm",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/9/9e/BanMeThuot.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b6_taynguyen",
+    "branchId": "b6",
+    "parentId": "branch_6",
+    "title": "Chiến dịch Tây Nguyên (4/3 - 24/3/1975)",
+    "subtitle": "Đột phá điểm huyệt Buôn Ma Thuột (10/3)",
+    "year": "4/3 - 24/3/1975",
+    "category": "Chiến dịch",
+    "x": 3250,
+    "y": 2050,
+    "width": 300,
+    "height": 190,
+    "color": "gold",
+    "icon": "compass",
+    "filterYear": "1975",
+    "detail": {
+      "title": "Chiến dịch Tây Nguyên - Đòn điểm huyệt mở màn Đại thắng",
+      "period": "Từ ngày 4 tháng 3 đến ngày 24 tháng 3 năm 1975",
+      "tag": "Trận nghi binh vĩ đại và đòn sấm sét bất ngờ",
+      "bookRef": "Trang 231 – 232, Giáo trình Lịch sử Đảng",
+      "quote": "Đánh trúng Buôn Ma Thuột là đánh trúng điểm hiểm yếu nhất, chia cắt toàn bộ chiến trường miền Nam của địch.",
+      "authorQuote": "Đại tướng Văn Tiến Dũng",
+      "context": "Địch phán đoán sai lầm rằng ta sẽ đánh Kon Tum hoặc Pleiku nên tập trung phòng ngự ở phía Bắc Tây Nguyên, để hở sườn phía Nam tại thị xã Buôn Ma Thuột.",
+      "decisions": "Ta thực hiện kế hoạch nghi binh tài tình thu hút địch lên hướng Bắc, bí mật luồn các sư đoàn chủ lực áp sát Buôn Ma Thuột.",
+      "developments": "Rạng sáng 10/3/1975, quân ta nổ súng đánh Buôn Ma Thuột, giải phóng hoàn toàn thị xã sau hơn 30 giờ chiến đấu. Địch hoảng loạn mở cuộc tháo chạy chiến lược trên đường số 7 nhưng bị quân ta truy kích tiêu diệt hoàn toàn.",
+      "dataStats": [
+        {
+          "label": "Thời gian giải phóng BMT",
+          "val": "Hơn 30 giờ (10 - 11/3/1975)"
+        },
+        {
+          "label": "Quân khu II ngụy",
+          "val": "Bị xóa sổ hoàn toàn"
+        },
+        {
+          "label": "Địa bàn giải phóng",
+          "val": "Toàn bộ dải cao nguyên chiến lược Tây Nguyên"
+        }
+      ],
+      "significance": "Tạo ra bước ngoặt quyết định của cuộc chiến: Chuyển cuộc tiến công chiến lược thông thường thành cuộc TỔNG TIẾN CÔNG CHIẾN LƯỢC trên toàn miền Nam."
+    },
+    "imageUrl": "images/b6_taynguyen.jpg",
+    "imageCaption": "Chiến dịch Tây Nguyên (4/3 - 24/3/1975) - Đột phá then chốt Buôn Ma Thuột phá vỡ thế phòng thủ địch",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/9/9e/BanMeThuot.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b6_huedanang",
+    "branchId": "b6",
+    "parentId": "branch_6",
+    "title": "Chiến dịch Huế - Đà Nẵng (21/3 - 29/3)",
+    "subtitle": "Quét sạch căn cứ liên hợp quân sự miền Trung",
+    "year": "21/3 - 29/3/1975",
+    "category": "Chiến dịch",
+    "x": 3250,
+    "y": 2300,
+    "width": 290,
+    "height": 130,
+    "color": "gold",
+    "icon": "map-pin",
+    "filterYear": "1975",
+    "detail": {
+      "title": "Chiến dịch giải phóng Huế - Đà Nẵng",
+      "period": "Từ ngày 21 tháng 3 đến ngày 29 tháng 3 năm 1975",
+      "tag": "Tiến công thần tốc chẻ tre",
+      "bookRef": "Trang 232, Giáo trình Lịch sử Đảng",
+      "quote": "Đà Nẵng là căn cứ liên hợp quân sự khổng lồ của địch, dự kiến đánh trong 1 tháng nhưng ta đã giải phóng chỉ trong 32 giờ!",
+      "authorQuote": "Báo cáo Bộ Tổng tham mưu",
+      "context": "Sau thất bại Tây Nguyên, địch co cụm về giữ dải đồng bằng ven biển miền Trung, xây dựng Đà Nẵng thành 'pháo đài bất khả xâm phạm'.",
+      "decisions": "Bộ Chính trị quyết định không cho địch kịp thở, hạ lệnh tiêu diệt tập đoàn quân địch ở Quân khu I.",
+      "developments": "Ngày 26/3, giải phóng cố đô Huế. Ngày 29/3, quân ta từ nhiều hướng đồng loạt tiến công căn cứ liên hợp Đà Nẵng, đập tan hơn 10 vạn quân địch chỉ trong hơn một ngày.",
+      "dataStats": [
+        {
+          "label": "Ngày giải phóng Huế",
+          "val": "26/3/1975"
+        },
+        {
+          "label": "Ngày giải phóng Đà Nẵng",
+          "val": "29/3/1975"
+        },
+        {
+          "label": "Quân đoàn I ngụy",
+          "val": "Hơn 10 vạn tên bị bắt và tan rã tại chỗ"
+        }
+      ],
+      "significance": "Đập tan hoàn toàn ý đồ co cụm chiến lược của địch, giải phóng dải đất miền Trung rộng lớn, dồn toàn bộ tàn quân địch về co cụm trong tuyệt vọng tại Sài Gòn."
+    },
+    "imageUrl": "images/b6_tank390_saigon.jpg",
+    "imageCaption": "Chiến dịch Huế - Đà Nẵng (21/3 - 29/3/1975) - Đập tan căn cứ quân sự liên hợp lớn thứ hai của địch",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/2/23/30thang4.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b6_hochiminh",
+    "branchId": "b6",
+    "parentId": "b6_huedanang",
+    "title": "Chiến dịch Hồ Chí Minh: ĐÁNH CHO NGỤY NHÀO",
+    "subtitle": "11h30 ngày 30/4/1975 • Toàn thắng rực rỡ non sông",
+    "year": "26/4 - 30/4/1975",
+    "category": "Đại thắng",
+    "x": 3810,
+    "y": 2300,
+    "width": 300,
+    "height": 190,
+    "color": "gold",
+    "icon": "flag",
+    "filterYear": "1975",
+    "detail": {
+      "title": "Chiến dịch Hồ Chí Minh lịch sử - Ngày thống nhất non sông",
+      "period": "Từ 17 giờ ngày 26/4 đến ngày 30/4/1975",
+      "tag": "Bản anh hùng ca bất diệt của dân tộc Việt Nam",
+      "bookRef": "Trang 232 – 233, Giáo trình Lịch sử Đảng",
+      "quote": "Chiến dịch giải phóng Sài Gòn - Gia Định được vinh dự mang tên Chiến dịch Hồ Chí Minh lịch sử.",
+      "authorQuote": "Nghị quyết của Bộ Chính trị (14/4/1975)",
+      "context": "Toàn bộ sào huyệt cuối cùng của chính quyền và quân đội Sài Gòn bị bao vây chặt chẽ bởi 5 cánh quân hùng hậu của Quân Giải phóng.",
+      "decisions": "Tập trung lực lượng áp đảo, thần tốc đánh chiếm 5 mục tiêu đầu não: Dinh Độc Lập, Bộ Tổng tham mưu ngụy, Biệt khu Thủ đô, Tổng nha Cảnh sát, Sân bay Tân Sơn Nhất.",
+      "developments": "Đúng 10 giờ 45 phút ngày 30/4, xe tăng số hiệu 390 húc đổ cổng chính Dinh Độc Lập. 11 giờ 30 phút, đồng chí Bùi Quang Thận cắm cờ giải phóng trên nóc Dinh Độc Lập. Tổng thống ngụy Dương Văn Minh tuyên bố đầu hàng không điều kiện.",
+      "dataStats": [
+        {
+          "label": "5 cánh quân hội tụ",
+          "val": "Bắc, Tây Bắc, Đông, Đông Nam, Tây Nam"
+        },
+        {
+          "label": "Thời khắc lịch sử",
+          "val": "11:30 ngày 30/4/1975"
+        },
+        {
+          "label": "Chiến dịch kết thúc",
+          "val": "2/5/1975 (hoàn tất giải phóng ĐBSCL & hải đảo)"
+        }
+      ],
+      "significance": "Hoàn thành trọn vẹn Di chúc thiêng liêng của Chủ tịch Hồ Chí Minh: Đánh cho Mỹ cút, Đánh cho ngụy nhào; giang sơn thu về một mối, đất nước sạch bóng thù xâm lược."
+    },
+    "imageUrl": "images/b6_tank390_saigon.jpg",
+    "imageCaption": "Đại thắng mùa Xuân 1975: Cờ Mặt trận Giải phóng tung bay trên nóc Dinh Độc Lập trưa 30/4/1975",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/vi/2/23/30thang4.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "branch_7",
+    "branchId": "b7",
+    "parentId": "center",
+    "title": "Ý NGHĨA LỊCH SỬ & BÀI HỌC KINH NGHIỆM",
+    "subtitle": "5 Bài học lớn & Câu hỏi ôn tập Giáo trình VNR202",
+    "year": "Tổng kết",
+    "category": "Đúc kết thời đại",
+    "x": 2000,
+    "y": 1900,
+    "width": 340,
+    "height": 210,
+    "color": "gold",
+    "icon": "book-marked",
+    "filterYear": "Tổng kết",
+    "detail": {
+      "title": "Ý nghĩa lịch sử và Bài học kinh nghiệm của Đảng (1954 - 1975)",
+      "period": "Giai đoạn 1954 – 1975",
+      "tag": "Tổng kết lý luận và thực tiễn cách mạng",
+      "bookRef": "Trang 233 – 236, Giáo trình Lịch sử Đảng",
+      "quote": "Năm tháng sẽ trôi qua, nhưng thắng lợi của nhân dân ta trong sự nghiệp kháng chiến chống Mỹ, cứu nước mãi mãi được ghi vào lịch sử dân tộc ta như một trong những trang chói lọi nhất, một biểu tượng sáng ngời về sự toàn thắng của chủ nghĩa anh hùng cách mạng và trí tuệ con người.",
+      "authorQuote": "Báo cáo Chính trị tại Đại hội đại biểu toàn quốc lần thứ IV của Đảng (12/1976)",
+      "context": "Cuộc kháng chiến chống Mỹ cứu nước là cuộc chiến tranh ác liệt nhất, kéo dài nhất và vĩ đại nhất trong lịch sử chống ngoại xâm của dân tộc ta.",
+      "decisions": "Đảng đã đúc kết 5 bài học kinh nghiệm sâu sắc để vận dụng vào công cuộc xây dựng CNXH và bảo vệ Tổ quốc trong thời kỳ mới; đồng thời thẳng thắn chỉ rõ những hạn chế trong chỉ đạo thực tiễn.",
+      "developments": "Tổng kết toàn diện về đường lối độc lập tự chủ, phương pháp bạo lực cách mạng tổng hợp, nghệ thuật chiến tranh nhân dân, xây dựng hậu phương và đoàn kết quốc tế.",
+      "dataStats": [
+        {
+          "label": "Ý nghĩa dân tộc",
+          "val": "Chấm dứt 21 năm chống Mỹ, 30 năm chiến tranh"
+        },
+        {
+          "label": "Ý nghĩa thời đại",
+          "val": "Đánh sụp chủ nghĩa thực dân mới của đế quốc Mỹ"
+        },
+        {
+          "label": "Bài học kinh nghiệm",
+          "val": "4 bài học cốt lõi ghi nhận trong giáo trình"
+        },
+        {
+          "label": "Câu hỏi ôn tập",
+          "val": "5 câu hỏi trọng tâm thi cử trang 235-236"
+        }
+      ],
+      "significance": "Để lại kho tàng di sản vô giá về khoa học lãnh đạo cách mạng, nghệ thuật quân sự và bản lĩnh chính trị của Đảng Cộng sản Việt Nam."
+    },
+    "imageUrl": "images/b7_saigon_victory.jpg",
+    "imageCaption": "Non sông liền một dải: Ngày hội non sông thống nhất sau 21 năm kháng chiến chống Mỹ gian khổ",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/2/2b/037300036-001_Saigon.jpg",
+    "hasCardImage": true
+  },
+  {
+    "id": "b7_meaning",
+    "branchId": "b7",
+    "parentId": "branch_7",
+    "title": "Ý nghĩa lịch sử dân tộc & quốc tế",
+    "subtitle": "Kỷ nguyên Độc lập, Thống nhất & Đi lên CNXH",
+    "year": "Trang 233 - 234",
+    "category": "Ý nghĩa",
+    "x": 1500,
+    "y": 2300,
+    "width": 300,
+    "height": 190,
+    "color": "gold",
+    "icon": "globe",
+    "filterYear": "Tổng kết",
+    "detail": {
+      "title": "Ý nghĩa lịch sử đối với Dân tộc và Thời đại",
+      "period": "Đúc kết từ Đại thắng 1975",
+      "tag": "Tầm vóc vĩ đại của chiến công",
+      "bookRef": "Trang 233 – 234, Giáo trình Lịch sử Đảng",
+      "quote": "Đối với thế giới, thắng lợi của nhân dân ta đã đi vào lịch sử thế giới như một chiến công vĩ đại của thế kỷ XX, một sự kiện có ý nghĩa quốc tế to lớn và có tính thời đại sâu sắc.",
+      "authorQuote": "Văn kiện Đảng toàn tập (t.37, tr.471)",
+      "context": "Chiến thắng đập tan hoàn toàn huyền thoại về 'sức mạnh vô song' của đế quốc Mỹ hùng mạnh nhất thế giới phương Tây.",
+      "decisions": "Khẳng định con đường độc lập dân tộc gắn liền với chủ nghĩa xã hội mà Đảng và Bác Hồ đã chọn là hoàn toàn đúng đắn.",
+      "developments": "- Đối với dân tộc: Chấm dứt vĩnh viễn hơn 1 thế kỷ ách đô hộ của chủ nghĩa thực dân; hoàn thành cuộc CM dân tộc dân chủ nhân dân trên cả nước; non sông liền một dải; đưa cả nước bước vào kỷ nguyên độc lập, thống nhất và đi lên CNXH.\n- Đối với quốc tế: Đập tan cuộc phản công lớn nhất của chủ nghĩa đế quốc sau Thế chiến II; làm suy yếu trận địa của chủ nghĩa đế quốc; cổ vũ mạnh mẽ phong trào giải phóng dân tộc trên toàn cầu.",
+      "dataStats": [
+        {
+          "label": "Chấm dứt ách đô hộ",
+          "val": "Hơn 117 năm kể từ khi Pháp nổ súng (1858)"
+        },
+        {
+          "label": "Thời đại mới",
+          "val": "Cả nước độc lập, thống nhất, tiến lên CNXH"
+        },
+        {
+          "label": "Ảnh hưởng quốc tế",
+          "val": "Cổ vũ hàng trăm triệu người thuộc địa vùng lên"
+        }
+      ],
+      "significance": "Nâng cao vị thế và uy tín quốc tế của nước Việt Nam Dân chủ Cộng hòa và Đảng Cộng sản Việt Nam lên một tầm cao mới."
+    },
+    "imageUrl": "images/b7_surrender_letter.jpg",
+    "imageCaption": "Văn bản đầu hàng của Tổng thống Dương Văn Minh - Kết thúc 30 năm chiến tranh giải phóng dân tộc",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/e/e3/Surrender_letter_of_Duong_Van_Minh.JPG",
+    "hasCardImage": true
+  },
+  {
+    "id": "b7_lessons",
+    "branchId": "b7",
+    "parentId": "branch_7",
+    "title": "4 Bài học kinh nghiệm của Đảng",
+    "subtitle": "Ngọn cờ ĐLDT & CNXH • Phương pháp cách mạng tổng hợp",
+    "year": "Trang 235",
+    "category": "Kinh nghiệm",
+    "x": 2000,
+    "y": 2300,
+    "width": 300,
+    "height": 140,
+    "color": "gold",
+    "icon": "award",
+    "filterYear": "Tổng kết",
+    "detail": {
+      "title": "Bốn bài học kinh nghiệm lãnh đạo của Đảng (Trang 235 Giáo trình)",
+      "period": "Đúc kết thực tiễn 1954 - 1975",
+      "tag": "Bài học xương máu cho hiện tại và tương lai",
+      "bookRef": "Trang 235, Giáo trình Lịch sử Đảng",
+      "quote": "Bốn bài học lớn là tài sản tinh thần vô giá chỉ đạo công cuộc xây dựng và bảo vệ Tổ quốc hôm nay.",
+      "authorQuote": "Giáo trình Lịch sử Đảng Cộng sản Việt Nam",
+      "context": "Từ sự lãnh đạo đầy sáng tạo và trải qua muôn vàn hy sinh gian khổ, Đảng ta đã đúc rút thành 4 bài học lớn mang tính nguyên tắc.",
+      "decisions": "1. MỘT LÀ: Giương cao ngọn cờ độc lập dân tộc và chủ nghĩa xã hội nhằm huy động sức mạnh toàn dân đánh Mỹ, cả nước đánh Mỹ.\n2. HAI LÀ: Tìm ra phương pháp đấu tranh đúng đắn, sáng tạo, thực hiện khởi nghĩa toàn dân và chiến tranh nhân dân, sử dụng phương pháp cách mạng tổng hợp.\n3. BA LÀ: Phải có công tác tổ chức chiến đấu giỏi của các cấp bộ đảng và các cấp chỉ huy quân đội, thực hiện giành thắng lợi từng bước đến thắng lợi hoàn toàn.\n4. BỐN LÀ: Hết sức coi trọng công tác xây dựng Đảng, xây dựng lực lượng cách mạng ở miền Nam và tổ chức xây dựng lực lượng chiến đấu trong cả nước, tranh thủ tối đa sự đồng tình, ủng hộ của quốc tế.",
+      "developments": "Các bài học này tạo nên hệ thống quan điểm toàn diện, kết hợp chặt chẽ giữa mục tiêu chính trị, phương pháp tác chiến và công tác xây dựng Đảng tự thân.",
+      "dataStats": [
+        {
+          "label": "Bài học 1",
+          "val": "Giương cao ngọn cờ ĐLDT & CNXH"
+        },
+        {
+          "label": "Bài học 2",
+          "val": "Phương pháp cách mạng tổng hợp"
+        },
+        {
+          "label": "Bài học 3",
+          "val": "Nghệ thuật tổ chức chiến đấu giỏi"
+        },
+        {
+          "label": "Bài học 4",
+          "val": "Xây dựng Đảng & Đoàn kết quốc tế"
+        }
+      ],
+      "significance": "Kim chỉ nam định hướng cho sự nghiệp bảo vệ chủ quyền biên giới, biển đảo và phát triển bền vững đất nước trong bối cảnh thế giới nhiều biến động."
+    },
+    "imageUrl": "images/b7_saigon_victory.jpg",
+    "imageCaption": "4 Bài học lớn của Đảng về giương cao ngọn cờ ĐLDT & CNXH, chiến tranh nhân dân toàn diện",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/2/2b/037300036-001_Saigon.jpg",
+    "hasCardImage": false
+  },
+  {
+    "id": "b7_critique",
+    "branchId": "b7",
+    "parentId": "branch_7",
+    "title": "Hạn chế & 5 Câu hỏi ôn tập VNR202",
+    "subtitle": "Kiểm điểm duy ý chí & Trọng tâm thi cử trang 235-236",
+    "year": "Trang 235 - 236",
+    "category": "Ôn tập thi cử",
+    "x": 2500,
+    "y": 2300,
+    "width": 290,
+    "height": 140,
+    "color": "gold",
+    "icon": "help-circle",
+    "filterYear": "Tổng kết",
+    "detail": {
+      "title": "Hạn chế trong chỉ đạo thực tiễn & 5 Câu hỏi ôn tập VNR202",
+      "period": "Trang 235 – 236 Giáo trình",
+      "tag": "Tài liệu chuẩn mực ôn thi trắc nghiệm và tự luận",
+      "bookRef": "Trang 235 – 236, Giáo trình Lịch sử Đảng",
+      "quote": "Có thời điểm đánh giá so sánh lực lượng giữa ta và địch chưa thật đầy đủ và còn có những biểu hiện nóng vội, chủ quan, duy ý chí trong xây dựng chủ nghĩa xã hội ở miền Bắc.",
+      "authorQuote": "Trang 235, Giáo trình Lịch sử Đảng Cộng sản Việt Nam",
+      "context": "Bên cạnh những chiến công hiển hách, Đảng cũng nhìn nhận sòng phẳng, nghiêm khắc những khiếm khuyết trong chỉ đạo thực tiễn.",
+      "decisions": "Thẳng thắn tự phê bình để rút kinh nghiệm cho công cuộc Đổi mới sau này.",
+      "developments": "5 CÂU HỎI ÔN TẬP CUỐI CHƯƠNG (Trang 235-236):\n1. Đường lối và sự chỉ đạo của Đảng trong cuộc kháng chiến chống Pháp và can thiệp Mỹ (1945 - 1954).\n2. Ý nghĩa lịch sử và những kinh nghiệm lãnh đạo của Đảng trong kháng chiến chống Pháp (1945 - 1954).\n3. Sự phát triển đường lối và khái quát quá trình chỉ đạo thực hiện của Đảng trong kháng chiến chống Mỹ, cứu nước (1954 - 1975).\n4. Đặc điểm, ý nghĩa thắng lợi và những kinh nghiệm lãnh đạo của Đảng trong kháng chiến chống Mỹ (1954 - 1975).\n5. Cách mạng xã hội chủ nghĩa và những thành quả xây dựng chủ nghĩa xã hội ở miền Bắc (1954 - 1975).",
+      "dataStats": [
+        {
+          "label": "Hạn chế 1",
+          "val": "Đánh giá tương quan lực lượng có lúc chưa đầy đủ"
+        },
+        {
+          "label": "Hạn chế 2",
+          "val": "Nóng vội, chủ quan duy ý chí trong xây dựng CNXH miền Bắc"
+        },
+        {
+          "label": "Trọng tâm thi VNR202",
+          "val": "Câu 3, 4, 5 dành cho giai đoạn 1954 - 1975"
+        }
+      ],
+      "significance": "Giúp học viên nắm vững bản chất lịch sử một cách biện chứng, khách quan, sâu sắc; chuẩn bị tốt nhất cho các kỳ thi và nghiên cứu chuyên môn."
+    },
+    "imageUrl": "images/b1_daihoi3.jpg",
+    "imageCaption": "Nhìn thẳng sự thật, khắc phục nóng vội duy ý chí và 5 câu hỏi trọng tâm ôn tập thi cử môn VNR202",
+    "cdnFallback": "https://upload.wikimedia.org/wikipedia/commons/0/07/Ho_Chi_Minh_-_1946_Portrait.jpg",
+    "hasCardImage": false
+  }
+];
+
+    const CROSS_LINKS = [{"from": "b1_north", "to": "b4_battles", "label": "Hậu phương lớn (Bắc) chi viện Tiền tuyến lớn (Nam)", "color": "#D97706", "id": "cross_link_1"}];
+
+    let currentScale = 0.85;
+    let currentPan = { x: -1100, y: -700 };
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let activeFilter = 'all';
+
+    // DEEP DETAIL MODE STATE (User requested Expand Mode)
+    let isDeepDetailMode = false;
+    const expandedNodeIds = new Set();
+
+    const canvasEl = document.getElementById('mindmap-canvas');
+    const viewportEl = document.getElementById('viewport');
+    const nodesContainer = document.getElementById('nodes-container');
+    const hierarchySvgGroup = document.getElementById('hierarchy-paths-group');
+    const crossLinksSvgGroup = document.getElementById('cross-links-group');
+
+    // Branch theme colors
+    const BRANCH_COLORS = {
+      center: '#7C3AED',
+      b1: '#2563EB',
+      b2: '#DC2626',
+      b3: '#059669',
+      b4: '#D97706',
+      b5: '#7C3AED',
+      b6: '#E11D48',
+      b7: '#CA8A04'
+    };
+
+    // Pastel Theme Card Palettes
+    const PASTEL_THEMES = {
+      center: {
+        card: 'bg-purple-900 border-2 border-purple-400 shadow-center text-white',
+        title: 'text-white font-bold',
+        desc: 'text-purple-100',
+        badge: 'bg-amber-400 text-purple-950',
+        tag: 'text-amber-300'
+      },
+      b1: {
+        card: 'bg-blue-50/80 border-2 border-blue-200/90 shadow-pastel hover:border-blue-400',
+        title: 'text-blue-950 font-bold',
+        desc: 'text-blue-800/80',
+        badge: 'bg-blue-100 text-blue-900 border border-blue-300',
+        tag: 'text-blue-700'
+      },
+      b2: {
+        card: 'bg-rose-50/80 border-2 border-rose-200/90 shadow-pastel hover:border-rose-400',
+        title: 'text-rose-950 font-bold',
+        desc: 'text-rose-800/80',
+        badge: 'bg-rose-100 text-rose-900 border border-rose-300',
+        tag: 'text-rose-700'
+      },
+      b3: {
+        card: 'bg-emerald-50/80 border-2 border-emerald-200/90 shadow-pastel hover:border-emerald-400',
+        title: 'text-emerald-950 font-bold',
+        desc: 'text-emerald-800/80',
+        badge: 'bg-emerald-100 text-emerald-900 border border-emerald-300',
+        tag: 'text-emerald-700'
+      },
+      b4: {
+        card: 'bg-amber-50/80 border-2 border-amber-200/90 shadow-pastel hover:border-amber-400',
+        title: 'text-amber-950 font-bold',
+        desc: 'text-amber-800/80',
+        badge: 'bg-amber-100 text-amber-900 border border-amber-300',
+        tag: 'text-amber-700'
+      },
+      b5: {
+        card: 'bg-purple-50/80 border-2 border-purple-200/90 shadow-pastel hover:border-purple-400',
+        title: 'text-purple-950 font-bold',
+        desc: 'text-purple-800/80',
+        badge: 'bg-purple-100 text-purple-900 border border-purple-300',
+        tag: 'text-purple-700'
+      },
+      b6: {
+        card: 'bg-red-50/80 border-2 border-red-200/90 shadow-pastel hover:border-red-400',
+        title: 'text-red-950 font-bold',
+        desc: 'text-red-800/80',
+        badge: 'bg-red-100 text-red-900 border border-red-300',
+        tag: 'text-red-700'
+      },
+      b7: {
+        card: 'bg-yellow-50/80 border-2 border-yellow-200/90 shadow-pastel hover:border-yellow-400',
+        title: 'text-yellow-950 font-bold',
+        desc: 'text-yellow-900/80',
+        badge: 'bg-yellow-200 text-yellow-950 border border-yellow-300',
+        tag: 'text-yellow-800'
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderNodes();
+      requestAnimationFrame(() => renderConnections());
+      setupInteractions();
+      setupSearch();
+      setupDrawer();
+      setupTimelineFilter();
+      setupModeSwitcher();
+      setupPdfExport();
+      introAnimation();
+    });
+
+    // Render HTML Nodes (Supporting both Overview & Deep Detail Expanded Mode)
+    function renderNodes() {
+      nodesContainer.innerHTML = '';
+
+      NODES.forEach((node) => {
+        const theme = PASTEL_THEMES[node.branchId] || PASTEL_THEMES.b1;
+        const d = node.detail || {};
+        const isExpanded = isDeepDetailMode || expandedNodeIds.has(node.id);
+
+        const el = document.createElement('div');
+        el.id = `node-${node.id}`;
+        el.dataset.nodeId = node.id;
+        el.dataset.filterYear = node.filterYear || 'all';
+
+        const cardWidth = isExpanded ? Math.max(node.width, 360) : node.width;
+        el.style.left = `${node.x}px`;
+        el.style.top = `${node.y}px`;
+        el.style.width = `${cardWidth}px`;
+
+        if (node.isCenter) {
+          // ================= CENTER NODE =================
+          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden bg-purple-950 border-2 border-purple-400 shadow-center z-30 animate-center-glow`;
+          
+          if (!isExpanded) {
+            el.style.height = `${node.height}px`;
+            el.innerHTML = `
+              <div class="h-28 w-full overflow-hidden relative group">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-purple-950 via-purple-950/40 to-transparent"></div>
+                <div class="absolute top-2 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-purple-950 tracking-wider shadow-sm flex items-center gap-1">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i> ${node.year}
+                </div>
+                <div class="absolute top-2 right-2.5 px-2 py-0.5 rounded-full text-[9px] font-bold bg-white/20 text-white backdrop-blur-xs">
+                  TRỌNG TÂM LỊCH SỬ
+                </div>
+                <div class="absolute bottom-1.5 left-3 right-3 text-[10px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
+                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
+                  <span class="truncate">${node.imageCaption}</span>
+                </div>
+              </div>
+              <div class="p-3.5 flex flex-col justify-between flex-1 bg-pastel-purple text-white">
+                <div>
+                  <h3 class="font-bold text-sm text-white leading-snug tracking-tight">
+                    ${node.title}
+                  </h3>
+                  <p class="text-[11px] text-purple-100 mt-0.5 line-clamp-2 leading-relaxed">
+                    ${node.subtitle}
+                  </p>
+                </div>
+                <div class="flex items-center justify-between pt-2 border-t border-white/20 text-[10px] text-purple-100">
+                  <button class="toggle-card-btn font-bold text-purple-950 bg-amber-300 hover:bg-amber-200 px-2.5 py-0.5 rounded-full shadow-xs flex items-center gap-1">
+                    <i data-lucide="book-open" class="w-3 h-3"></i> Mở rộng 5 mục
+                  </button>
+                  <span class="font-bold text-white flex items-center bg-white/20 px-2 py-0.5 rounded-full">Chi tiết <i data-lucide="arrow-right" class="w-3 h-3 ml-1"></i></span>
+                </div>
+              </div>
+            `;
+          } else {
+            // CENTER NODE EXPANDED WITH 5 FULL SECTIONS
+            el.style.height = 'auto';
+            el.innerHTML = `
+              <div class="h-32 w-full overflow-hidden relative group">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-top" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-purple-950 via-purple-950/40 to-transparent"></div>
+                <div class="absolute top-2 left-2.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-400 text-purple-950 tracking-wider shadow-sm flex items-center gap-1">
+                  <i data-lucide="star" class="w-3 h-3 fill-current"></i> ${node.year}
+                </div>
+                <div class="absolute top-2 right-2.5 flex items-center gap-1">
+                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[10px] font-bold bg-white text-purple-950 hover:bg-amber-300 transition flex items-center gap-1 shadow-sm">
+                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
+                  </button>
+                </div>
+                <div class="absolute bottom-1.5 left-3 right-3 text-[10px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
+                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
+                  <span class="truncate">${node.imageCaption}</span>
+                </div>
+              </div>
+
+              <div class="p-4 bg-purple-900 text-white border-b border-purple-800">
+                <h3 class="font-bold text-sm md:text-base text-white leading-snug tracking-tight">
+                  ${node.title}
+                </h3>
+                <p class="text-[11px] text-purple-200 mt-1 leading-relaxed">
+                  ${node.subtitle}
+                </p>
+              </div>
+
+              <!-- 5 FULL EXPANDED SECTIONS -->
+              <div class="p-3.5 space-y-2.5 bg-slate-900 text-slate-100 text-xs max-h-[500px] overflow-y-auto">
+                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
+                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
+                    <i data-lucide="compass" class="w-3.5 h-3.5"></i> 1. BỐI CẢNH LỊCH SỬ
+                  </div>
+                  <p class="text-[11px] text-purple-100 leading-relaxed">${d.context || ''}</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
+                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
+                    <i data-lucide="flag" class="w-3.5 h-3.5"></i> 2. QUYẾT SÁCH CHIẾN LƯỢC CỦA ĐẢNG
+                  </div>
+                  <p class="text-[11px] text-purple-100 leading-relaxed font-medium">${d.decisions || ''}</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
+                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
+                    <i data-lucide="swords" class="w-3.5 h-3.5"></i> 3. DIỄN BIẾN CHÍNH (4 CHIẾN LƯỢC CỦA MỸ)
+                  </div>
+                  <p class="text-[11px] text-purple-100 leading-relaxed">${d.developments || ''}</p>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
+                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1.5">
+                    <i data-lucide="bar-chart-3" class="w-3.5 h-3.5"></i> 4. SỐ LIỆU & QUY MÔ CUỘC KHÁNG CHIẾN
+                  </div>
+                  <div class="grid grid-cols-2 gap-1.5">
+                    ${(d.dataStats || []).map(s => `
+                      <div class="p-1.5 bg-purple-900/80 rounded-lg border border-purple-700">
+                        <div class="text-[9px] text-purple-300">${s.label}</div>
+                        <div class="text-[11px] font-bold text-amber-200">${s.val}</div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+
+                <div class="p-2.5 rounded-xl bg-purple-950/90 border border-purple-800">
+                  <div class="font-bold text-[11px] text-amber-300 flex items-center gap-1.5 mb-1">
+                    <i data-lucide="award" class="w-3.5 h-3.5"></i> 5. Ý NGHĨA LỊCH SỬ THỜI ĐẠI
+                  </div>
+                  <p class="text-[11px] text-purple-100 leading-relaxed font-medium">${d.significance || ''}</p>
+                </div>
+
+                <div class="p-2 rounded-lg bg-purple-950 border border-purple-800 text-[10px] text-purple-300 flex items-center justify-between">
+                  <span class="flex items-center gap-1 font-semibold text-amber-300"><i data-lucide="book-open" class="w-3 h-3"></i> ${d.bookRef || 'Trang 180 – 236'}</span>
+                  <button class="collapse-card-btn text-[10px] font-bold text-amber-300 hover:text-white flex items-center gap-0.5">
+                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
+                  </button>
+                </div>
+              </div>
+            `;
+          }
+
+        } else if (isExpanded) {
+          // ================= EXPANDED CARD WITH 5 SECTIONS =================
+          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden bg-white border-2 border-slate-300 shadow-xl z-20`;
+          el.style.height = 'auto';
+
+          el.innerHTML = `
+            <!-- CARD HEADER WITH REAL PHOTO BANNER -->
+            ${node.imageUrl ? `
+              <div class="h-28 w-full overflow-hidden border-b border-slate-200 relative group">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent"></div>
+                <div class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider ${theme.badge} shadow-xs">
+                  ${node.year}
+                </div>
+                <div class="absolute top-2 right-2 flex items-center gap-1">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-semibold bg-white/95 text-slate-800 shadow-xs">
+                    ${node.category}
+                  </span>
+                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[9px] font-bold bg-white text-slate-800 hover:bg-slate-200 transition flex items-center gap-0.5 shadow-xs">
+                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
+                  </button>
+                </div>
+                <div class="absolute bottom-1 left-2.5 right-2.5 text-[9px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
+                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
+                  <span class="truncate">${node.imageCaption}</span>
+                </div>
+              </div>
+            ` : `
+              <div class="p-3 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${theme.badge}">${node.year}</span>
+                <div class="flex items-center gap-1">
+                  <span class="text-[9px] text-slate-500 font-semibold">${node.category}</span>
+                  <button class="collapse-card-btn px-2 py-0.5 rounded-full text-[9px] font-bold bg-slate-200 text-slate-800 hover:bg-slate-300 flex items-center gap-0.5">
+                    <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
+                  </button>
+                </div>
+              </div>
+            `}
+
+            <!-- TITLE & SUBTITLE -->
+            <div class="p-3 border-b border-slate-100 bg-white">
+              <h4 class="font-bold text-xs sm:text-sm ${theme.title} leading-snug">
+                ${node.title}
+              </h4>
+              <p class="text-[10px] ${theme.desc} mt-0.5 leading-relaxed">
+                ${node.subtitle}
+              </p>
+            </div>
+
+            <!-- 5 DETAILED SECTIONS (User Requested Complete Expansion) -->
+            <div class="p-3 space-y-2 bg-slate-50/60 text-xs max-h-[460px] overflow-y-auto">
+              <!-- 1. BỐI CẢNH LỊCH SỬ -->
+              <div class="p-2.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
+                <div class="font-bold text-[10px] text-indigo-700 flex items-center gap-1.5 mb-1 tracking-tight">
+                  <i data-lucide="compass" class="w-3.5 h-3.5 text-indigo-600 shrink-0"></i> 1. BỐI CẢNH LỊCH SỬ
+                </div>
+                <p class="text-[11px] text-slate-600 leading-relaxed">${d.context || 'Đang cập nhật bối cảnh...'}</p>
+              </div>
+
+              <!-- 2. QUYẾT SÁCH CỦA ĐẢNG -->
+              <div class="p-2.5 rounded-xl bg-amber-50/80 border border-amber-200/90 shadow-2xs">
+                <div class="font-bold text-[10px] text-amber-900 flex items-center gap-1.5 mb-1 tracking-tight">
+                  <i data-lucide="flag" class="w-3.5 h-3.5 text-amber-600 shrink-0"></i> 2. QUYẾT SÁCH CỦA ĐẢNG
+                </div>
+                <p class="text-[11px] text-slate-800 leading-relaxed font-medium">${d.decisions || 'Đang cập nhật quyết sách...'}</p>
+              </div>
+
+              <!-- 3. DIỄN BIẾN CHÍNH & CÁC MỐC QUAN TRỌNG -->
+              <div class="p-2.5 rounded-xl bg-emerald-50/80 border border-emerald-200/90 shadow-2xs">
+                <div class="font-bold text-[10px] text-emerald-900 flex items-center gap-1.5 mb-1 tracking-tight">
+                  <i data-lucide="swords" class="w-3.5 h-3.5 text-emerald-600 shrink-0"></i> 3. DIỄN BIẾN CHÍNH & MỐC QUAN TRỌNG
+                </div>
+                <p class="text-[11px] text-slate-700 leading-relaxed">${d.developments || 'Đang cập nhật diễn biến...'}</p>
+              </div>
+
+              <!-- 4. SỐ LIỆU & CHIẾN CÔNG CHIẾN TRƯỜNG -->
+              <div class="p-2.5 rounded-xl bg-sky-50/80 border border-sky-200/90 shadow-2xs">
+                <div class="font-bold text-[10px] text-sky-900 flex items-center gap-1.5 mb-1.5 tracking-tight">
+                  <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-sky-600 shrink-0"></i> 4. SỐ LIỆU & CHIẾN CÔNG CHIẾN TRƯỜNG
+                </div>
+                <div class="grid grid-cols-2 gap-1.5">
+                  ${(d.dataStats || []).map(st => `
+                    <div class="p-1.5 bg-white/95 rounded-lg border border-sky-200/60 shadow-2xs">
+                      <div class="text-[9px] text-slate-500 font-medium leading-tight">${st.label}</div>
+                      <div class="text-[11px] font-bold text-sky-950 mt-0.5 leading-snug">${st.val}</div>
+                    </div>
+                  `).join('')}
+                </div>
+              </div>
+
+              <!-- 5. Ý NGHĨA LỊCH SỬ & BÀI HỌC -->
+              <div class="p-2.5 rounded-xl bg-purple-50/80 border border-purple-200/90 shadow-2xs">
+                <div class="font-bold text-[10px] text-purple-900 flex items-center gap-1.5 mb-1 tracking-tight">
+                  <i data-lucide="award" class="w-3.5 h-3.5 text-purple-600 shrink-0"></i> 5. Ý NGHĨA LỊCH SỬ & BÀI HỌC
+                </div>
+                <p class="text-[11px] text-slate-800 leading-relaxed font-medium">${d.significance || 'Đang cập nhật ý nghĩa...'}</p>
+              </div>
+
+              <!-- FOOTER BOOK REFERENCE -->
+              <div class="p-2 rounded-lg bg-slate-100 border border-slate-200 text-[10px] text-slate-600 flex items-center justify-between">
+                <span class="flex items-center gap-1 font-semibold text-slate-700">
+                  <i data-lucide="book-open" class="w-3 h-3 text-indigo-600"></i> ${d.bookRef || 'Giáo trình Lịch sử Đảng'}
+                </span>
+                <button class="collapse-card-btn text-[10px] font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-0.5">
+                  <i data-lucide="chevron-up" class="w-3 h-3"></i> Thu gọn
+                </button>
+              </div>
+            </div>
+          `;
+
+        } else {
+          // ================= COMPACT OVERVIEW MODE =================
+          el.className = `node-card absolute cursor-pointer rounded-3xl transition-all flex flex-col overflow-hidden ${theme.card || ''} z-10`;
+          el.style.height = `${node.height}px`;
+
+          if (node.hasCardImage && node.imageUrl) {
+            // CARD WITH ARCHIVAL PHOTO BANNER (Compact)
+            el.innerHTML = `
+              <div class="h-20 w-full overflow-hidden border-b border-slate-200/60 relative group">
+                <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback}'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent"></div>
+                <div class="absolute top-2 left-2 px-2 py-0.5 rounded-full text-[9px] font-bold tracking-wider ${theme.badge} shadow-xs">
+                  ${node.year}
+                </div>
+                <div class="absolute top-2 right-2 px-2 py-0.5 rounded-full text-[9px] font-semibold bg-white/90 text-slate-800 shadow-xs">
+                  ${node.category}
+                </div>
+                <div class="absolute bottom-1 left-2.5 right-2.5 text-[9px] text-amber-200 font-medium truncate drop-shadow-sm flex items-center gap-1">
+                  <i data-lucide="camera" class="w-3 h-3 text-amber-300 shrink-0"></i>
+                  <span class="truncate">${node.imageCaption}</span>
+                </div>
+              </div>
+              <div class="p-3 flex flex-col justify-between flex-1">
+                <div>
+                  <h4 class="font-bold text-xs ${theme.title} line-clamp-2 leading-snug">
+                    ${node.title}
+                  </h4>
+                  <p class="text-[10px] ${theme.desc} mt-0.5 line-clamp-2 leading-relaxed">
+                    ${node.subtitle}
+                  </p>
+                </div>
+                <div class="flex items-center justify-between text-[10px] pt-1.5 border-t border-slate-200/50 mt-1">
+                  <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
+                    <i data-lucide="book-open" class="w-2.5 h-2.5"></i> Mở 5 mục
+                  </button>
+                  <span class="${theme.tag} font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-3 h-3 ml-0.5"></i></span>
+                </div>
+              </div>
+            `;
+          } else {
+            // LEAF PILL CARD (Compact)
+            el.innerHTML = `
+              <div class="p-3 flex flex-col justify-between h-full">
+                <div class="flex items-center justify-between">
+                  <span class="px-2 py-0.5 rounded-full text-[9px] font-bold ${theme.badge}">
+                    ${node.year}
+                  </span>
+                  <span class="text-[9px] text-slate-500 font-semibold">${node.category}</span>
+                </div>
+                <div class="my-1">
+                  <h5 class="font-bold text-xs ${theme.title} leading-snug">
+                    ${node.title}
+                  </h5>
+                  <p class="text-[10px] ${theme.desc} mt-0.5 line-clamp-2 leading-snug">
+                    ${node.subtitle}
+                  </p>
+                </div>
+                <div class="flex items-center justify-between pt-1 border-t border-slate-200/50 text-[9px]">
+                  <button class="toggle-card-btn px-2 py-0.5 rounded-full font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 transition flex items-center gap-1">
+                    <i data-lucide="book-open" class="w-2.5 h-2.5"></i> Mở 5 mục
+                  </button>
+                  <span class="${theme.tag} font-bold flex items-center drawer-link">Chi tiết <i data-lucide="chevron-right" class="w-2.5 h-2.5 ml-0.5"></i></span>
+                </div>
+              </div>
+            `;
+          }
+        }
+
+        // Click to Toggle Expand / Collapse or Open Drawer
+        el.querySelectorAll('.toggle-card-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            expandedNodeIds.add(node.id);
+            renderNodes();
+            requestAnimationFrame(() => renderConnections());
+          });
+        });
+
+        el.querySelectorAll('.collapse-card-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            expandedNodeIds.delete(node.id);
+            if (isDeepDetailMode) {
+              // If global deep mode is on, turn it off so this card collapses
+              isDeepDetailMode = false;
+              NODES.forEach(other => {
+                if (other.id !== node.id) expandedNodeIds.add(other.id);
+              });
+              updateModeButtons();
+            }
+            renderNodes();
+            requestAnimationFrame(() => renderConnections());
+          });
+        });
+
+        el.querySelectorAll('.drawer-link').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            openDrawer(node.id);
+          });
+        });
+
+        el.addEventListener('click', (e) => {
+          // If clicking card outside buttons
+          if (!e.target.closest('button')) {
+            openDrawer(node.id);
+          }
+        });
+
+        // Hover Effect
+        el.addEventListener('mouseenter', () => highlightNodeConnections(node.id, true));
+        el.addEventListener('mouseleave', () => highlightNodeConnections(node.id, false));
+
+        nodesContainer.appendChild(el);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Exact Edge-to-Edge Anchor Calculation Function (Reads live DOM bounding boxes)
+    function getAnchors(parent, child) {
+      const pEl = document.getElementById('node-' + parent.id);
+      const cEl = document.getElementById('node-' + child.id);
+
+      const pX = pEl ? pEl.offsetLeft : parent.x;
+      const pY = pEl ? pEl.offsetTop : parent.y;
+      const pW = pEl ? pEl.offsetWidth : parent.width;
+      const pH = pEl ? pEl.offsetHeight : parent.height;
+
+      const cX = cEl ? cEl.offsetLeft : child.x;
+      const cY = cEl ? cEl.offsetTop : child.y;
+      const cW = cEl ? cEl.offsetWidth : child.width;
+      const cH = cEl ? cEl.offsetHeight : child.height;
+
+      const pCenterX = pX + pW / 2;
+      const pCenterY = pY + pH / 2;
+      const cCenterX = cX + cW / 2;
+      const cCenterY = cY + cH / 2;
+
+      const dx = cCenterX - pCenterX;
+      const dy = cCenterY - pCenterY;
+
+      let startX, startY, endX, endY, isHorizontal;
+
+      // Primary horizontal routing if dx dominates dy * 0.55
+      if (Math.abs(dx) >= Math.abs(dy) * 0.55) {
+        isHorizontal = true;
+        if (dx > 0) {
+          // Child is to the RIGHT of parent
+          startX = pX + pW;
+          startY = pCenterY;
+          endX = cX;
+          endY = cCenterY;
+        } else {
+          // Child is to the LEFT of parent
+          startX = pX;
+          startY = pCenterY;
+          endX = cX + cW;
+          endY = cCenterY;
+        }
+      } else {
+        // Child is primarily ABOVE or BELOW parent
+        isHorizontal = false;
+        if (dy > 0) {
+          // Child is BELOW parent
+          startX = pCenterX;
+          startY = pY + pH;
+          endX = cCenterX;
+          endY = cY;
+        } else {
+          // Child is ABOVE parent
+          startX = pCenterX;
+          startY = pY;
+          endX = cCenterX;
+          endY = cY + cH;
+        }
+      }
+      return { startX, startY, endX, endY, isHorizontal, dx, dy };
+    }
+
+    // Render SVG Connectors with Exact Edge Docking & Distinct Branch Colors
+    function renderConnections() {
+      hierarchySvgGroup.innerHTML = '';
+      crossLinksSvgGroup.innerHTML = '';
+
+      const nodeMap = new Map();
+      NODES.forEach(n => nodeMap.set(n.id, n));
+
+      // 1. Hierarchy Parent -> Child Connections
+      NODES.forEach(child => {
+        if (!child.parentId) return;
+        const parent = nodeMap.get(child.parentId);
+        if (!parent) return;
+
+        const a = getAnchors(parent, child);
+        let pathData;
+
+        if (a.isHorizontal) {
+          const curvature = Math.min(Math.abs(a.endX - a.startX) * 0.5, 200);
+          const cx1 = (a.dx > 0) ? a.startX + curvature : a.startX - curvature;
+          const cy1 = a.startY;
+          const cx2 = (a.dx > 0) ? a.endX - curvature : a.endX + curvature;
+          const cy2 = a.endY;
+          pathData = `M ${a.startX} ${a.startY} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${a.endX} ${a.endY}`;
+        } else {
+          const curvature = Math.min(Math.abs(a.endY - a.startY) * 0.5, 200);
+          const cx1 = a.startX;
+          const cy1 = (a.dy > 0) ? a.startY + curvature : a.startY - curvature;
+          const cx2 = a.endX;
+          const cy2 = (a.dy > 0) ? a.endY - curvature : a.endY + curvature;
+          pathData = `M ${a.startX} ${a.startY} C ${cx1} ${cy1}, ${cx2} ${cy2}, ${a.endX} ${a.endY}`;
+        }
+
+        const branchKey = child.branchId || parent.branchId || 'b1';
+        const lineColor = BRANCH_COLORS[branchKey] || '#475569';
+        const markerId = (branchKey in BRANCH_COLORS) ? `arrow-${branchKey}` : 'arrow-default';
+
+        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathEl.setAttribute('d', pathData);
+        pathEl.setAttribute('fill', 'none');
+        pathEl.setAttribute('stroke', lineColor);
+        pathEl.setAttribute('stroke-width', parent.isCenter ? '2.8' : '2.2');
+        pathEl.setAttribute('stroke-linecap', 'round');
+        pathEl.setAttribute('stroke-opacity', '0.85');
+        pathEl.setAttribute('marker-end', `url(#${markerId})`);
+        pathEl.id = `link-${parent.id}-${child.id}`;
+        pathEl.dataset.parent = parent.id;
+        pathEl.dataset.child = child.id;
+
+        hierarchySvgGroup.appendChild(pathEl);
+      });
+
+      // 2. Macro Cross-Links (Hậu phương miền Bắc -> Tiền tuyến miền Nam)
+      CROSS_LINKS.forEach(cl => {
+        const fromNode = nodeMap.get(cl.from);
+        const toNode = nodeMap.get(cl.to);
+        if (!fromNode || !toNode) return;
+
+        const fEl = document.getElementById('node-' + fromNode.id);
+        const tEl = document.getElementById('node-' + toNode.id);
+
+        const x1 = (fEl ? fEl.offsetLeft : fromNode.x) + (fEl ? fEl.offsetWidth : fromNode.width) / 2;
+        const y1 = fEl ? fEl.offsetTop : fromNode.y;
+        const x2 = (tEl ? tEl.offsetLeft : toNode.x) + (tEl ? tEl.offsetWidth : toNode.width) / 2;
+        const y2 = tEl ? tEl.offsetTop : toNode.y;
+
+        const midX = (x1 + x2) / 2;
+        const midY = Math.min(y1, y2) - 180;
+
+        const pathData = `M ${x1} ${y1} Q ${midX} ${midY}, ${x2} ${y2}`;
+
+        const dashPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        dashPath.setAttribute('d', pathData);
+        dashPath.setAttribute('fill', 'none');
+        dashPath.setAttribute('stroke', cl.color);
+        dashPath.setAttribute('stroke-width', '2.5');
+        dashPath.setAttribute('stroke-linecap', 'round');
+        dashPath.setAttribute('stroke-dasharray', '8 6');
+        dashPath.setAttribute('class', 'path-flow');
+        dashPath.setAttribute('marker-end', 'url(#arrow-cross1)');
+        crossLinksSvgGroup.appendChild(dashPath);
+
+        const textEl = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        textEl.setAttribute('x', midX);
+        textEl.setAttribute('y', midY + 16);
+        textEl.setAttribute('fill', cl.color);
+        textEl.setAttribute('font-family', 'Arial, sans-serif');
+        textEl.setAttribute('font-size', '11');
+        textEl.setAttribute('font-weight', 'bold');
+        textEl.setAttribute('text-anchor', 'middle');
+        textEl.textContent = `★ ${cl.label} ★`;
+        crossLinksSvgGroup.appendChild(textEl);
+      });
+    }
+
+    // Setup Mode Switcher (Overview vs Expanded 5-Sections)
+    function setupModeSwitcher() {
+      const compactBtn = document.getElementById('mode-compact-btn');
+      const expandedBtn = document.getElementById('mode-expanded-btn');
+
+      if (compactBtn) {
+        compactBtn.addEventListener('click', () => {
+          isDeepDetailMode = false;
+          expandedNodeIds.clear();
+          updateModeButtons();
+          renderNodes();
+          requestAnimationFrame(() => renderConnections());
+        });
+      }
+
+      if (expandedBtn) {
+        expandedBtn.addEventListener('click', () => {
+          isDeepDetailMode = true;
+          expandedNodeIds.clear();
+          updateModeButtons();
+          renderNodes();
+          requestAnimationFrame(() => renderConnections());
+        });
+      }
+    }
+
+    function updateModeButtons() {
+      const compactBtn = document.getElementById('mode-compact-btn');
+      const expandedBtn = document.getElementById('mode-expanded-btn');
+      if (!compactBtn || !expandedBtn) return;
+
+      if (isDeepDetailMode) {
+        expandedBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-amber-500 text-white shadow-xs border border-amber-600";
+        compactBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
+      } else {
+        compactBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-bold transition flex items-center space-x-1.5 bg-white text-purple-900 shadow-xs border border-purple-200";
+        expandedBtn.className = "px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-xl text-xs font-semibold text-slate-600 hover:text-slate-900 transition flex items-center space-x-1.5";
+      }
+    }
+
+    // Highlight Node Connections on Hover
+    function highlightNodeConnections(nodeId, active) {
+      const connectedPaths = document.querySelectorAll(`path[data-parent="${nodeId}"], path[data-child="${nodeId}"]`);
+      connectedPaths.forEach(p => {
+        if (active) {
+          p.setAttribute('stroke-width', '4.0');
+          p.setAttribute('stroke', '#4F46E5');
+          p.setAttribute('stroke-opacity', '1');
+          p.setAttribute('marker-end', 'url(#arrow-active)');
+        } else {
+          const parentId = p.dataset.parent;
+          const childId = p.dataset.child;
+          const childNode = NODES.find(n => n.id === childId);
+          const parentNode = NODES.find(n => n.id === parentId);
+          const branchKey = (childNode && childNode.branchId) || (parentNode && parentNode.branchId) || 'b1';
+          const lineColor = BRANCH_COLORS[branchKey] || '#475569';
+          const markerId = (branchKey in BRANCH_COLORS) ? `arrow-${branchKey}` : 'arrow-default';
+
+          p.setAttribute('stroke-width', parentId === 'center' ? '2.8' : '2.2');
+          p.setAttribute('stroke', lineColor);
+          p.setAttribute('stroke-opacity', '0.85');
+          p.setAttribute('marker-end', `url(#${markerId})`);
+        }
+      });
+    }
+
+    // Intro animation timeline (Clean scale/position, no opacity lock)
+    function introAnimation() {
+      const tl = gsap.timeline();
+      tl.from('#node-center', {
+        scale: 0.88,
+        duration: 0.5,
+        ease: 'back.out(1.4)'
+      })
+      .from('.node-card:not(#node-center)', {
+        y: 12,
+        stagger: 0.015,
+        duration: 0.35,
+        ease: 'power2.out'
+      }, '-=0.25');
+    }
+
+    // GSAP Pan & Zoom Interactions (Transforms canvasEl inside viewportEl)
+    function setupInteractions() {
+      initCamera();
+
+      Draggable.create(canvasEl, {
+        type: 'x,y',
+        trigger: viewportEl,
+        dragClickables: false,
+        onDragStart: () => {
+          isDragging = true;
+          viewportEl.style.cursor = 'grabbing';
+        },
+        onDrag: function() {
+          currentPan.x = this.x;
+          currentPan.y = this.y;
+        },
+        onDragEnd: () => {
+          isDragging = false;
+          viewportEl.style.cursor = 'grab';
+        }
+      });
+
+      viewportEl.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY * -0.0012;
+        smoothZoom(currentScale + delta, e.clientX, e.clientY);
+      }, { passive: false });
+
+      document.getElementById('zoom-in-btn').addEventListener('click', () => smoothZoom(currentScale + 0.15));
+      document.getElementById('zoom-out-btn').addEventListener('click', () => smoothZoom(currentScale - 0.15));
+      document.getElementById('reset-view-btn').addEventListener('click', () => centerOnNode('center'));
+      document.getElementById('fit-screen-btn').addEventListener('click', fitAllNodes);
+
+      window.addEventListener('resize', () => {
+        renderConnections();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === '0') centerOnNode('center');
+        if (e.key === 'Escape') closeDrawer();
+      });
+    }
+
+    function initCamera() {
+      const screenW = window.innerWidth || 1200;
+      const screenH = window.innerHeight || 800;
+      currentScale = 0.75;
+      // Center node center point is around (2190, 1360)
+      currentPan.x = Math.round((screenW / 2) - (2190 * currentScale));
+      currentPan.y = Math.round((screenH / 2) - (1360 * currentScale));
+      updateTransform();
+    }
+
+    function updateTransform() {
+      gsap.set(canvasEl, {
+        x: currentPan.x,
+        y: currentPan.y,
+        scale: currentScale,
+        transformOrigin: '0 0'
+      });
+    }
+
+    function smoothZoom(targetScale, mouseX, mouseY) {
+      const newScale = Math.min(Math.max(targetScale, 0.25), 1.8);
+      if (newScale === currentScale) return;
+
+      if (mouseX !== undefined && mouseY !== undefined) {
+        const factor = newScale / currentScale;
+        currentPan.x = mouseX - (mouseX - currentPan.x) * factor;
+        currentPan.y = mouseY - (mouseY - currentPan.y) * factor;
+      }
+
+      currentScale = newScale;
+      gsap.to(canvasEl, {
+        scale: currentScale,
+        x: currentPan.x,
+        y: currentPan.y,
+        duration: 0.35,
+        ease: 'power2.out'
+      });
+    }
+
+    function centerOnNode(nodeId) {
+      const node = NODES.find(n => n.id === nodeId);
+      if (!node) return;
+
+      const nodeEl = document.getElementById('node-' + nodeId);
+      const nw = nodeEl ? nodeEl.offsetWidth : node.width;
+      const nh = nodeEl ? nodeEl.offsetHeight : node.height;
+
+      const nodeCenterX = node.x + nw / 2;
+      const nodeCenterY = node.y + nh / 2;
+
+      const screenW = window.innerWidth;
+      const screenH = window.innerHeight;
+
+      currentScale = 0.8;
+      currentPan.x = Math.round(screenW / 2 - nodeCenterX * currentScale);
+      currentPan.y = Math.round(screenH / 2 - nodeCenterY * currentScale);
+
+      gsap.to(canvasEl, {
+        x: currentPan.x,
+        y: currentPan.y,
+        scale: currentScale,
+        duration: 0.6,
+        ease: 'power3.out'
+      });
+    }
+
+    function fitAllNodes() {
+      currentScale = 0.38;
+      const screenW = window.innerWidth;
+      const screenH = window.innerHeight;
+      currentPan.x = Math.round(screenW / 2 - 2190 * currentScale);
+      currentPan.y = Math.round(screenH / 2 - 1360 * currentScale);
+
+      gsap.to(canvasEl, {
+        x: currentPan.x,
+        y: currentPan.y,
+        scale: currentScale,
+        duration: 0.6,
+        ease: 'power3.out'
+      });
+    }
+
+    // Timeline Quick Filter
+    function setupTimelineFilter() {
+      const filterPills = document.querySelectorAll('.filter-pill');
+      filterPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          filterPills.forEach(p => {
+            p.classList.remove('bg-purple-600', 'text-white', 'shadow-sm');
+            p.classList.add('bg-slate-100', 'text-slate-600');
+          });
+          pill.classList.remove('bg-slate-100', 'text-slate-600');
+          pill.classList.add('bg-purple-600', 'text-white', 'shadow-sm');
+
+          const year = pill.dataset.year;
+          activeFilter = year;
+          applyTimelineFilter(year);
+        });
+      });
+    }
+
+    function applyTimelineFilter(year) {
+      NODES.forEach(n => {
+        const el = document.getElementById(`node-${n.id}`);
+        if (!el) return;
+
+        if (year === 'all' || n.filterYear === year || n.id === 'center') {
+          gsap.to(el, { opacity: 1, scale: 1, filter: 'grayscale(0%)', duration: 0.3 });
+        } else {
+          gsap.to(el, { opacity: 0.25, scale: 0.95, filter: 'grayscale(80%)', duration: 0.3 });
+        }
+      });
+    }
+
+    // Search Engine
+    function setupSearch() {
+      const input = document.getElementById('search-input');
+      const clearBtn = document.getElementById('search-clear-btn');
+      const dropdown = document.getElementById('search-results-dropdown');
+
+      input.addEventListener('input', (e) => {
+        const query = e.target.value.trim().toLowerCase();
+        if (query.length > 0) {
+          clearBtn.classList.remove('hidden');
+          const results = NODES.filter(n => {
+            const t = n.title.toLowerCase();
+            const s = n.subtitle.toLowerCase();
+            const y = (n.year || '').toLowerCase();
+            const c = (n.category || '').toLowerCase();
+            const d = JSON.stringify(n.detail || {}).toLowerCase();
+            return t.includes(query) || s.includes(query) || y.includes(query) || c.includes(query) || d.includes(query);
+          });
+          renderSearchResults(results);
+        } else {
+          clearBtn.classList.add('hidden');
+          dropdown.classList.add('hidden');
+        }
+      });
+
+      clearBtn.addEventListener('click', () => {
+        input.value = '';
+        clearBtn.classList.add('hidden');
+        dropdown.classList.add('hidden');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.add('hidden');
+        }
+      });
+    }
+
+    function renderSearchResults(results) {
+      const dropdown = document.getElementById('search-results-dropdown');
+      dropdown.innerHTML = '';
+
+      if (results.length === 0) {
+        dropdown.innerHTML = '<div class="p-4 text-xs text-slate-500 text-center italic">Không tìm thấy sự kiện phù hợp</div>';
+      } else {
+        results.slice(0, 8).forEach(n => {
+          const item = document.createElement('div');
+          item.className = 'p-3 hover:bg-purple-50 cursor-pointer border-b border-slate-100 flex items-center justify-between transition';
+          item.innerHTML = `
+            <div>
+              <div class="flex items-center space-x-2">
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">${n.year}</span>
+                <span class="text-xs font-bold text-slate-800">${n.title}</span>
+              </div>
+              <p class="text-[10px] text-slate-500 line-clamp-1 mt-0.5">${n.subtitle}</p>
+            </div>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+          `;
+          item.addEventListener('click', () => {
+            centerOnNode(n.id);
+            dropdown.classList.add('hidden');
+            setTimeout(() => {
+              openDrawer(n.id);
+            }, 750);
+          });
+          dropdown.appendChild(item);
+        });
+      }
+      dropdown.classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    // Detail Drawer
+    function setupDrawer() {
+      const drawer = document.getElementById('detail-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+      const closeBtn = document.getElementById('drawer-close-btn');
+      const closeBtnBottom = document.getElementById('drawer-close-btn-bottom');
+
+      closeBtn.addEventListener('click', closeDrawer);
+      closeBtnBottom.addEventListener('click', closeDrawer);
+      backdrop.addEventListener('click', closeDrawer);
+    }
+
+    function openDrawer(nodeId) {
+      const node = NODES.find(n => n.id === nodeId);
+      if (!node || !node.detail) return;
+
+      const d = node.detail;
+
+      document.getElementById('drawer-title').textContent = d.title || node.title;
+      document.getElementById('drawer-subtitle').textContent = node.subtitle;
+      document.getElementById('drawer-badge-category').textContent = d.tag || node.category;
+      document.getElementById('drawer-badge-period').textContent = d.period || node.year;
+      document.getElementById('drawer-book-ref').textContent = d.bookRef || 'Trang 180 – 236';
+
+      const bannerContainer = document.getElementById('drawer-banner-container');
+      if (node.imageUrl) {
+        bannerContainer.innerHTML = `
+          <div class="relative overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-900 shadow-sm group">
+            <img src="${node.imageUrl}" alt="${node.title}" class="w-full h-56 object-cover object-center group-hover:scale-105 transition-transform duration-500" onerror="this.onerror=null; this.src='${node.cdnFallback || 'images/center_ket_doan.jpg'}'"/>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/30 to-transparent flex flex-col justify-end p-4">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-400 text-slate-950 font-bold text-[10px] w-fit mb-1.5 shadow-sm">
+                <i data-lucide="camera" class="w-3.5 h-3.5 text-slate-950"></i> ẢNH TƯ LIỆU LỊCH SỬ CHÍNH XÁC
+              </span>
+              <p class="text-white text-xs font-semibold leading-relaxed drop-shadow-md">
+                ${node.imageCaption || 'Tư liệu lịch sử Đảng Cộng sản Việt Nam (1954 – 1975)'}
+              </p>
+            </div>
+          </div>
+        `;
+        bannerContainer.classList.remove('hidden');
+      } else {
+        bannerContainer.classList.add('hidden');
+      }
+
+      const quoteBox = document.getElementById('drawer-quote-box');
+      if (d.quote) {
+        document.getElementById('drawer-quote-text').textContent = `"${d.quote}"`;
+        document.getElementById('drawer-quote-author').textContent = `— ${d.authorQuote || ''}`;
+        quoteBox.classList.remove('hidden');
+      } else {
+        quoteBox.classList.add('hidden');
+      }
+
+      document.getElementById('drawer-context').textContent = d.context || 'Đang cập nhật...';
+      document.getElementById('drawer-decisions').textContent = d.decisions || 'Đang cập nhật...';
+      document.getElementById('drawer-developments').textContent = d.developments || 'Đang cập nhật...';
+      document.getElementById('drawer-significance').textContent = d.significance || 'Đang cập nhật...';
+
+      const statsGrid = document.getElementById('drawer-stats-grid');
+      statsGrid.innerHTML = '';
+      if (d.dataStats && d.dataStats.length > 0) {
+        d.dataStats.forEach(st => {
+          const card = document.createElement('div');
+          card.className = 'bg-slate-50 p-3 rounded-2xl border border-slate-200/80 flex flex-col justify-between';
+          card.innerHTML = `
+            <span class="text-[10px] text-slate-500 font-semibold">${st.label}</span>
+            <strong class="text-xs text-slate-800 mt-1">${st.val}</strong>
+          `;
+          statsGrid.appendChild(card);
+        });
+      } else {
+        statsGrid.innerHTML = '<div class="text-[10px] text-slate-400 italic">Số liệu chiến trường đang cập nhật</div>';
+      }
+
+      const drawer = document.getElementById('detail-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+
+      backdrop.classList.remove('hidden');
+      gsap.to(backdrop, { opacity: 1, duration: 0.25 });
+      gsap.to(drawer, { x: '0%', duration: 0.35, ease: 'power3.out' });
+
+      lucide.createIcons();
+    }
+
+    function closeDrawer() {
+      const drawer = document.getElementById('detail-drawer');
+      const backdrop = document.getElementById('drawer-backdrop');
+
+      gsap.to(drawer, { x: '100%', duration: 0.3, ease: 'power3.in' });
+      gsap.to(backdrop, {
+        opacity: 0,
+        duration: 0.3,
+        onComplete: () => {
+          backdrop.classList.add('hidden');
+        }
+      });
+    
+    // PDF Export Setup
+    function setupPdfExport() {
+      const modal = document.getElementById('pdf-export-modal');
+      const openBtn = document.getElementById('export-pdf-modal-btn');
+      const closeBtn = document.getElementById('pdf-modal-close-btn');
+      const cancelBtn = document.getElementById('pdf-modal-cancel-btn');
+      const browserPrintBtn = document.getElementById('pdf-browser-print-btn');
+
+      if (openBtn && modal) {
+        openBtn.addEventListener('click', () => {
+          modal.classList.remove('hidden');
+          lucide.createIcons();
+        });
+      }
+
+      const closeModal = () => {
+        if (modal) modal.classList.add('hidden');
+      };
+
+      if (closeBtn) closeBtn.addEventListener('click', closeModal);
+      if (cancelBtn) cancelBtn.addEventListener('click', closeModal);
+
+      if (modal) {
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      if (browserPrintBtn) {
+        browserPrintBtn.addEventListener('click', () => {
+          closeModal();
+          // Briefly adjust scale to fit A3 page before print
+          const prevScale = currentScale;
+          const prevPan = { ...currentPan };
+
+          window.print();
+        });
+      }
+    }
+
+  }
+  </script>
+
+  <!-- ================= PDF & IMAGE EXPORT MODAL ================= -->
+  <div id="pdf-export-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs hidden no-print">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-purple-600 flex items-center justify-center text-white shadow-md">
+            <i data-lucide="file-down" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-slate-900 tracking-tight">Tải Sơ Đồ Tư Duy (PDF & Ảnh PNG)</h3>
+            <p class="text-xs text-slate-500">Giáo trình Lịch sử Đảng (1954 – 1975) • VNR202</p>
+          </div>
+        </div>
+        <button id="pdf-modal-close-btn" class="w-8 h-8 rounded-full bg-white hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 transition border border-slate-200">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (3 Options) -->
+      <div class="p-6 space-y-3.5">
+        
+        <!-- OPTION 1: Direct Single-Page PDF File Download -->
+        <div class="p-4 rounded-2xl border-2 border-purple-200 bg-purple-50/60 hover:bg-purple-50 transition flex items-center justify-between group">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-9 h-9 rounded-xl bg-purple-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="file-check-2" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-xs sm:text-sm text-purple-950">Tệp PDF Chuẩn 1 Trang Duy Nhất (Vector Siêu Nét)</h4>
+                <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-purple-600 text-white">KHUYÊN DÙNG</span>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                Đã được tối ưu nguyên khối <strong>1 trang duy nhất</strong>, không bị đứt đoạn, đầy đủ 34 sự kiện, 14 ảnh thật và mọi đường nối.
+              </p>
+            </div>
+          </div>
+          <a href="mindmap_1954_1975.pdf" target="_blank" download="Lich_Su_Dang_1954_1975_Mindmap.pdf" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Tải PDF</span>
+          </a>
+        </div>
+
+        <!-- OPTION 2: High-Resolution PNG Image Download -->
+        <div class="p-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 transition flex items-center justify-between">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="image" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-xs sm:text-sm text-emerald-950">Tệp Ảnh PNG Toàn Cảnh (4350 × 2700 px)</h4>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">DỄ DÙNG</span>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                Độ phân giải siêu cao, nền trong suốt sạch sẽ, lý tưởng để chèn thẳng vào slide thuyết trình PowerPoint, Word hoặc báo cáo bài tập.
+              </p>
+            </div>
+          </div>
+          <a href="mindmap_1954_1975.png" target="_blank" download="Lich_Su_Dang_1954_1975_Mindmap.png" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Tải PNG</span>
+          </a>
+        </div>
+
+        <!-- OPTION 3: Browser Print to PDF -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-slate-50 transition flex items-center justify-between">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-9 h-9 rounded-xl bg-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-0.5">
+              <i data-lucide="printer" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-xs sm:text-sm text-slate-800">In / Lưu PDF qua Trình duyệt</h4>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Mở hộp thoại in mặc định (Ctrl+P) với bố cục in tự động ẩn thanh công cụ và căn chuẩn toàn bộ sơ đồ tư duy.
+              </p>
+            </div>
+          </div>
+          <button id="pdf-browser-print-btn" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>In / Lưu</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
+          Định dạng 1 trang nguyên khối • Không bị ngắt đoạn • Khổ rộng chuẩn
+        </span>
+        <button id="pdf-modal-cancel-btn" class="text-xs font-semibold text-slate-600 hover:text-slate-800 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition">
+          Đóng
+        </button>
+      </div>
+
+    </div>
+  </div>
+  </div>
+</body>
+</html>

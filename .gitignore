@@ -1,0 +1,32 @@
+# Large Archives & Presentations
+PPT.zip
+PPT/
+*.zip
+*.rar
+
+# Course documents not part of mindmap web
+3thnguvahanh.pdf
+Kich_ban_Thuyet_trinh_Cach_mang_Thang_Tam_1945_Nhom_5.pdf
+
+# Scraped / intermediary data files
+configJson.json
+downloaded_stream.bin
+drive_view.html
+meta.json
+nodes_data.json
+pages_180_236.txt
+press_content.xml
+scratch_dom.html
+viewer_data.txt
+
+# Temporary test outputs
+test_*
+temp_*
+*.log
+
+# OS & Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+__pycache__/
