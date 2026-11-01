@@ -225,6 +225,80 @@
       transform: translateY(-50%) scale(1.18);
     }
 
+  
+    /* ================= EXPAND / COLLAPSE BUTTON ANIMATIONS ================= */
+    .branch-dock-btn {
+      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.25s ease,
+                  background-color 0.2s ease,
+                  border-color 0.2s ease;
+      will-change: transform;
+    }
+    .branch-dock-btn:hover {
+      filter: brightness(1.05);
+      box-shadow: 0 4px 14px -1px rgba(245, 158, 11, 0.55), 0 0 0 3px rgba(251, 191, 36, 0.45) !important;
+    }
+    .branch-dock-btn:active {
+      transform: scale(0.85) !important;
+    }
+
+    /* Pulsing radar ring for collapsed branch buttons inviting user click */
+    .pulse-beacon {
+      position: relative;
+    }
+    .pulse-beacon::after {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 9999px;
+      border: 2px solid rgba(245, 158, 11, 0.65);
+      opacity: 0.85;
+      animation: beacon-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+      pointer-events: none;
+    }
+
+    @keyframes beacon-ping {
+      0% {
+        transform: scale(0.95);
+        opacity: 0.85;
+      }
+      75%, 100% {
+        transform: scale(1.45);
+        opacity: 0;
+      }
+    }
+
+    /* Button click burst animation */
+    .btn-burst-ring {
+      position: absolute;
+      inset: -6px;
+      border-radius: 9999px;
+      border: 2px solid #F59E0B;
+      opacity: 1;
+      transform: scale(0.8);
+      pointer-events: none;
+      animation: burst-bloom 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes burst-bloom {
+      0% {
+        transform: scale(0.7);
+        opacity: 0.9;
+      }
+      100% {
+        transform: scale(1.6);
+        opacity: 0;
+      }
+    }
+
+    /* Smooth Icon Rotation when Expanding / Collapsing */
+    .toggle-icon-spin {
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .toggle-icon-spin:hover {
+      transform: rotate(90deg) scale(1.15);
+    }
+
   </style>
 </head>
 
@@ -2350,15 +2424,75 @@
     }
 
     function toggleBranch(nodeId, e) {
-      if (e) e.stopPropagation();
-      if (collapsedNodeIds.has(nodeId)) {
+      let clickTarget = null;
+      if (e) {
+        e.stopPropagation();
+        clickTarget = e.currentTarget;
+        if (clickTarget) {
+          const burst = document.createElement('span');
+          burst.className = 'btn-burst-ring';
+          clickTarget.appendChild(burst);
+          setTimeout(() => burst.remove(), 450);
+
+          gsap.fromTo(clickTarget,
+            { scale: 0.82 },
+            { scale: 1, duration: 0.35, ease: 'back.out(2)' }
+          );
+        }
+      }
+
+      const wasCollapsed = collapsedNodeIds.has(nodeId);
+      if (wasCollapsed) {
         collapsedNodeIds.delete(nodeId);
       } else {
         collapsedNodeIds.add(nodeId);
       }
+
       renderNodes();
       requestAnimationFrame(() => renderConnections());
       lucide.createIcons();
+
+      // Fluid entrance animation for newly unfolded children
+      if (wasCollapsed) {
+        const directChildren = childrenMap.get(nodeId) || [];
+        const childEls = directChildren
+          .map(id => document.getElementById(`node-${id}`))
+          .filter(Boolean);
+
+        if (childEls.length > 0) {
+          const parentNode = NODES.find(n => n.id === nodeId);
+          const isRight = parentNode && parentNode.x >= 2000;
+          const isBottom = nodeId === 'branch_7';
+
+          gsap.from(childEls, {
+            scale: 0.72,
+            opacity: 0,
+            x: isBottom ? 0 : (isRight ? -35 : 35),
+            y: isBottom ? -35 : 0,
+            duration: 0.45,
+            stagger: 0.06,
+            ease: 'back.out(1.5)',
+            clearProps: 'transform,opacity'
+          });
+
+          // Animate connecting lines drawing in
+          const paths = directChildren
+            .map(cid => document.querySelector(`path[data-child="${cid}"]`))
+            .filter(Boolean);
+
+          paths.forEach(p => {
+            try {
+              const len = p.getTotalLength();
+              gsap.fromTo(p,
+                { strokeDasharray: len, strokeDashoffset: len, opacity: 0 },
+                { strokeDashoffset: 0, opacity: 0.85, duration: 0.5, ease: 'power2.out', clearProps: 'strokeDasharray,strokeDashoffset' }
+              );
+            } catch (err) {
+              gsap.from(p, { opacity: 0, duration: 0.35 });
+            }
+          });
+        }
+      }
     }
 
     function toggleAllBranches(collapse) {
@@ -2787,7 +2921,7 @@
           if (isBottom) posClass = "left-1/2 -translate-x-1/2 -bottom-3.5";
           
           const dockBtn = document.createElement('button');
-          dockBtn.className = `branch-dock-btn absolute ${posClass} ${isBranchCollapsed ? 'px-2 h-7 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-500 shadow-md ring-2 ring-amber-300/50' : 'w-7 h-7 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-xs'} flex items-center justify-center font-bold z-30 transition-all hover:scale-110`;
+          dockBtn.className = `branch-dock-btn absolute ${posClass} ${isBranchCollapsed ? 'pulse-beacon px-2.5 h-7 rounded-full bg-amber-400 hover:bg-amber-300 text-amber-950 border-2 border-amber-500 shadow-md ring-2 ring-amber-300/60' : 'w-7 h-7 rounded-full bg-white hover:bg-slate-50 text-slate-700 border border-slate-300 shadow-xs'} flex items-center justify-center font-bold z-30 transition-all hover:scale-115 active:scale-90`;
           dockBtn.title = isBranchCollapsed ? `Mở rộng xẻ ${descCount} nhánh (NotebookLM)` : 'Thu gọn nhánh';
           dockBtn.innerHTML = isBranchCollapsed 
             ? `<span class="flex items-center gap-1 text-[11px] font-extrabold"><i data-lucide="plus" class="w-3.5 h-3.5 stroke-[3]"></i><span>${descCount}</span></span>`
@@ -2814,6 +2948,11 @@
             expandedNodeIds.add(node.id);
             renderNodes();
             requestAnimationFrame(() => renderConnections());
+            lucide.createIcons();
+            const targetEl = document.getElementById(`node-${node.id}`);
+            if (targetEl) {
+              gsap.from(targetEl, { scale: 0.94, duration: 0.3, ease: 'back.out(1.5)', clearProps: 'transform' });
+            }
           });
         });
 
