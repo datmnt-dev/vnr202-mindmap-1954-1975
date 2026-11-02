@@ -341,9 +341,6 @@
             <marker id="arrow-b7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
               <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#CA8A04"/>
             </marker>
-            <marker id="arrow-cross1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#D97706"/>
-            </marker>
           </defs>
 
           <!-- Hierarchy paths group -->
@@ -2364,7 +2361,7 @@
   }
 ];
 
-    const CROSS_LINKS = [{"from": "b1_north", "to": "b4_battles", "label": "Hậu phương lớn (Bắc) chi viện Tiền tuyến lớn (Nam)", "color": "#D97706", "id": "cross_link_1"}];
+    const CROSS_LINKS = [];
 
     // Branch Color Theme
     const BRANCH_COLORS = {
@@ -2736,32 +2733,7 @@
         hierarchySvgGroup.appendChild(pathEl);
       });
 
-      // 2. Cross Links (e.g. Miền Bắc chi viện Miền Nam)
-      CROSS_LINKS.forEach(cl => {
-        if (!isNodeVisible(cl.from) || !isNodeVisible(cl.to)) return;
-        const fBox = getNodeBox(cl.from);
-        const tBox = getNodeBox(cl.to);
-
-        const startX = fBox.left + fBox.width / 2;
-        const startY = fBox.top;
-        const endX = tBox.left + tBox.width / 2;
-        const endY = tBox.top;
-
-        const midX = (startX + endX) / 2;
-        const midY = Math.min(startY, endY) - 80;
-
-        const pathData = 'M ' + startX + ' ' + startY + ' Q ' + midX + ' ' + midY + ', ' + endX + ' ' + endY;
-
-        const dashPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-        dashPath.setAttribute('d', pathData);
-        dashPath.setAttribute('fill', 'none');
-        dashPath.setAttribute('stroke', cl.color);
-        dashPath.setAttribute('stroke-width', '2.2');
-        dashPath.setAttribute('stroke-linecap', 'round');
-        dashPath.setAttribute('class', 'dash-flow');
-        dashPath.setAttribute('marker-end', 'url(#arrow-cross1)');
-        crossLinksSvgGroup.appendChild(dashPath);
-      });
+      
     }
 
     // Select Node and populate Detail Panel
