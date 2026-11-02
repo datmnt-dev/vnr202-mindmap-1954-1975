@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full w-full overflow-hidden select-none bg-slate-50">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lịch sử Đảng Giai đoạn 1954 – 1975 | Heptabase Historical Mind Map VNR202</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Arial", "'Helvetica Neue'", "Helvetica", "sans-serif"],
+            serif: ["Arial", "'Helvetica Neue'", "Helvetica", "sans-serif"],
+          },
+          colors: {
+            pastel: {
+              purple: '#8E82E0',
+              purpleLight: '#F8F5FF',
+              purpleBorder: '#DDD6FE',
+              purpleText: '#5B21B6',
+
+              peach: '#FFE8D6',
+              peachLight: '#FFF5EC',
+              peachBorder: '#FFD2B8',
+              peachText: '#9A3412',
+
+              pink: '#FFD6D9',
+              pinkLight: '#FFF0F3',
+              pinkBorder: '#FFC2CD',
+              pinkText: '#9F1239',
+
+              mint: '#D8F3DC',
+              mintLight: '#EDFAF1',
+              mintBorder: '#B9E9C8',
+              mintText: '#166534',
+
+              coral: '#FFDFD3',
+              coralLight: '#FFF1EC',
+              coralBorder: '#FFC9B8',
+              coralText: '#991B1B',
+
+              blue: '#D0E8FF',
+              blueLight: '#F0F7FF',
+              blueBorder: '#BEDBFE',
+              blueText: '#1E40AF',
+
+              yellow: '#FEF08A',
+              yellowLight: '#FEFCE8',
+              yellowBorder: '#FDE047',
+              yellowText: '#854D0E',
+            }
+          },
+          boxShadow: {
+            'card': '0 2px 8px -2px rgba(15, 23, 42, 0.06), 0 1px 4px -1px rgba(15, 23, 42, 0.04)',
+            'card-hover': '0 10px 25px -5px rgba(15, 23, 42, 0.1), 0 8px 10px -6px rgba(15, 23, 42, 0.05)',
+            'card-active': '0 0 0 2px #7C3AED, 0 10px 25px -5px rgba(124, 58, 237, 0.2)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- GSAP CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    *, html, body {
+      font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif !important;
+    }
+
+    /* Subtle Heptabase-Style Dot Grid */
+    .bg-pastel-grid {
+      background-color: #FAFBFD;
+      background-image: radial-gradient(#CBD5E1 1.2px, transparent 1.2px);
+      background-size: 24px 24px;
+      background-position: 0 0;
+    }
+
+    /* Smooth Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F8FAFC;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+
+    /* Node Card Base & Transitions */
+    .node-card {
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+      cursor: pointer;
+    }
+    .node-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px -4px rgba(15, 23, 42, 0.1);
+    }
+    .node-card.is-selected {
+      border-color: #7C3AED !important;
+      box-shadow: 0 0 0 2px #7C3AED, 0 12px 28px -6px rgba(124, 58, 237, 0.25) !important;
+    }
+
+    /* Branch Toggle Button (Positioned completely outside node on right) */
+    .branch-toggle-btn {
+      position: absolute;
+      right: -26px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+      transition: all 0.18s ease;
+      z-index: 40;
+    }
+    .branch-toggle-btn:hover {
+      transform: translateY(-50%) scale(1.15);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Flow animation for cross links */
+    @keyframes dashflow {
+      0% { stroke-dashoffset: 40; }
+      100% { stroke-dashoffset: 0; }
+    }
+    .dash-flow {
+      stroke-dasharray: 6 5;
+      animation: dashflow 2s linear infinite;
+    }
+
+    /* Center breathing glow */
+    @keyframes rootGlow {
+      0%, 100% { filter: drop-shadow(0 6px 14px rgba(124, 58, 237, 0.25)); }
+      50% { filter: drop-shadow(0 10px 22px rgba(124, 58, 237, 0.45)); }
+    }
+    .animate-root-glow {
+      animation: rootGlow 4s ease-in-out infinite;
+    }
+
+    /* Line Clamp utility */
+    .line-clamp-2 {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    .line-clamp-3 {
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* Print Styling for 1-Page Vector PDF */
+    @media print {
+      @page {
+        size: 1800px 3300px;
+        margin: 0;
+      }
+      *, *::before, *::after {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      html, body {
+        width: 1800px !important;
+        height: 3300px !important;
+        background: #FFFFFF !important;
+        overflow: visible !important;
+      }
+      header,
+      #canvas-toolbar,
+      #detail-panel,
+      #panel-backdrop,
+      #pdf-export-modal,
+      #color-legend-modal,
+      .no-print {
+        display: none !important;
+      }
+      #viewport {
+        position: absolute !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 1800px !important;
+        height: 3300px !important;
+        overflow: visible !important;
+        background: #FFFFFF !important;
+      }
+      #mindmap-canvas {
+        transform: translate(0, 0) scale(1) !important;
+        left: 30px !important;
+        top: 30px !important;
+      }
+    }
+  </style>
+</head>
+
+<body class="h-full w-full overflow-hidden bg-white text-slate-800 antialiased flex flex-col">
+
+  <!-- ================= TOP NAVIGATION BAR (HEPTABASE MINIMAL) ================= -->
+  <header class="h-[52px] w-full bg-white border-b border-slate-200/90 px-3 md:px-5 flex items-center justify-between z-30 flex-shrink-0 shadow-xs">
+    
+    <!-- Left: App Identity & Book Reference -->
+    <div class="flex items-center space-x-2.5">
+      <div class="w-8 h-8 rounded-xl bg-purple-600 flex items-center justify-center text-white shadow-xs shrink-0">
+        <i data-lucide="layers" class="w-4 h-4 text-white"></i>
+      </div>
+      <div>
+        <div class="flex items-center space-x-1.5">
+          <h1 class="font-bold text-xs md:text-sm text-slate-900 tracking-tight whitespace-nowrap">LỊCH SỬ VN <span class="hidden sm:inline">(1954 – 1975)</span></h1>
+          <span class="text-[9px] font-extrabold px-1.5 py-0.2 rounded-md bg-purple-100 text-purple-700 border border-purple-200">VNR202</span>
+        </div>
+        <p class="text-[10px] text-slate-400 hidden lg:block leading-tight">Giáo trình Lịch sử ĐCSVN • Trang 180 – 236</p>
+      </div>
+    </div>
+
+    <!-- Center: Search & Timeline Filters -->
+    <div class="flex items-center space-x-2">
+      <!-- Search Input -->
+      <div class="relative w-32 xs:w-40 sm:w-56 md:w-64">
+        <i data-lucide="search" class="w-3.5 h-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 pointer-events-none"></i>
+        <input 
+          id="search-input" 
+          type="text" 
+          placeholder="Tìm: Ấp Bắc, Mậu Thân, NQ 15, Paris..." 
+          class="w-full bg-slate-100/90 hover:bg-slate-100 focus:bg-white border border-slate-200 focus:border-purple-500 rounded-full pl-8 pr-7 py-1 text-xs text-slate-800 placeholder-slate-400 focus:outline-none transition shadow-inner"
+        />
+        <button id="search-clear-btn" class="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 hidden">
+          <i data-lucide="x" class="w-3 h-3"></i>
+        </button>
+        <div id="search-results-dropdown" class="absolute top-full left-0 right-0 mt-1.5 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden hidden max-h-72 overflow-y-auto z-50"></div>
+      </div>
+
+      <!-- Timeline Quick Filter Pills (Top Bar integrated) -->
+      <div id="timeline-filters-bar" class="hidden xl:flex items-center space-x-1 bg-slate-100/80 p-0.5 rounded-full border border-slate-200/80">
+        <button data-filter="all" class="timeline-btn active px-2.5 py-1 rounded-full text-[11px] font-bold bg-white text-purple-700 shadow-xs transition">
+          Tất cả
+        </button>
+        <button data-filter="1954" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          1954 Khôi phục
+        </button>
+        <button data-filter="1960" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          1960 Đại hội III
+        </button>
+        <button data-filter="1965" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          1961-1965
+        </button>
+        <button data-filter="1968" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          1968 Mậu Thân
+        </button>
+        <button data-filter="1973" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          1973 Paris
+        </button>
+        <button data-filter="1975" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          1975 Toàn thắng
+        </button>
+        <button data-filter="Tổng kết" class="timeline-btn px-2.5 py-1 rounded-full text-[11px] font-medium text-slate-600 hover:text-slate-900 transition">
+          Bài học
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Actions & Panel Toggle -->
+    <div class="flex items-center space-x-1.5">
+      <!-- Expand All / Collapse All Toggle -->
+      <button id="toggle-all-branches-btn" class="px-2.5 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition flex items-center space-x-1" title="Mở rộng hoặc thu gọn tất cả 7 nhánh">
+        <i data-lucide="git-branch" class="w-3.5 h-3.5 text-purple-600"></i>
+        <span id="toggle-all-text" class="hidden sm:inline">Mở rộng tất cả</span>
+      </button>
+
+      <!-- Palette Legend Button -->
+      <button id="legend-btn" class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" title="Bảng màu 7 nhánh">
+        <i data-lucide="palette" class="w-4 h-4 text-purple-600"></i>
+      </button>
+
+      <!-- Export PDF / Image Modal Trigger -->
+      <button id="export-btn" class="px-3 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs transition flex items-center space-x-1.5 shadow-xs shadow-purple-200" title="Tải PDF hoặc Ảnh sơ đồ">
+        <i data-lucide="file-down" class="w-4 h-4 text-white"></i>
+        <span class="hidden sm:inline">Tải PDF</span>
+      </button>
+
+      <!-- Toggle Detail Sidebar Button -->
+      <button id="toggle-sidebar-btn" class="p-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition" title="Ẩn/Hiện Bảng chi tiết">
+        <i data-lucide="panel-right-close" class="w-4 h-4 text-slate-700"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- ================= MAIN TWO-PANE CONTAINER (HEPTABASE SPLIT VIEW) ================= -->
+  <div class="flex flex-1 w-full h-[calc(100vh-52px)] overflow-hidden relative">
+
+    <!-- LEFT PANE: MIND MAP CANVAS (68–72% width on desktop) -->
+    <main id="viewport" class="flex-1 h-full relative overflow-hidden bg-[#FAFBFD] bg-pastel-grid cursor-grab active:cursor-grabbing select-none">
+      
+      <!-- Scalable Mindmap Canvas -->
+      <div id="mindmap-canvas" class="absolute left-0 top-0 origin-top-left" style="width: 1750px; height: 3250px;">
+        
+        <!-- SVG CONNECTOR PATHS LAYER -->
+        <svg id="connections-svg" class="absolute inset-0 w-full h-full pointer-events-none z-10" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrow-default" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#64748B"/>
+            </marker>
+            <marker id="arrow-center" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#8E82E0"/>
+            </marker>
+            <marker id="arrow-b1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#2563EB"/>
+            </marker>
+            <marker id="arrow-b2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#DC2626"/>
+            </marker>
+            <marker id="arrow-b3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#059669"/>
+            </marker>
+            <marker id="arrow-b4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#D97706"/>
+            </marker>
+            <marker id="arrow-b5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#7C3AED"/>
+            </marker>
+            <marker id="arrow-b6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#E11D48"/>
+            </marker>
+            <marker id="arrow-b7" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#CA8A04"/>
+            </marker>
+            <marker id="arrow-cross1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+              <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#D97706"/>
+            </marker>
+          </defs>
+
+          <!-- Hierarchy paths group -->
+          <g id="hierarchy-paths-group"></g>
+
+          <!-- Cross-links group -->
+          <g id="cross-links-group"></g>
+        </svg>
+
+        <!-- HTML NODES LAYER -->
+        <div id="nodes-container" class="absolute inset-0 w-full h-full z-20"></div>
+
+      </div>
+
+      <!-- FLOATING CANVAS CONTROLS (BOTTOM-LEFT) -->
+      <div id="canvas-toolbar" class="absolute bottom-4 left-4 z-30 bg-white/95 backdrop-blur-md rounded-2xl border border-slate-200/90 shadow-lg p-1.5 flex items-center space-x-1">
+        <button id="zoom-out-btn" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-600 transition" title="Thu nhỏ (-)">
+          <i data-lucide="minus" class="w-4 h-4"></i>
+        </button>
+
+        <button id="zoom-level-btn" class="px-2 py-1 rounded-xl hover:bg-slate-100 text-slate-700 font-bold text-xs transition" title="Đặt lại 100%">
+          <span id="zoom-percent-text">80%</span>
+        </button>
+
+        <button id="zoom-in-btn" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-600 transition" title="Phóng to (+)">
+          <i data-lucide="plus" class="w-4 h-4"></i>
+        </button>
+
+        <div class="h-4 w-px bg-slate-200 mx-0.5"></div>
+
+        <button id="fit-all-btn" class="px-2 py-1 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-semibold text-xs transition flex items-center space-x-1" title="Hiển thị toàn bộ sơ đồ (F)">
+          <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+          <span>Bao quát</span>
+        </button>
+
+        <button id="center-root-btn" class="p-1.5 rounded-xl hover:bg-slate-100 text-slate-600 transition" title="Về sự kiện Trung tâm (0)">
+          <i data-lucide="crosshair" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+    </main>
+
+    <!-- MOBILE BACKDROP -->
+    <div id="panel-backdrop" class="fixed inset-0 bg-slate-900/40 z-30 hidden lg:hidden transition-opacity duration-300 opacity-0"></div>
+
+    <!-- RIGHT PANE: DETAIL PANEL (28–32% width on desktop, fixed sidebar) -->
+    <aside id="detail-panel" class="fixed lg:static top-0 right-0 bottom-0 w-[88vw] sm:w-[460px] lg:w-[380px] xl:w-[440px] 2xl:w-[480px] h-full bg-white border-l border-slate-200 shadow-2xl lg:shadow-none flex flex-col z-40 transition-transform lg:transition-all duration-300 translate-x-full lg:translate-x-0">
+      
+      <!-- EMPTY STATE (Shown when no node is selected) -->
+      <div id="panel-empty-state" class="flex-1 overflow-y-auto p-6 flex flex-col justify-between">
+        <div class="space-y-6">
+          <div class="w-12 h-12 rounded-2xl bg-purple-100 border border-purple-200 flex items-center justify-center text-purple-700 shadow-xs">
+            <i data-lucide="book-open" class="w-6 h-6"></i>
+          </div>
+
+          <div>
+            <span class="text-[11px] font-extrabold uppercase tracking-wider text-purple-700 bg-purple-50 px-2 py-0.5 rounded-md border border-purple-200">
+              Heptabase Study Workspace
+            </span>
+            <h2 class="text-xl font-bold text-slate-900 mt-2 leading-snug">
+              Lịch sử Đảng Giai đoạn 1954 – 1975
+            </h2>
+            <p class="text-xs text-slate-500 mt-1 leading-relaxed">
+              Môn học VNR202 • Giáo trình Lịch sử Đảng Cộng sản Việt Nam (Trang 180 – 236)
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200/80 text-xs text-slate-600 space-y-2">
+            <div class="flex items-center space-x-2 font-bold text-slate-800">
+              <i data-lucide="mouse-pointer" class="w-4 h-4 text-purple-600"></i>
+              <span>Hướng dẫn tương tác:</span>
+            </div>
+            <ul class="space-y-1.5 pl-4 list-disc text-slate-600 text-[11px]">
+              <li><strong>Nhấp vào bất kỳ thẻ nào</strong> trên sơ đồ để đọc trọn vẹn 5 mục lịch sử, quyết sách của Đảng, số liệu và bài học.</li>
+              <li><strong>Nhấp nút + / -</strong> bên ngoài thẻ để mở rộng hoặc thu gọn nhánh tương ứng.</li>
+              <li><strong>Kéo chuột</strong> để di chuyển bản đồ; dùng nút phóng to thu nhỏ ở góc trái.</li>
+            </ul>
+          </div>
+
+          <!-- Quick Jump Branches List -->
+          <div class="space-y-2.5">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-slate-500 flex items-center space-x-1.5">
+              <i data-lucide="compass" class="w-3.5 h-3.5 text-slate-400"></i>
+              <span>7 Giai đoạn chiến lược:</span>
+            </h3>
+
+            <div class="space-y-1.5">
+              <button onclick="selectAndFocusNode('branch_1')" class="w-full text-left p-2.5 rounded-xl border border-blue-200 bg-blue-50/60 hover:bg-blue-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-blue-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-blue-950 group-hover:text-blue-700">1. Đại hội III & Đường lối 2 miền (1960)</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-blue-600"></i>
+              </button>
+
+              <button onclick="selectAndFocusNode('branch_2')" class="w-full text-left p-2.5 rounded-xl border border-rose-200 bg-rose-50/60 hover:bg-rose-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-rose-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-rose-950 group-hover:text-rose-700">2. Chuyển sang thế tiến công (1954-1960)</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-rose-600"></i>
+              </button>
+
+              <button onclick="selectAndFocusNode('branch_3')" class="w-full text-left p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-emerald-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-emerald-950 group-hover:text-emerald-700">3. Đánh bại Chiến tranh đặc biệt (1961-1965)</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-emerald-600"></i>
+              </button>
+
+              <button onclick="selectAndFocusNode('branch_4')" class="w-full text-left p-2.5 rounded-xl border border-amber-200 bg-amber-50/60 hover:bg-amber-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-amber-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-amber-950 group-hover:text-amber-700">4. Đánh bại Chiến tranh cục bộ (1965-1968)</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-amber-600"></i>
+              </button>
+
+              <button onclick="selectAndFocusNode('branch_5')" class="w-full text-left p-2.5 rounded-xl border border-purple-200 bg-purple-50/60 hover:bg-purple-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-purple-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-purple-950 group-hover:text-purple-700">5. Đánh bại Việt Nam hóa & Paris (1969-1973)</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-purple-600"></i>
+              </button>
+
+              <button onclick="selectAndFocusNode('branch_6')" class="w-full text-left p-2.5 rounded-xl border border-red-200 bg-red-50/60 hover:bg-red-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-red-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-red-950 group-hover:text-red-700">6. Đại thắng Mùa Xuân 1975</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-red-600"></i>
+              </button>
+
+              <button onclick="selectAndFocusNode('branch_7')" class="w-full text-left p-2.5 rounded-xl border border-yellow-200 bg-yellow-50/60 hover:bg-yellow-100/80 transition flex items-center justify-between group">
+                <div class="flex items-center space-x-2.5">
+                  <span class="w-2.5 h-2.5 rounded-full bg-yellow-600 shrink-0"></span>
+                  <span class="text-xs font-bold text-yellow-950 group-hover:text-yellow-700">7. Ý nghĩa lịch sử & Bài học kinh nghiệm</span>
+                </div>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-yellow-600"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-6 border-t border-slate-100 text-center text-[11px] text-slate-400">
+          Hệ thống Mindmap VNR202 chuẩn Đại học FPT • 34 Sự kiện lịch sử
+        </div>
+      </div>
+
+      <!-- ACTIVE STATE (Shown when a node is selected) -->
+      <div id="panel-active-state" class="flex-1 flex-col h-full hidden overflow-hidden">
+        
+        <!-- Header -->
+        <div class="p-5 border-b border-slate-200/90 relative bg-slate-50/70 shrink-0">
+          <div class="flex items-center justify-between mb-2">
+            <div class="flex items-center space-x-2">
+              <span id="panel-badge-category" class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide bg-purple-100 text-purple-700 border border-purple-200">
+                Chuyên đề
+              </span>
+              <span id="panel-badge-period" class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-200 text-slate-700">
+                1954 - 1975
+              </span>
+            </div>
+
+            <!-- Header Action buttons -->
+            <div class="flex items-center space-x-1">
+              <button id="panel-focus-btn" class="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition" title="Tập trung vào thẻ này trên bản đồ">
+                <i data-lucide="crosshair" class="w-4 h-4"></i>
+              </button>
+              <button id="panel-close-btn" class="p-1.5 rounded-lg bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 transition" title="Bỏ chọn / Đóng">
+                <i data-lucide="x" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <h2 id="panel-title" class="font-bold text-base md:text-lg text-slate-900 leading-snug">
+            Tiêu đề chi tiết sự kiện
+          </h2>
+          <p id="panel-subtitle" class="text-xs text-slate-500 mt-1 leading-snug">
+            Trích xuất từ Giáo trình Lịch sử Đảng Cộng sản Việt Nam
+          </p>
+        </div>
+
+        <!-- Scrollable Content Body -->
+        <div class="flex-1 overflow-y-auto p-5 space-y-5">
+          
+          <!-- Historical Photo Banner -->
+          <div id="panel-image-container" class="rounded-2xl overflow-hidden border border-slate-200/90 bg-slate-900 shadow-xs relative group hidden">
+            <img id="panel-image-img" src="" alt="" class="w-full h-44 object-cover object-center group-hover:scale-102 transition duration-300"/>
+            <div class="p-3 bg-slate-900/90 border-t border-slate-800">
+              <span class="inline-flex items-center gap-1 text-[9px] font-bold text-amber-400 uppercase tracking-wide mb-0.5">
+                <i data-lucide="camera" class="w-3 h-3 text-amber-400"></i> Ảnh tư liệu lịch sử
+              </span>
+              <p id="panel-image-caption" class="text-white text-xs leading-snug"></p>
+            </div>
+          </div>
+
+          <!-- Historic Quote Box -->
+          <div id="panel-quote-container" class="p-4 rounded-2xl bg-amber-50/80 border-l-4 border-amber-400 text-slate-800 text-xs italic leading-relaxed space-y-1.5 hidden">
+            <p id="panel-quote-text">"Không có gì quý hơn độc lập, tự do!"</p>
+            <span id="panel-quote-author" class="block text-right text-[11px] font-bold text-amber-900 not-italic">— Bác Hồ</span>
+          </div>
+
+          <!-- Section 1: Bối cảnh -->
+          <div id="panel-sec-context" class="space-y-1.5">
+            <div class="flex items-center space-x-1.5 text-xs font-bold text-purple-800 uppercase tracking-wide">
+              <i data-lucide="landmark" class="w-3.5 h-3.5 text-purple-600"></i>
+              <span>1. Bối cảnh & Tình thế lịch sử</span>
+            </div>
+            <div id="panel-context" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80"></div>
+          </div>
+
+          <!-- Section 2: Quyết sách của Đảng -->
+          <div id="panel-sec-decisions" class="space-y-1.5">
+            <div class="flex items-center space-x-1.5 text-xs font-bold text-rose-800 uppercase tracking-wide">
+              <i data-lucide="file-text" class="w-3.5 h-3.5 text-rose-600"></i>
+              <span>2. Quyết sách & Nghị quyết của Đảng</span>
+            </div>
+            <div id="panel-decisions" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 whitespace-pre-line"></div>
+          </div>
+
+          <!-- Section 3: Diễn biến chính -->
+          <div id="panel-sec-developments" class="space-y-1.5">
+            <div class="flex items-center space-x-1.5 text-xs font-bold text-emerald-800 uppercase tracking-wide">
+              <i data-lucide="swords" class="w-3.5 h-3.5 text-emerald-600"></i>
+              <span>3. Diễn biến chính & Các mốc quan trọng</span>
+            </div>
+            <div id="panel-developments" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80 whitespace-pre-line"></div>
+          </div>
+
+          <!-- Section 4: Số liệu chiến trường -->
+          <div id="panel-sec-stats" class="space-y-1.5">
+            <div class="flex items-center space-x-1.5 text-xs font-bold text-sky-800 uppercase tracking-wide">
+              <i data-lucide="bar-chart-2" class="w-3.5 h-3.5 text-sky-600"></i>
+              <span>4. Số liệu & Chiến công chiến trường</span>
+            </div>
+            <div id="panel-stats-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+          </div>
+
+          <!-- Section 5: Ý nghĩa lịch sử -->
+          <div id="panel-sec-significance" class="space-y-1.5">
+            <div class="flex items-center space-x-1.5 text-xs font-bold text-indigo-800 uppercase tracking-wide">
+              <i data-lucide="award" class="w-3.5 h-3.5 text-indigo-600"></i>
+              <span>5. Ý nghĩa lịch sử & Bài học</span>
+            </div>
+            <div id="panel-significance" class="text-xs leading-relaxed text-slate-700 bg-slate-50 p-3.5 rounded-xl border border-slate-200/80"></div>
+          </div>
+
+          <!-- Hierarchy Navigation (Parent & Children links) -->
+          <div id="panel-hierarchy-links" class="pt-3 border-t border-slate-200 space-y-2">
+            <div id="panel-parent-link" class="hidden"></div>
+            <div id="panel-children-links" class="space-y-1 hidden"></div>
+          </div>
+
+          <!-- Book Reference Footer -->
+          <div class="p-3 rounded-xl bg-purple-50/60 border border-purple-200/80 flex items-center space-x-2.5 text-xs text-purple-950">
+            <i data-lucide="book-marked" class="w-4 h-4 text-purple-700 shrink-0"></i>
+            <div>
+              <span class="font-bold block text-[11px]">Giáo trình Lịch sử Đảng Cộng sản Việt Nam:</span>
+              <span id="panel-book-ref" class="text-purple-700 font-semibold text-[11px]">Trang 180 – 236</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+
+  <!-- ================= PDF & IMAGE EXPORT MODAL ================= -->
+  <div id="pdf-export-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs hidden no-print">
+    <div class="bg-white rounded-3xl shadow-2xl max-w-xl w-full overflow-hidden border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
+      
+      <!-- Modal Header -->
+      <div class="p-5 border-b border-slate-100 flex items-center justify-between bg-gradient-to-r from-purple-50 to-indigo-50">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-2xl bg-purple-600 flex items-center justify-center text-white shadow-md">
+            <i data-lucide="file-down" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-bold text-base text-slate-900 tracking-tight">Tải Sơ Đồ Tư Duy (PDF & Ảnh PNG)</h3>
+            <p class="text-xs text-slate-500">Giáo trình Lịch sử Đảng (1954 – 1975) • VNR202</p>
+          </div>
+        </div>
+        <button id="pdf-modal-close-btn" class="w-8 h-8 rounded-full bg-white hover:bg-slate-100 flex items-center justify-center text-slate-400 hover:text-slate-700 transition border border-slate-200">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Modal Body (Options) -->
+      <div class="p-6 space-y-3.5">
+        
+        <!-- OPTION 1: Master Single-Page Vector PDF -->
+        <div class="p-4 rounded-2xl border-2 border-purple-300 bg-purple-50/80 hover:bg-purple-100/80 transition flex items-center justify-between group">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-10 h-10 rounded-2xl bg-purple-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="book-open-check" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-xs sm:text-sm text-purple-950">Tệp PDF Chi Tiết Chuẩn Ôn Thi VNR202 (1 Trang Nguyên Khối)</h4>
+                <span class="text-[9px] font-extrabold px-2 py-0.5 rounded-full bg-purple-600 text-white shadow-xs">CHUẨN ĐẸP</span>
+              </div>
+              <p class="text-[11px] text-slate-700 mt-1 leading-relaxed">
+                Đầy đủ trọn vẹn 34 sự kiện theo cấu trúc Heptabase 1 trang vector sắc nét không bị ngắt quãng hay cắt đôi thẻ.
+              </p>
+            </div>
+          </div>
+          <a href="mindmap_1954_1975.pdf" target="_blank" download="Lich_Su_Dang_1954_1975_Mindmap.pdf" class="shrink-0 ml-3 px-3.5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-700 text-white font-bold text-xs shadow-md transition flex items-center space-x-1.5">
+            <i data-lucide="download" class="w-4 h-4"></i>
+            <span>Tải PDF</span>
+          </a>
+        </div>
+
+        <!-- OPTION 2: High-Resolution PNG Image Download -->
+        <div class="p-4 rounded-2xl border border-emerald-200 bg-emerald-50/50 hover:bg-emerald-50 transition flex items-center justify-between">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-9 h-9 rounded-xl bg-emerald-600 flex items-center justify-center text-white shrink-0 mt-0.5 shadow-sm">
+              <i data-lucide="image" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-2">
+                <h4 class="font-bold text-xs sm:text-sm text-emerald-950">Tệp Ảnh PNG Toàn Cảnh (Siêu Nét Chèn Slide / Word)</h4>
+                <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800">DỄ DÙNG</span>
+              </div>
+              <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">
+                Độ phân giải siêu cao, nền sạch sẽ, lý tưởng để chèn thẳng vào slide thuyết trình PowerPoint hoặc in ấn.
+              </p>
+            </div>
+          </div>
+          <a href="mindmap_1954_1975.png" target="_blank" download="Lich_Su_Dang_1954_1975_Mindmap.png" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Tải PNG</span>
+          </a>
+        </div>
+
+        <!-- OPTION 3: Browser Print to PDF -->
+        <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-slate-50 transition flex items-center justify-between">
+          <div class="flex items-start space-x-3.5">
+            <div class="w-9 h-9 rounded-xl bg-slate-200 flex items-center justify-center text-slate-700 shrink-0 mt-0.5">
+              <i data-lucide="printer" class="w-4 h-4"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-xs sm:text-sm text-slate-800">In / Lưu PDF qua Trình duyệt (Ctrl+P)</h4>
+              <p class="text-[11px] text-slate-500 mt-1 leading-relaxed">
+                Mở hộp thoại in trình duyệt định dạng 1 trang gọn gàng không dính toolbar.
+              </p>
+            </div>
+          </div>
+          <button id="pdf-browser-print-btn" class="shrink-0 ml-3 px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs shadow-sm transition flex items-center space-x-1">
+            <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            <span>In / Lưu</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-4 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <span class="flex items-center gap-1">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i>
+          Định dạng 1 trang nguyên khối • Không bị ngắt đoạn
+        </span>
+        <button id="pdf-modal-cancel-btn" class="text-xs font-semibold text-slate-600 hover:text-slate-800 px-3 py-1.5 rounded-lg hover:bg-slate-200 transition">
+          Đóng
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= COLOR PALETTE LEGEND MODAL ================= -->
+  <div id="color-legend-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs hidden no-print">
+    <div class="bg-white rounded-3xl shadow-xl max-w-md w-full overflow-hidden border border-slate-200 p-5 space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+        <div class="flex items-center space-x-2">
+          <i data-lucide="palette" class="w-5 h-5 text-purple-600"></i>
+          <h3 class="font-bold text-sm text-slate-900">Bảng Màu 7 Nhánh Lịch Sử VNR202</h3>
+        </div>
+        <button id="legend-close-btn" class="p-1 rounded-full hover:bg-slate-100 text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-purple-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Tím:</strong> Sự kiện trung tâm & Đại hội Đảng</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-blue-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Xanh dương:</strong> Nhánh 1 • Đại hội III & Kế hoạch 5 năm (1960)</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-rose-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Đỏ / Hồng:</strong> Nhánh 2 • NQ 15 & Phong trào Đồng khởi (1954-1960)</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-emerald-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Xanh lá:</strong> Nhánh 3 • Đánh bại Chiến tranh đặc biệt (1961-1965)</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-amber-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Cam đất:</strong> Nhánh 4 • Chiến tranh cục bộ & Mậu Thân (1965-1968)</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-purple-700 shrink-0"></span>
+          <span class="text-slate-700"><strong>Tím đậm:</strong> Nhánh 5 • Việt Nam hóa & Hiệp định Paris (1969-1973)</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-red-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Đỏ cờ:</strong> Nhánh 6 • Đại thắng Mùa Xuân 1975</span>
+        </div>
+        <div class="flex items-center space-x-2.5 p-1.5 rounded-xl hover:bg-slate-50">
+          <span class="w-4 h-4 rounded-full bg-yellow-600 shrink-0"></span>
+          <span class="text-slate-700"><strong>Vàng:</strong> Nhánh 7 • Ý nghĩa lịch sử & Bài học kinh nghiệm</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= EMBEDDED JAVASCRIPT LOGIC ================= -->
+  <script>
+    const NODES = /* __NODES_PLACEHOLDER__ */;
+
+    const CROSS_LINKS = [{"from": "b1_north", "to": "b4_battles", "label": "Hậu phương lớn (Bắc) chi viện Tiền tuyến lớn (Nam)", "color": "#D97706", "id": "cross_link_1"}];
+
+    // Branch Color Theme
+    const BRANCH_COLORS = {
+      center: '#7C3AED',
+      b1: '#2563EB',
+      b2: '#DC2626',
+      b3: '#059669',
+      b4: '#D97706',
+      b5: '#7C3AED',
+      b6: '#E11D48',
+      b7: '#CA8A04'
+    };
+
+    const BRANCH_BORDER_CLASSES = {
+      center: 'border-2 border-purple-400',
+      b1: 'border-l-4 border-l-blue-600',
+      b2: 'border-l-4 border-l-rose-600',
+      b3: 'border-l-4 border-l-emerald-600',
+      b4: 'border-l-4 border-l-amber-600',
+      b5: 'border-l-4 border-l-purple-600',
+      b6: 'border-l-4 border-l-red-600',
+      b7: 'border-l-4 border-l-yellow-600'
+    };
+
+    const BRANCH_BADGE_CLASSES = {
+      center: 'bg-purple-100 text-purple-700 border border-purple-200',
+      b1: 'bg-blue-100 text-blue-700 border border-blue-200',
+      b2: 'bg-rose-100 text-rose-700 border border-rose-200',
+      b3: 'bg-emerald-100 text-emerald-700 border border-emerald-200',
+      b4: 'bg-amber-100 text-amber-700 border border-amber-200',
+      b5: 'bg-purple-100 text-purple-700 border border-purple-200',
+      b6: 'bg-red-100 text-red-700 border border-red-200',
+      b7: 'bg-yellow-100 text-yellow-800 border border-yellow-200'
+    };
+
+    // State Variables
+    let currentScale = 0.8;
+    let currentPan = { x: 40, y: -800 };
+    let isDragging = false;
+    let dragStart = { x: 0, y: 0 };
+    let activeFilter = 'all';
+    let selectedNodeId = null;
+    let isSidebarCollapsed = false;
+
+    // Branches that have children
+    const childrenMap = new Map();
+    NODES.forEach(n => {
+      const pid = n.parentId;
+      if (pid && pid !== n.id) {
+        if (!childrenMap.has(pid)) childrenMap.set(pid, []);
+        childrenMap.get(pid).push(n.id);
+      }
+    });
+
+    // By default all branches are expanded for full visual view
+    const collapsedNodeIds = new Set();
+
+    // DOM Elements
+    const canvasEl = document.getElementById('mindmap-canvas');
+    const viewportEl = document.getElementById('viewport');
+    const nodesContainer = document.getElementById('nodes-container');
+    const hierarchySvgGroup = document.getElementById('hierarchy-paths-group');
+    const crossLinksSvgGroup = document.getElementById('cross-links-group');
+    const detailPanel = document.getElementById('detail-panel');
+    const panelEmptyState = document.getElementById('panel-empty-state');
+    const panelActiveState = document.getElementById('panel-active-state');
+    const panelBackdrop = document.getElementById('panel-backdrop');
+
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+      renderNodes();
+      requestAnimationFrame(() => {
+        renderConnections();
+        if (window.innerWidth >= 1200) {
+          // On desktop, start at readable 0.48 scale centered on branch 3/4
+          currentScale = 0.48;
+          currentPan.x = 40;
+          currentPan.y = Math.round((viewportEl.clientHeight / 2) - (1500 * currentScale));
+          updateTransform();
+        } else {
+          fitAllNodes(false);
+        }
+      });
+      setupPanZoom();
+      setupSearch();
+      setupTimelineFilter();
+      setupSidebarToggle();
+      setupPdfExport();
+      setupLegendModal();
+      setupKeyboardNav();
+
+      window.addEventListener('resize', () => {
+        requestAnimationFrame(() => renderConnections());
+      });
+    });
+
+    // Helper: Is Node Visible based on filter & ancestors
+    function isNodeVisible(nodeId) {
+      if (nodeId === 'center') return true;
+      const node = NODES.find(n => n.id === nodeId);
+      if (!node) return false;
+
+      // Filter check
+      if (activeFilter !== 'all') {
+        const matchesFilter = (node.filterYear === activeFilter) || 
+                              (node.year && node.year.includes(activeFilter)) ||
+                              (activeFilter === 'Tổng kết' && node.branchId === 'b7');
+        if (!matchesFilter && node.id !== 'center') return false;
+      }
+
+      // Ancestor collapse check
+      let curr = node;
+      while (curr && curr.parentId && curr.parentId !== 'center') {
+        if (collapsedNodeIds.has(curr.parentId)) return false;
+        curr = NODES.find(n => n.id === curr.parentId);
+      }
+      if (node.parentId && collapsedNodeIds.has(node.parentId)) return false;
+
+      return true;
+    }
+
+    // Toggle expand/collapse for a node
+    function toggleBranch(nodeId, e) {
+      if (e) {
+        e.stopPropagation();
+      }
+
+      if (collapsedNodeIds.has(nodeId)) {
+        collapsedNodeIds.delete(nodeId);
+      } else {
+        collapsedNodeIds.add(nodeId);
+      }
+
+      renderNodes();
+      requestAnimationFrame(() => renderConnections());
+      lucide.createIcons();
+    }
+
+    // Toggle all branches
+    function toggleAllBranches() {
+      const allParentIds = Array.from(childrenMap.keys());
+      const hasCollapsed = allParentIds.some(id => collapsedNodeIds.has(id));
+
+      if (hasCollapsed) {
+        // Expand all
+        collapsedNodeIds.clear();
+        document.getElementById('toggle-all-text').textContent = 'Thu gọn tất cả';
+      } else {
+        // Collapse all to branches
+        allParentIds.forEach(id => collapsedNodeIds.add(id));
+        document.getElementById('toggle-all-text').textContent = 'Mở rộng tất cả';
+      }
+
+      renderNodes();
+      requestAnimationFrame(() => {
+        renderConnections();
+        fitAllNodes(true);
+      });
+      lucide.createIcons();
+    }
+
+    // Render HTML Nodes
+    function renderNodes() {
+      nodesContainer.innerHTML = '';
+      const visibleNodes = NODES.filter(n => isNodeVisible(n.id));
+
+      visibleNodes.forEach(node => {
+        const el = document.createElement('div');
+        el.id = 'node-' + node.id;
+        el.dataset.nodeId = node.id;
+        el.dataset.filterYear = node.filterYear || 'all';
+        el.style.left = node.x + 'px';
+        el.style.top = node.y + 'px';
+        el.style.width = node.width + 'px';
+        el.style.minHeight = node.height + 'px';
+
+        const isCenter = node.isCenter;
+        const borderClass = isCenter ? 'border-2 border-purple-400' : (BRANCH_BORDER_CLASSES[node.branchId] || 'border-l-4 border-l-slate-400');
+        const badgeClass = BRANCH_BADGE_CLASSES[node.branchId] || 'bg-slate-100 text-slate-700';
+        const isSelected = selectedNodeId === node.id;
+
+        if (isCenter) {
+          el.className = 'node-card absolute rounded-2xl bg-purple-950 text-white shadow-xl flex flex-col justify-between p-4 z-30 animate-root-glow ' + borderClass + (isSelected ? ' is-selected' : '');
+          el.innerHTML = `
+            <div>
+              <div class="flex items-center justify-between mb-2">
+                <span class="px-2 py-0.5 rounded-full text-[10px] font-extrabold bg-amber-400 text-purple-950 flex items-center gap-1 shadow-xs">
+                  <i data-lucide="star" class="w-3 h-3 fill-purple-950"></i>
+                  ${node.year}
+                </span>
+                <span class="px-2 py-0.5 rounded-full text-[9px] font-bold uppercase tracking-wider bg-purple-900 text-purple-200 border border-purple-700">
+                  ${node.category}
+                </span>
+              </div>
+              <h3 class="font-extrabold text-sm text-white leading-snug line-clamp-2">
+                ${node.title}
+              </h3>
+              <p class="text-[11px] text-purple-200 mt-1 leading-snug line-clamp-2">
+                ${node.subtitle}
+              </p>
+            </div>
+            <div class="mt-3 pt-2 border-t border-purple-800/80 flex items-center justify-between text-[11px] text-amber-300 font-bold">
+              <span>Xem hồ sơ trung tâm</span>
+              <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+            </div>
+          `;
+        } else {
+          // Standard Heptabase Note Card
+          const hasKids = (childrenMap.get(node.id) || []).length > 0;
+          const isCollapsed = collapsedNodeIds.has(node.id);
+          const branchColor = BRANCH_COLORS[node.branchId] || '#64748B';
+
+          el.className = 'node-card absolute rounded-xl bg-white border border-slate-200/90 shadow-card flex flex-col justify-between p-3.5 z-20 hover:border-slate-300 ' + borderClass + (isSelected ? ' is-selected' : '');
+          
+          let thumbnailHtml = '';
+          if (node.imageUrl) {
+            thumbnailHtml = `
+              <div class="w-10 h-10 rounded-lg overflow-hidden shrink-0 border border-slate-200 bg-slate-100 shadow-xs">
+                <img src="${node.imageUrl}" alt="" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='${node.cdnFallback || ''}'"/>
+              </div>
+            `;
+          }
+
+          let toggleBtnHtml = '';
+          if (hasKids) {
+            toggleBtnHtml = `
+              <div 
+                class="branch-toggle-btn" 
+                style="border: 1.5px solid ${branchColor}; color: ${branchColor};" 
+                onclick="toggleBranch('${node.id}', event)" 
+                title="${isCollapsed ? 'Mở rộng nhánh' : 'Thu gọn nhánh'}"
+              >
+                <i data-lucide="${isCollapsed ? 'plus' : 'minus'}" class="w-3 h-3" style="stroke-width: 2.5;"></i>
+              </div>
+            `;
+          }
+
+          el.innerHTML = `
+            ${toggleBtnHtml}
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide ${badgeClass}">
+                  ${node.category}
+                </span>
+                <span class="text-[10px] font-bold text-slate-500">
+                  ${node.year}
+                </span>
+              </div>
+
+              <div class="flex items-start space-x-2.5">
+                <div class="flex-1 min-w-0">
+                  <h3 class="font-bold text-[13px] text-slate-800 leading-snug line-clamp-2">
+                    ${node.title}
+                  </h3>
+                  <p class="text-[11px] text-slate-500 mt-1 leading-snug line-clamp-2">
+                    ${node.subtitle}
+                  </p>
+                </div>
+                ${thumbnailHtml}
+              </div>
+            </div>
+
+            <div class="mt-2.5 pt-2 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-semibold">
+              <span class="text-purple-700 font-bold hover:underline">Chi tiết & Hồ sơ</span>
+              <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400"></i>
+            </div>
+          `;
+        }
+
+        // Accessibility attributes
+        el.setAttribute('tabindex', '0');
+        el.setAttribute('role', 'button');
+        el.setAttribute('aria-label', node.title);
+
+        // Click to select node
+        el.addEventListener('click', (e) => {
+          selectNode(node.id);
+        });
+
+        // Double click to center camera
+        el.addEventListener('dblclick', (e) => {
+          centerOnNode(node.id);
+        });
+
+        // Keyboard selection
+        el.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            selectNode(node.id);
+          }
+        });
+
+        nodesContainer.appendChild(el);
+      });
+
+      lucide.createIcons();
+    }
+
+    // Measure exact bounding box of rendered node
+    function getNodeBox(nodeId) {
+      const el = document.getElementById('node-' + nodeId);
+      const node = NODES.find(n => n.id === nodeId);
+      if (el) {
+        return {
+          left: parseFloat(el.style.left) || el.offsetLeft,
+          top: parseFloat(el.style.top) || el.offsetTop,
+          width: el.offsetWidth || (node ? node.width : 290),
+          height: el.offsetHeight || (node ? node.height : 118)
+        };
+      }
+      if (node) {
+        return {
+          left: node.x,
+          top: node.y,
+          width: node.width || 290,
+          height: node.height || 118
+        };
+      }
+      return { left: 0, top: 0, width: 290, height: 118 };
+    }
+
+    // Render SVG Bezier Connections
+    function renderConnections() {
+      hierarchySvgGroup.innerHTML = '';
+      crossLinksSvgGroup.innerHTML = '';
+
+      const nodeMap = new Map();
+      NODES.forEach(n => nodeMap.set(n.id, n));
+
+      // 1. Hierarchy Connections (Parent right-edge -> Child left-edge)
+      NODES.forEach(child => {
+        if (!child.parentId) return;
+        if (!isNodeVisible(child.id) || !isNodeVisible(child.parentId)) return;
+
+        const parent = nodeMap.get(child.parentId);
+        if (!parent) return;
+
+        const pBox = getNodeBox(parent.id);
+        const cBox = getNodeBox(child.id);
+
+        const startX = pBox.left + pBox.width;
+        const startY = pBox.top + pBox.height / 2;
+        const endX = cBox.left;
+        const endY = cBox.top + cBox.height / 2;
+
+        const deltaX = Math.abs(endX - startX);
+        const deltaY = Math.abs(endY - startY);
+
+        // Smooth cubic bezier
+        const dx = Math.max(35, Math.min(120, deltaX * 0.5 + deltaY * 0.08));
+        const pathData = 'M ' + startX + ' ' + startY + ' C ' + (startX + dx) + ' ' + startY + ', ' + (endX - dx) + ' ' + endY + ', ' + endX + ' ' + endY;
+
+        const branchKey = child.branchId || parent.branchId || 'b1';
+        const lineColor = BRANCH_COLORS[branchKey] || '#64748B';
+        const markerId = (branchKey in BRANCH_COLORS) ? 'arrow-' + branchKey : 'arrow-default';
+
+        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathEl.setAttribute('d', pathData);
+        pathEl.setAttribute('fill', 'none');
+        pathEl.setAttribute('stroke', lineColor);
+        pathEl.setAttribute('stroke-width', parent.isCenter ? '2.5' : '2.0');
+        pathEl.setAttribute('stroke-linecap', 'round');
+        pathEl.setAttribute('stroke-opacity', '0.85');
+        pathEl.setAttribute('marker-end', 'url(#' + markerId + ')');
+        pathEl.id = 'link-' + parent.id + '-' + child.id;
+        pathEl.dataset.parent = parent.id;
+        pathEl.dataset.child = child.id;
+
+        hierarchySvgGroup.appendChild(pathEl);
+      });
+
+      // 2. Cross Links (e.g. Miền Bắc chi viện Miền Nam)
+      CROSS_LINKS.forEach(cl => {
+        if (!isNodeVisible(cl.from) || !isNodeVisible(cl.to)) return;
+        const fBox = getNodeBox(cl.from);
+        const tBox = getNodeBox(cl.to);
+
+        const startX = fBox.left + fBox.width / 2;
+        const startY = fBox.top;
+        const endX = tBox.left + tBox.width / 2;
+        const endY = tBox.top;
+
+        const midX = (startX + endX) / 2;
+        const midY = Math.min(startY, endY) - 80;
+
+        const pathData = 'M ' + startX + ' ' + startY + ' Q ' + midX + ' ' + midY + ', ' + endX + ' ' + endY;
+
+        const dashPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        dashPath.setAttribute('d', pathData);
+        dashPath.setAttribute('fill', 'none');
+        dashPath.setAttribute('stroke', cl.color);
+        dashPath.setAttribute('stroke-width', '2.2');
+        dashPath.setAttribute('stroke-linecap', 'round');
+        dashPath.setAttribute('class', 'dash-flow');
+        dashPath.setAttribute('marker-end', 'url(#arrow-cross1)');
+        crossLinksSvgGroup.appendChild(dashPath);
+      });
+    }
+
+    // Select Node and populate Detail Panel
+    function selectNode(nodeId) {
+      selectedNodeId = nodeId;
+
+      // Update card visual active ring
+      document.querySelectorAll('.node-card').forEach(c => c.classList.remove('is-selected'));
+      const activeCard = document.getElementById('node-' + nodeId);
+      if (activeCard) {
+        activeCard.classList.add('is-selected');
+      }
+
+      const node = NODES.find(n => n.id === nodeId);
+      if (!node) {
+        deselectNode();
+        return;
+      }
+
+      // Populate Detail Panel
+      panelEmptyState.classList.add('hidden');
+      panelActiveState.classList.remove('hidden');
+      panelActiveState.classList.add('flex');
+
+      const d = node.detail || {};
+      document.getElementById('panel-title').textContent = d.title || node.title;
+      document.getElementById('panel-subtitle').textContent = node.subtitle;
+      document.getElementById('panel-badge-category').textContent = d.tag || node.category;
+      document.getElementById('panel-badge-period').textContent = d.period || node.year;
+      document.getElementById('panel-book-ref').textContent = d.bookRef || 'Trang 180 – 236';
+
+      // Badge style
+      const badgeEl = document.getElementById('panel-badge-category');
+      badgeEl.className = 'px-2 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wide ' + (BRANCH_BADGE_CLASSES[node.branchId] || 'bg-slate-100 text-slate-700');
+
+      // Photo
+      const imgContainer = document.getElementById('panel-image-container');
+      if (node.imageUrl) {
+        document.getElementById('panel-image-img').src = node.imageUrl;
+        document.getElementById('panel-image-caption').textContent = node.imageCaption || 'Tư liệu lịch sử Đảng Cộng sản Việt Nam';
+        imgContainer.classList.remove('hidden');
+      } else {
+        imgContainer.classList.add('hidden');
+      }
+
+      // Quote
+      const quoteContainer = document.getElementById('panel-quote-container');
+      if (d.quote) {
+        document.getElementById('panel-quote-text').textContent = '"' + d.quote + '"';
+        document.getElementById('panel-quote-author').textContent = '— ' + (d.authorQuote || 'Tài liệu lịch sử');
+        quoteContainer.classList.remove('hidden');
+      } else {
+        quoteContainer.classList.add('hidden');
+      }
+
+      // 5 Sections
+      renderSectionText('panel-context', 'panel-sec-context', d.context);
+      renderSectionText('panel-decisions', 'panel-sec-decisions', d.decisions);
+      renderSectionText('panel-developments', 'panel-sec-developments', d.developments);
+      renderSectionText('panel-significance', 'panel-sec-significance', d.significance);
+
+      // Stat cards
+      const statsSec = document.getElementById('panel-sec-stats');
+      const statsGrid = document.getElementById('panel-stats-grid');
+      statsGrid.innerHTML = '';
+      if (d.dataStats && d.dataStats.length > 0) {
+        d.dataStats.forEach(st => {
+          const card = document.createElement('div');
+          card.className = 'bg-slate-50 p-2.5 rounded-xl border border-slate-200/80 flex flex-col justify-between';
+          card.innerHTML = `
+            <span class="text-[10px] text-slate-500 font-semibold">${st.label}</span>
+            <strong class="text-xs text-sky-900 mt-1 font-bold">${st.val}</strong>
+          `;
+          statsGrid.appendChild(card);
+        });
+        statsSec.classList.remove('hidden');
+      } else {
+        statsSec.classList.add('hidden');
+      }
+
+      // Hierarchy Links (Parent / Children)
+      const parentLinkDiv = document.getElementById('panel-parent-link');
+      if (node.parentId && node.parentId !== node.id) {
+        const parentNode = NODES.find(n => n.id === node.parentId);
+        if (parentNode) {
+          parentLinkDiv.innerHTML = `
+            <span class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Thuộc nhánh sự kiện:</span>
+            <button onclick="selectAndFocusNode('${parentNode.id}')" class="w-full text-left p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center justify-between transition">
+              <span class="truncate">← ${parentNode.title}</span>
+              <i data-lucide="arrow-left" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+            </button>
+          `;
+          parentLinkDiv.classList.remove('hidden');
+        } else {
+          parentLinkDiv.classList.add('hidden');
+        }
+      } else {
+        parentLinkDiv.classList.add('hidden');
+      }
+
+      const directKids = childrenMap.get(node.id) || [];
+      const childrenLinksDiv = document.getElementById('panel-children-links');
+      if (directKids.length > 0) {
+        let kidsHtml = `<span class="text-[10px] text-slate-400 font-bold uppercase block mb-1">Sự kiện trực thuộc (${directKids.length}):</span>`;
+        directKids.forEach(kidId => {
+          const kidNode = NODES.find(n => n.id === kidId);
+          if (kidNode) {
+            kidsHtml += `
+              <button onclick="selectAndFocusNode('${kidNode.id}')" class="w-full text-left p-2 rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 text-xs font-semibold text-slate-700 flex items-center justify-between transition mb-1">
+                <span class="truncate">• ${kidNode.title}</span>
+                <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-400 shrink-0"></i>
+              </button>
+            `;
+          }
+        });
+        childrenLinksDiv.innerHTML = kidsHtml;
+        childrenLinksDiv.classList.remove('hidden');
+      } else {
+        childrenLinksDiv.classList.add('hidden');
+      }
+
+      // Mobile Drawer behavior
+      if (window.innerWidth < 1024) {
+        detailPanel.classList.remove('translate-x-full');
+        detailPanel.classList.add('translate-x-0');
+        panelBackdrop.classList.remove('hidden');
+        panelBackdrop.classList.add('opacity-100');
+      }
+
+      lucide.createIcons();
+    }
+
+    function renderSectionText(textId, secId, content) {
+      const el = document.getElementById(textId);
+      const sec = document.getElementById(secId);
+      if (content && content.trim()) {
+        el.textContent = content;
+        sec.classList.remove('hidden');
+      } else {
+        sec.classList.add('hidden');
+      }
+    }
+
+    function deselectNode() {
+      selectedNodeId = null;
+      document.querySelectorAll('.node-card').forEach(c => c.classList.remove('is-selected'));
+      panelActiveState.classList.add('hidden');
+      panelActiveState.classList.remove('flex');
+      panelEmptyState.classList.remove('hidden');
+
+      if (window.innerWidth < 1024) {
+        detailPanel.classList.add('translate-x-full');
+        detailPanel.classList.remove('translate-x-0');
+        panelBackdrop.classList.remove('opacity-100');
+        setTimeout(() => panelBackdrop.classList.add('hidden'), 300);
+      }
+    }
+
+    function selectAndFocusNode(nodeId) {
+      // If node is collapsed, expand ancestor branches
+      let curr = NODES.find(n => n.id === nodeId);
+      while (curr && curr.parentId) {
+        collapsedNodeIds.delete(curr.parentId);
+        curr = NODES.find(n => n.id === curr.parentId);
+      }
+
+      renderNodes();
+      requestAnimationFrame(() => renderConnections());
+
+      selectNode(nodeId);
+      centerOnNode(nodeId);
+    }
+
+    // Camera Pan & Zoom logic
+    function updateTransform() {
+      gsap.set(canvasEl, {
+        x: currentPan.x,
+        y: currentPan.y,
+        scale: currentScale,
+        transformOrigin: '0 0'
+      });
+      updateZoomDisplay();
+    }
+
+    function updateZoomDisplay() {
+      const zoomText = document.getElementById('zoom-percent-text');
+      if (zoomText) {
+        zoomText.textContent = Math.round(currentScale * 100) + '%';
+      }
+    }
+
+    function smoothZoom(factor, clientX, clientY) {
+      const oldScale = currentScale;
+      let newScale = currentScale * factor;
+      newScale = Math.max(0.2, Math.min(1.8, newScale));
+
+      if (clientX !== undefined && clientY !== undefined) {
+        const rect = viewportEl.getBoundingClientRect();
+        const mouseX = clientX - rect.left;
+        const mouseY = clientY - rect.top;
+
+        currentPan.x = mouseX - (mouseX - currentPan.x) * (newScale / oldScale);
+        currentPan.y = mouseY - (mouseY - currentPan.y) * (newScale / oldScale);
+      } else {
+        const viewW = viewportEl.clientWidth;
+        const viewH = viewportEl.clientHeight;
+        currentPan.x = viewW / 2 - (viewW / 2 - currentPan.x) * (newScale / oldScale);
+        currentPan.y = viewH / 2 - (viewH / 2 - currentPan.y) * (newScale / oldScale);
+      }
+
+      currentScale = newScale;
+      gsap.to(canvasEl, {
+        x: currentPan.x,
+        y: currentPan.y,
+        scale: currentScale,
+        duration: 0.3,
+        ease: 'power2.out',
+        onUpdate: updateTransform
+      });
+    }
+
+    function centerOnNode(nodeId, animate = true) {
+      const node = NODES.find(n => n.id === nodeId);
+      if (!node) return;
+
+      const box = getNodeBox(nodeId);
+      const nodeCenterX = box.left + box.width / 2;
+      const nodeCenterY = box.top + box.height / 2;
+
+      const viewW = viewportEl.clientWidth;
+      const viewH = viewportEl.clientHeight;
+
+      const targetScale = Math.max(currentScale, 0.75);
+      const targetPanX = Math.round(viewW / 2 - nodeCenterX * targetScale);
+      const targetPanY = Math.round(viewH / 2 - nodeCenterY * targetScale);
+
+      currentScale = targetScale;
+      currentPan.x = targetPanX;
+      currentPan.y = targetPanY;
+
+      if (animate) {
+        gsap.to(canvasEl, {
+          x: currentPan.x,
+          y: currentPan.y,
+          scale: currentScale,
+          duration: 0.5,
+          ease: 'power2.out',
+          onUpdate: updateTransform
+        });
+      } else {
+        updateTransform();
+      }
+    }
+
+    function fitAllNodes(animate = true) {
+      const visibleNodes = NODES.filter(n => isNodeVisible(n.id));
+      if (visibleNodes.length === 0) return;
+
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      visibleNodes.forEach(n => {
+        const box = getNodeBox(n.id);
+        minX = Math.min(minX, box.left);
+        maxX = Math.max(maxX, box.left + box.width);
+        minY = Math.min(minY, box.top);
+        maxY = Math.max(maxY, box.top + box.height);
+      });
+
+      const contentW = maxX - minX;
+      const contentH = maxY - minY;
+      const contentCenterX = minX + contentW / 2;
+      const contentCenterY = minY + contentH / 2;
+
+      const viewW = viewportEl.clientWidth || 800;
+      const viewH = viewportEl.clientHeight || 600;
+
+      const padding = 50;
+      const scaleX = (viewW - padding * 2) / contentW;
+      const scaleY = (viewH - padding * 2) / contentH;
+      let targetScale = Math.min(scaleX, scaleY);
+      targetScale = Math.max(0.2, Math.min(1.1, targetScale));
+
+      const targetPanX = Math.round(viewW / 2 - contentCenterX * targetScale);
+      const targetPanY = Math.round(viewH / 2 - contentCenterY * targetScale);
+
+      currentScale = targetScale;
+      currentPan.x = targetPanX;
+      currentPan.y = targetPanY;
+
+      if (animate) {
+        gsap.to(canvasEl, {
+          x: currentPan.x,
+          y: currentPan.y,
+          scale: currentScale,
+          duration: 0.5,
+          ease: 'power2.out',
+          onUpdate: updateTransform
+        });
+      } else {
+        updateTransform();
+      }
+    }
+
+    // Setup Drag Pan & Wheel Zoom
+    function setupPanZoom() {
+      let isPointerDown = false;
+      let startX = 0, startY = 0;
+      let initialPan = { x: 0, y: 0 };
+
+      viewportEl.addEventListener('pointerdown', (e) => {
+        // Only drag if clicking viewport background, canvas, or svg (not inside node card or toolbar)
+        if (e.target.closest('.node-card') || e.target.closest('#canvas-toolbar') || e.target.closest('button')) {
+          return;
+        }
+        isPointerDown = true;
+        startX = e.clientX;
+        startY = e.clientY;
+        initialPan = { ...currentPan };
+        viewportEl.setPointerCapture(e.pointerId);
+      });
+
+      viewportEl.addEventListener('pointermove', (e) => {
+        if (!isPointerDown) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        currentPan.x = initialPan.x + dx;
+        currentPan.y = initialPan.y + dy;
+        updateTransform();
+      });
+
+      const endPointer = (e) => {
+        if (!isPointerDown) return;
+        isPointerDown = false;
+        try { viewportEl.releasePointerCapture(e.pointerId); } catch(err) {}
+      };
+
+      viewportEl.addEventListener('pointerup', endPointer);
+      viewportEl.addEventListener('pointercancel', endPointer);
+
+      // Wheel Zoom
+      viewportEl.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.12 : 0.88;
+        smoothZoom(factor, e.clientX, e.clientY);
+      }, { passive: false });
+
+      // Toolbar zoom buttons
+      document.getElementById('zoom-in-btn').addEventListener('click', () => smoothZoom(1.2));
+      document.getElementById('zoom-out-btn').addEventListener('click', () => smoothZoom(0.8));
+      document.getElementById('zoom-level-btn').addEventListener('click', () => {
+        currentScale = 1.0;
+        updateTransform();
+      });
+      document.getElementById('fit-all-btn').addEventListener('click', () => fitAllNodes(true));
+      document.getElementById('center-root-btn').addEventListener('click', () => centerOnNode('center'));
+    }
+
+    // Search Autocomplete & Instant Focus
+    function setupSearch() {
+      const searchInput = document.getElementById('search-input');
+      const clearBtn = document.getElementById('search-clear-btn');
+      const dropdown = document.getElementById('search-results-dropdown');
+
+      const performSearch = (q) => {
+        const query = q.trim().toLowerCase();
+        if (!query) {
+          dropdown.classList.add('hidden');
+          clearBtn.classList.add('hidden');
+          return;
+        }
+
+        clearBtn.classList.remove('hidden');
+
+        const matches = NODES.filter(n => {
+          const t = (n.title || '').toLowerCase();
+          const s = (n.subtitle || '').toLowerCase();
+          const y = (n.year || '').toLowerCase();
+          const c = (n.category || '').toLowerCase();
+          const ctx = (n.detail && n.detail.context || '').toLowerCase();
+          const dec = (n.detail && n.detail.decisions || '').toLowerCase();
+          const dev = (n.detail && n.detail.developments || '').toLowerCase();
+          return t.includes(query) || s.includes(query) || y.includes(query) || c.includes(query) || ctx.includes(query) || dec.includes(query) || dev.includes(query);
+        });
+
+        if (matches.length === 0) {
+          dropdown.innerHTML = '<div class="p-4 text-xs text-slate-400 text-center italic">Không tìm thấy sự kiện phù hợp</div>';
+          dropdown.classList.remove('hidden');
+          return;
+        }
+
+        dropdown.innerHTML = matches.slice(0, 8).map(m => `
+          <div 
+            class="p-2.5 border-b border-slate-100 hover:bg-slate-50 cursor-pointer flex items-center justify-between transition group"
+            onclick="selectAndFocusNode('${m.id}'); document.getElementById('search-results-dropdown').classList.add('hidden');"
+          >
+            <div class="min-w-0 pr-2">
+              <div class="flex items-center space-x-1.5 mb-0.5">
+                <span class="px-1.5 py-0.2 rounded text-[9px] font-bold ${BRANCH_BADGE_CLASSES[m.branchId] || 'bg-slate-100 text-slate-700'}">
+                  ${m.year}
+                </span>
+                <span class="text-[10px] text-slate-400 truncate">${m.category}</span>
+              </div>
+              <h4 class="font-bold text-xs text-slate-800 group-hover:text-purple-700 truncate">${m.title}</h4>
+            </div>
+            <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300 group-hover:text-purple-600 shrink-0"></i>
+          </div>
+        `).join('');
+
+        dropdown.classList.remove('hidden');
+        lucide.createIcons();
+      };
+
+      searchInput.addEventListener('input', (e) => performSearch(e.target.value));
+
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        dropdown.classList.add('hidden');
+        clearBtn.classList.add('hidden');
+        searchInput.focus();
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('#search-input') && !e.target.closest('#search-results-dropdown')) {
+          dropdown.classList.add('hidden');
+        }
+      });
+    }
+
+    // Timeline Filter Buttons
+    function setupTimelineFilter() {
+      const filterBtns = document.querySelectorAll('.timeline-btn');
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          filterBtns.forEach(b => {
+            b.classList.remove('active', 'bg-white', 'text-purple-700', 'font-bold', 'shadow-xs');
+            b.classList.add('text-slate-600', 'font-medium');
+          });
+          btn.classList.add('active', 'bg-white', 'text-purple-700', 'font-bold', 'shadow-xs');
+          btn.classList.remove('text-slate-600', 'font-medium');
+
+          activeFilter = btn.dataset.filter || 'all';
+          renderNodes();
+          requestAnimationFrame(() => {
+            renderConnections();
+            fitAllNodes(true);
+          });
+        });
+      });
+    }
+
+    // Toggle Sidebar & Backdrop setup
+    function setupSidebarToggle() {
+      const toggleBtn = document.getElementById('toggle-sidebar-btn');
+      const closeBtn = document.getElementById('panel-close-btn');
+      const focusBtn = document.getElementById('panel-focus-btn');
+      const toggleAllBtn = document.getElementById('toggle-all-branches-btn');
+
+      toggleBtn.addEventListener('click', () => {
+        isSidebarCollapsed = !isSidebarCollapsed;
+        if (isSidebarCollapsed) {
+          detailPanel.classList.add('lg:hidden');
+        } else {
+          detailPanel.classList.remove('lg:hidden');
+        }
+        requestAnimationFrame(() => renderConnections());
+      });
+
+      closeBtn.addEventListener('click', () => {
+        deselectNode();
+      });
+
+      panelBackdrop.addEventListener('click', () => {
+        deselectNode();
+      });
+
+      focusBtn.addEventListener('click', () => {
+        if (selectedNodeId) {
+          centerOnNode(selectedNodeId);
+        }
+      });
+
+      toggleAllBtn.addEventListener('click', () => {
+        toggleAllBranches();
+      });
+    }
+
+    // Export PDF & Image Modal
+    function setupPdfExport() {
+      const modal = document.getElementById('pdf-export-modal');
+      const openBtn = document.getElementById('export-btn');
+      const closeBtn = document.getElementById('pdf-modal-close-btn');
+      const cancelBtn = document.getElementById('pdf-modal-cancel-btn');
+      const printBtn = document.getElementById('pdf-browser-print-btn');
+
+      openBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        lucide.createIcons();
+      });
+
+      const closeModal = () => modal.classList.add('hidden');
+      closeBtn.addEventListener('click', closeModal);
+      cancelBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+      });
+
+      printBtn.addEventListener('click', () => {
+        closeModal();
+        window.print();
+      });
+    }
+
+    // Color Legend Modal
+    function setupLegendModal() {
+      const modal = document.getElementById('color-legend-modal');
+      const openBtn = document.getElementById('legend-btn');
+      const closeBtn = document.getElementById('legend-close-btn');
+
+      openBtn.addEventListener('click', () => {
+        modal.classList.remove('hidden');
+        lucide.createIcons();
+      });
+
+      closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) modal.classList.add('hidden');
+      });
+    }
+
+    // Keyboard Navigation
+    function setupKeyboardNav() {
+      document.addEventListener('keydown', (e) => {
+        if (e.target.tagName === 'INPUT') return;
+
+        if (e.key === 'Escape') {
+          deselectNode();
+          document.getElementById('search-results-dropdown').classList.add('hidden');
+          document.getElementById('pdf-export-modal').classList.add('hidden');
+          document.getElementById('color-legend-modal').classList.add('hidden');
+        } else if (e.key === 'f' || e.key === 'F') {
+          fitAllNodes(true);
+        } else if (e.key === '0') {
+          centerOnNode('center');
+        } else if (e.key === '+' || e.key === '=') {
+          smoothZoom(1.2);
+        } else if (e.key === '-' || e.key === '_') {
+          smoothZoom(0.8);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
