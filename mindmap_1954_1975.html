@@ -2914,7 +2914,7 @@
         });
         const b7Y = maxColY + 80;
         b7El.style.top = b7Y + 'px';
-        const b7KidsY = b7Y + b7El.offsetHeight + 60;
+        const b7KidsY = b7Y + b7El.offsetHeight + 120;
         ['node-b7_meaning', 'node-b7_lessons', 'node-b7_critique'].forEach(id => {
           const el = document.getElementById(id);
           if (el) el.style.top = b7KidsY + 'px';
@@ -2944,7 +2944,7 @@
 
         if (isBottom) {
           btnX = cardX + cardW / 2 - 20;
-          btnY = cardY + cardH + 24;
+          btnY = cardY + cardH + 18;
           dirStemClass = 'dock-stem-bottom';
         } else if (isRight) {
           btnX = cardX + cardW + 24;
@@ -2993,19 +2993,40 @@
       lucide.createIcons();
     }
 
+    function getNodeBox(nodeId) {
+      const el = document.getElementById('node-' + nodeId);
+      const n = NODES.find(item => item.id === nodeId);
+      if (!el) {
+        return {
+          x: n ? n.x : 0,
+          y: n ? n.y : 0,
+          w: n ? n.width : 340,
+          h: n ? n.height : 180
+        };
+      }
+      const sLeft = parseFloat(el.style.left);
+      const sTop = parseFloat(el.style.top);
+      return {
+        x: !isNaN(sLeft) ? sLeft : (el.offsetLeft || (n ? n.x : 0)),
+        y: !isNaN(sTop) ? sTop : (el.offsetTop || (n ? n.y : 0)),
+        w: el.offsetWidth || (n ? n.width : 340),
+        h: el.offsetHeight || (n ? n.height : 180)
+      };
+    }
+
     function getAnchors(parent, child) {
-      const pEl = document.getElementById('node-' + parent.id);
-      const cEl = document.getElementById('node-' + child.id);
+      const pBox = getNodeBox(parent.id);
+      const cBox = getNodeBox(child.id);
 
-      const pX = pEl ? pEl.offsetLeft : parent.x;
-      const pY = pEl ? pEl.offsetTop : parent.y;
-      const pW = pEl ? pEl.offsetWidth : parent.width;
-      const pH = pEl ? pEl.offsetHeight : parent.height;
+      const pX = pBox.x;
+      const pY = pBox.y;
+      const pW = pBox.w;
+      const pH = pBox.h;
 
-      const cX = cEl ? cEl.offsetLeft : child.x;
-      const cY = cEl ? cEl.offsetTop : child.y;
-      const cW = cEl ? cEl.offsetWidth : child.width;
-      const cH = cEl ? cEl.offsetHeight : child.height;
+      const cX = cBox.x;
+      const cY = cBox.y;
+      const cW = cBox.w;
+      const cH = cBox.h;
 
       const pCenterX = pX + pW / 2;
       const pCenterY = pY + pH / 2;
@@ -3017,8 +3038,24 @@
 
       let startX, startY, endX, endY, isHorizontal;
 
-      // Branch 7 children are strictly underneath: force downward vertical connection
+      // Special Case 1: Branch 7 children are strictly underneath: force downward vertical connection
       if (parent.id === 'branch_7') {
+        isHorizontal = false;
+        startX = pCenterX;
+        const dBtn = document.getElementById('dock-btn-branch_7');
+        if (dBtn) {
+          const btnTop = parseFloat(dBtn.style.top);
+          startY = (!isNaN(btnTop) ? btnTop : (pY + pH)) + dBtn.offsetHeight;
+        } else {
+          startY = pY + pH;
+        }
+        endX = cCenterX;
+        endY = cY;
+        return { startX, startY, endX, endY, isHorizontal, dx, dy };
+      }
+
+      // Special Case 2: Center connecting to Branch 7 (strictly downward vertical)
+      if (parent.isCenter && child.id === 'branch_7') {
         isHorizontal = false;
         startX = pCenterX;
         startY = pY + pH;
@@ -3030,22 +3067,31 @@
       // Check if parent has an external dock button
       const pDockBtn = document.getElementById('dock-btn-' + parent.id);
       let pAnchorY = pCenterY;
+      let pAnchorLeft = pX;
+      let pAnchorRight = pX + pW;
+
       if (pDockBtn) {
-        pAnchorY = parseFloat(pDockBtn.style.top) + 20;
+        const btnTop = parseFloat(pDockBtn.style.top);
+        const btnLeft = parseFloat(pDockBtn.style.left);
+        if (!isNaN(btnTop)) pAnchorY = btnTop + pDockBtn.offsetHeight / 2;
+        if (!isNaN(btnLeft)) {
+          if (dx > 0) pAnchorRight = btnLeft + pDockBtn.offsetWidth;
+          if (dx < 0) pAnchorLeft = btnLeft;
+        }
       }
 
-      // Primary horizontal routing if dx dominates dy * 0.55
-      if (Math.abs(dx) >= Math.abs(dy) * 0.55) {
+      // Primary horizontal routing if dx dominates dy * 0.45 or if parent is center
+      if (Math.abs(dx) >= Math.abs(dy) * 0.45 || parent.isCenter) {
         isHorizontal = true;
         if (dx > 0) {
           // Child is to the RIGHT of parent
-          startX = pX + pW;
+          startX = pAnchorRight;
           startY = pAnchorY;
           endX = cX;
           endY = cCenterY;
         } else {
           // Child is to the LEFT of parent
-          startX = pX;
+          startX = pAnchorLeft;
           startY = pAnchorY;
           endX = cX + cW;
           endY = cCenterY;
@@ -3054,13 +3100,11 @@
         // Child is primarily ABOVE or BELOW parent
         isHorizontal = false;
         if (dy > 0) {
-          // Child is BELOW parent
           startX = pCenterX;
           startY = pY + pH;
           endX = cCenterX;
           endY = cY;
         } else {
-          // Child is ABOVE parent
           startX = pCenterX;
           startY = pY;
           endX = cCenterX;
@@ -3070,7 +3114,6 @@
       return { startX, startY, endX, endY, isHorizontal, dx, dy };
     }
 
-    // Render SVG Connectors with Exact Edge Docking & Distinct Branch Colors
     function renderConnections() {
       hierarchySvgGroup.innerHTML = '';
       crossLinksSvgGroup.innerHTML = '';
